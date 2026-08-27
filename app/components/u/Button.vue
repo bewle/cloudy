@@ -11,15 +11,18 @@ export const buttonStyles = tv({
   },
   variants: {
     size: {
-      default: 'px-2 h-7 text-sm rounded',
-      sm: 'px-1.5 h-6 text-xs rounded',
+      default: 'px-2.5 h-8 text-sm rounded',
+      sm: 'px-2 h-7 text-xs rounded',
       lg: 'px-3 h-9 text-base rounded',
+      icon: 'size-8 aspect-square text-base rounded',
     },
     variant: {
       default:
-        'hover:bg-background-hover active:bg-background-active focus-visible:bg-background-hover',
+        // 'text-muted-foreground not-[[data-state=active],[data-state=on]]:hover:(bg-background-hover text-foreground) active:(bg-background-active text-foreground) focus-visible:bg-background-hover data-[state=active]:(bg-background-active text-foreground) data-[state=on]:(bg-background-active text-foreground)',
+        'text-muted-foreground not-[[data-state=active],[data-state=on]]:hover:(bg-background-hover text-foreground) active:(bg-background-active text-foreground) focus-visible:bg-background-hover',
       outline:
-        'bg-surface hover:(bg-surface-hover border-border-hover) active:(bg-surface-active border-border-active) focus-visible:bg-surface-hover border border-border',
+        // 'bg-surface not-[[data-state=active],[data-state=on]]:hover:(bg-surface-hover border-border-hover) active:(bg-surface-active border-border-active) focus-visible:bg-surface-hover border border-border data-[state=active]:(bg-surface-active border-border-active) data-[state=on]:(bg-surface-active border-border-active)',
+        'bg-surface not-[[data-state=active],[data-state=on]]:hover:(bg-surface-hover border-border-hover) active:(bg-surface-active border-border-active) focus-visible:bg-surface-hover border border-border ',
     },
   },
 })
