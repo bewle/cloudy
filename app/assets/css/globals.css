@@ -1,17 +1,17 @@
-/* https://colorbox.io/?c0=%7Ep%24s%24%3D11%7Ep%24m%24%3Dok%7Ep%24h%24st%24%3D220%7Ep%24h%24e%24%3D240%7Ep%24h%24c%24%3Deqo%7Ep%24sa%24st%24%3D0.08%7Ep%24sa%24e%24%3D1%7Ep%24sa%24r%24%3D1%7Ep%24sa%24c%24%3Deqo%7Ep%24b%24st%24%3D1%7Ep%24b%24e%24%3D0.2%7Ep%24b%24c%24%3Deqti%7Ep%24li%24st%24%3D98%7Ep%24li%24e%24%3D13%7Ep%24li%24c%24%3D0.525%2C0.8416666666666667%2C0.88%2C1%7Ep%24ch%24st%24%3D0.006%7Ep%24ch%24e%24%3D0.011%7Ep%24ch%24r%24%3D1%7Ep%24ch%24c%24%3Dl%7Ep%24oh%24st%24%3D285%7Ep%24oh%24e%24%3D285%7Ep%24oh%24c%24%3Deqo%7Eo%24ms%24%3D%5B%5D%7Eo%24n%24%3DNeutral%7Eo%24ro%24%3Dcw%7Eo%24gm%24%3Dsr&c1=%7Ep%24s%24%3D11%7Ep%24m%24%3Dok%7Ep%24h%24st%24%3D220%7Ep%24h%24e%24%3D240%7Ep%24h%24c%24%3Deqo%7Ep%24sa%24st%24%3D0.08%7Ep%24sa%24e%24%3D1%7Ep%24sa%24r%24%3D1%7Ep%24sa%24c%24%3Deqo%7Ep%24b%24st%24%3D1%7Ep%24b%24e%24%3D0.2%7Ep%24b%24c%24%3Deqti%7Ep%24li%24st%24%3D91%7Ep%24li%24e%24%3D19%7Ep%24li%24c%24%3Dl%7Ep%24ch%24st%24%3D0.112%7Ep%24ch%24e%24%3D0.112%7Ep%24ch%24r%24%3D1%7Ep%24ch%24c%24%3Deqo%7Ep%24oh%24st%24%3D284.63%7Ep%24oh%24e%24%3D284.63%7Ep%24oh%24c%24%3Deqo%7Eo%24ms%24%3D%5B%5D%7Eo%24n%24%3DPrimary%7Eo%24ro%24%3Dcw%7Eo%24gm%24%3Dsr&ly=g&col=2&ns=tw */
+/* https://colorbox.io/?c0=~p%24s%24%3D11~p%24m%24%3Dok~p%24h%24st%24%3D220~p%24h%24e%24%3D240~p%24h%24c%24%3Deqo~p%24sa%24st%24%3D0.08~p%24sa%24e%24%3D1~p%24sa%24r%24%3D1~p%24sa%24c%24%3Deqo~p%24b%24st%24%3D1~p%24b%24e%24%3D0.2~p%24b%24c%24%3Deqti~p%24li%24st%24%3D98~p%24li%24e%24%3D11~p%24li%24c%24%3D0.25833333333333336%2C0.6666666666666667%2C0.88%2C1~p%24ch%24st%24%3D0.006~p%24ch%24e%24%3D0.014~p%24ch%24r%24%3D1~p%24ch%24c%24%3Dl~p%24oh%24st%24%3D285~p%24oh%24e%24%3D285~p%24oh%24c%24%3Deqo~o%24ms%24%3D%5B%5D~o%24n%24%3DNeutral~o%24ro%24%3Dcw~o%24gm%24%3Dsr&c1=~p%24s%24%3D11~p%24m%24%3Dok~p%24h%24st%24%3D220~p%24h%24e%24%3D240~p%24h%24c%24%3Deqo~p%24sa%24st%24%3D0.08~p%24sa%24e%24%3D1~p%24sa%24r%24%3D1~p%24sa%24c%24%3Deqo~p%24b%24st%24%3D1~p%24b%24e%24%3D0.2~p%24b%24c%24%3Deqti~p%24li%24st%24%3D91~p%24li%24e%24%3D19~p%24li%24c%24%3Dl~p%24ch%24st%24%3D0.112~p%24ch%24e%24%3D0.112~p%24ch%24r%24%3D1~p%24ch%24c%24%3Deqo~p%24oh%24st%24%3D284.63~p%24oh%24e%24%3D284.63~p%24oh%24c%24%3Deqo~o%24ms%24%3D%5B%5D~o%24n%24%3DPrimary~o%24ro%24%3Dcw~o%24gm%24%3Dsr&ly=g&col=2&ns=tw */
 
 :root {
   --neutral-50: #f8f8fc;
-  --neutral-100: #ccccd1;
-  --neutral-200: #a5a5aa;
-  --neutral-300: #838388;
-  --neutral-400: #646469;
-  --neutral-500: #4a4a4f;
-  --neutral-600: #343439;
-  --neutral-700: #222227;
-  --neutral-800: #141419;
-  --neutral-900: #0b0b0f;
-  --neutral-950: #07070b;
+  --neutral-100: #bbbbc0;
+  --neutral-200: #909096;
+  --neutral-300: #6f6f75;
+  --neutral-400: #54545a;
+  --neutral-500: #3e3e44;
+  --neutral-600: #2c2c32;
+  --neutral-700: #1d1d23;
+  --neutral-800: #101117;
+  --neutral-900: #08080d;
+  --neutral-950: #040408;
 
   --primary-50: #dddeff;
   --primary-100: #c3c3ff;
@@ -30,16 +30,16 @@
 @supports (color: oklch(0% 0 0)) {
   :root {
     --neutral-50: oklch(98% 0.006 285);
-    --neutral-100: oklch(84.8% 0.006 285);
-    --neutral-200: oklch(72.5% 0.007 285);
-    --neutral-300: oklch(61% 0.007 285);
-    --neutral-400: oklch(50.5% 0.008 285);
-    --neutral-500: oklch(41% 0.008 285);
-    --neutral-600: oklch(32.6% 0.009 285);
-    --neutral-700: oklch(25.3% 0.009 285);
-    --neutral-800: oklch(19.4% 0.01 285);
-    --neutral-900: oklch(15% 0.01 285);
-    --neutral-950: oklch(13% 0.011 285);
+    --neutral-100: oklch(79.5% 0.007 285);
+    --neutral-200: oklch(65.6% 0.008 285);
+    --neutral-300: oklch(54.4% 0.008 285);
+    --neutral-400: oklch(44.8% 0.009 285);
+    --neutral-500: oklch(36.6% 0.01 285);
+    --neutral-600: oklch(29.4% 0.011 285);
+    --neutral-700: oklch(23.2% 0.012 285);
+    --neutral-800: oklch(17.8% 0.012 285);
+    --neutral-900: oklch(13.5% 0.013 285);
+    --neutral-950: oklch(11% 0.014 285);
     --primary-50: oklch(91% 0.045 284.6);
     --primary-100: oklch(83.8% 0.083 284.6);
     --primary-200: oklch(76.6% 0.112 284.6);
@@ -73,9 +73,9 @@
 
 .dark {
   --shift-hover-lightness: 0.075;
-  --shift-hover-chroma: 0.01;
-  --shift-active-lightness: 0.09;
-  --shift-active-chroma: 0.015;
+  --shift-hover-chroma: 0.005;
+  --shift-active-lightness: 0.1;
+  --shift-active-chroma: 0.01;
 
   --background: var(--neutral-950);
   --foreground: var(--neutral-50);
@@ -108,7 +108,7 @@
   --popover-foreground: oklch(--neutral-100);
 
   --muted: var(--neutral-800);
-  --muted-foreground: var(--neutral-200);
+  --muted-foreground: var(--neutral-100);
   --accent-foreground: var(--neutral-50);
 
   --success: oklch(79% 0.21 147);
@@ -125,9 +125,9 @@
 
 .light {
   --shift-hover-lightness: -0.075;
-  --shift-hover-chroma: 0.01;
-  --shift-active-lightness: -0.09;
-  --shift-active-chroma: 0.015;
+  --shift-hover-chroma: 0.005;
+  --shift-active-lightness: -0.1;
+  --shift-active-chroma: 0.01;
 
   --background: var(--neutral-50);
   --foreground: var(--neutral-950);
