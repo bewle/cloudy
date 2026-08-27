@@ -120,6 +120,10 @@ export default defineConfig({
       popover: [`0 6px 10px oklch(from var(--background) l c h / 0.75)`],
       sm: [`0 4px 5px oklch(from var(--background) l c h / 0.35)`],
     },
+    spacing: {
+      'main-input-w': '42rem',
+      'main-input-field-h': '2rem',
+    },
     text: {
       '2xs': {
         fontSize: '0.7rem',
