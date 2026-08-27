@@ -1,5 +1,4 @@
-import { defineConfig, presetWind4 } from 'unocss'
-import { transformerDirectives, transformerVariantGroup } from 'unocss'
+import { defineConfig, presetWind4, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 export default defineConfig({
   presets: [
@@ -9,6 +8,21 @@ export default defineConfig({
       },
     }),
   ],
+  rules: [
+    [
+      /^(bg|text|border)-(.+)-(hover|active)$/,
+      ([, prop, name, state], { theme }) => {
+        const omit = ['danger']
+        const color = (theme.colors as Record<string, any>)[name]
+        if (typeof color !== 'string' || omit.includes(name)) return
+        const cssProp =
+          prop === 'bg' ? 'background-color' : prop === 'text' ? 'color' : 'border-color'
+        return {
+          [cssProp]: `oklch(from ${color} calc(l + var(--shift-${state}-lightness)) calc(c + var(--shift-${state}-chroma)) h)`,
+        }
+      },
+    ],
+  ],
   theme: {
     colors: {
       'accent': 'var(--accent)',
@@ -17,9 +31,9 @@ export default defineConfig({
       'border': 'var(--border)',
       'border-strong': 'var(--border-strong)',
       'danger': 'var(--danger)',
+      'danger-active': 'var(--danger-active)',
       'danger-foreground': 'var(--danger-foreground)',
       'danger-hover': 'var(--danger-hover)',
-      'danger-press': 'var(--danger-press)',
       'foreground': 'var(--foreground)',
       'hover': 'var(--hover)',
       'input': 'var(--input)',
@@ -49,6 +63,9 @@ export default defineConfig({
     font: {
       mono: 'Paper Mono',
       sans: 'Inter',
+    },
+    fontWeight: {
+      medium: '550',
     },
     radius: {
       DEFAULT: 'var(--radius)',
