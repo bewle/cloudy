@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     'reka-ui/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/fonts',
+    '@vueuse/nuxt',
   ],
   colorMode: {
     storage: 'cookie',
@@ -33,5 +34,15 @@ export default defineNuxtConfig({
     css: {
       transformer: 'lightningcss',
     },
+  },
+  imports: {
+    dirs: [
+      '~/utils/**/*.ts',
+      '~/config/**/*.ts',
+      '~/composables/**/*.ts',
+      '~/constants/**/*.ts',
+      '~~/shared/**/*.ts',
+    ],
+    presets: [{ package: 'tailwind-variants' }],
   },
 })

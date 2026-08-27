@@ -2,7 +2,9 @@ allowBuilds:
   esbuild: false
   vue-demi: false
 overrides:
+  typescript: 6.0.3
   vite@*: npm:@voidzero-dev/vite-plus-core@0.3.0
+  vue: 3.6.0-rc.5
 peerDependencyRules:
   allowAny:
     - vite
