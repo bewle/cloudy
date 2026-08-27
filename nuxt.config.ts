@@ -30,11 +30,6 @@ export default defineNuxtConfig({
   colorMode: {
     storage: 'cookie',
   },
-  vite: {
-    css: {
-      transformer: 'lightningcss',
-    },
-  },
   imports: {
     dirs: [
       '~/utils/**/*.ts',
