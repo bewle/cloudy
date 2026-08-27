@@ -1,0 +1,35 @@
+{
+  "name": "cloudy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "vp lint && vp run lint:vue",
+    "lint:fix": "vp lint --fix && vp fmt && vp run lint:vue:fix"
+  },
+  "dependencies": {
+    "@nuxt/fonts": "0.14.0",
+    "@nuxt/icon": "2.5.1",
+    "@nuxtjs/color-mode": "4.0.1",
+    "@unocss/nuxt": "66.8.1",
+    "nuxt": "^4.5.2",
+    "nuxt-security": "2.6.0",
+    "reka-ui": "2.10.4",
+    "unocss": "^66.8.1",
+    "vue": "^3.6.0-rc.5",
+    "vue-router": "^5.2.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^9.3.0",
+    "@e18e/eslint-plugin": "^0.8.0",
+    "@unocss/eslint-plugin": "^66.8.1",
+    "eslint": "^10.9.1",
+    "oxlint-tsgolint": "^7.0.2001",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
+    "vite-plus": "0.3.0"
+  }
+}
