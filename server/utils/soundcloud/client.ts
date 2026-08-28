@@ -41,8 +41,6 @@ export async function $scRequest<TReq extends NitroFetchRequest>(
 }
 
 export async function $scResolve(url: string, kind: SCKind) {
-  setOperation('resolve')
-
   const [err, res] = await attemptAsync(() =>
     $scRequest('/resolve', {
       query: {
@@ -62,8 +60,6 @@ export async function $scResolve(url: string, kind: SCKind) {
 }
 
 export async function getClientId(fresh: boolean = false) {
-  setOperation('client-id')
-
   const kv = useKV()
   const logger = getLogger()
 
@@ -77,8 +73,9 @@ export async function getClientId(fresh: boolean = false) {
   const [siteErr, site] = await attemptAsync<string, Error>(() => $fetch<string>(SC__SITE_URL))
   if (siteErr) throw clientIdErrors.FETCH_FAILED()
 
-  const scripts = Array.from(site.matchAll(RE__SC_SCRIPT_TAG), s => s[2])
-    .filter(s => Boolean(s) && s?.startsWith('https://a-v2.sndcdn.com/assets/')) as string[]
+  const scripts = Array.from(site.matchAll(RE__SC_SCRIPT_TAG), s => s[2]).filter(
+    s => Boolean(s) && s?.startsWith('https://a-v2.sndcdn.com/assets/'),
+  ) as string[]
 
   if (!scripts.length) throw clientIdErrors.NO_SCRIPTS_FOUND()
 

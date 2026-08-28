@@ -1,19 +1,9 @@
-import type { FieldContext } from 'evlog'
 import type { EventHandlerRequest, H3Event } from 'h3'
 import type { GenericSchema } from 'valibot'
 
 export function getLogger() {
   const event = useEvent()
   return useLogger(event)
-}
-
-export function setOperation(operation: string, context?: FieldContext) {
-  const logger = getLogger()
-
-  logger.set({
-    operation,
-    ...context,
-  })
 }
 
 export function validateQuery<TSchema extends GenericSchema>(
