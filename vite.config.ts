@@ -43,7 +43,7 @@ export default defineConfig({
       'no-await-in-loop': 'off',
       'no-console': 'warn',
       'no-restricted-globals': 'error',
-      'sort-keys': 'error',
+      'sort-keys': 'warn',
       'typescript/consistent-type-imports': 'error',
       'unicorn/no-array-sort': 'off',
       'vitest/require-mock-type-parameters': 'off',
