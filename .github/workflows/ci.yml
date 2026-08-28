@@ -1,0 +1,47 @@
+name: ci
+
+permissions: {}
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+  merge_group: {}
+
+# cancel in-progress runs on new commits to same PR (github.event.number)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: voidzero-dev/setup-vp@v1.18.0
+        with:
+          node-version: '24'
+          cache: true
+
+      - name: install deps
+        run: vp install
+
+      - name: check
+        run: vp check
+
+      - name: lint vue
+        run: vp run lint:vue
+
+      - name: test
+        run: vp test --passWithNoTests
+        timeout-minutes: 10
+
+      - name: build
+        run: vp run build
+        timeout-minutes: 10
