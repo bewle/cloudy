@@ -12,9 +12,9 @@ export const buttonStyles = tv({
   variants: {
     size: {
       default: 'px-2.5 h-8 text-sm rounded',
-      sm: 'px-2 h-7 text-xs rounded',
-      lg: 'px-3 h-9 text-base rounded',
       icon: 'size-8 aspect-square text-base rounded',
+      lg: 'px-3 h-9 text-base rounded',
+      sm: 'px-2 h-7 text-xs rounded',
     },
     variant: {
       default:

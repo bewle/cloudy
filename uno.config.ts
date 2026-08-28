@@ -121,8 +121,8 @@ export default defineConfig({
       sm: [`0 4px 5px oklch(from var(--background) l c h / 0.35)`],
     },
     spacing: {
-      'main-input-w': '42rem',
       'main-input-field-h': '2rem',
+      'main-input-w': '42rem',
     },
     text: {
       '2xs': {
