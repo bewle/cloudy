@@ -6,11 +6,14 @@ export default defineNuxtConfig({
       },
     },
   },
+  colorMode: {
+    storage: 'cookie',
+  },
   compatibilityDate: '2025-07-15',
   css: ['~/assets/css/globals.css'],
   devtools: { enabled: true },
-  future: {
-    compatibilityVersion: 5,
+  experimental: {
+    asyncContext: true,
   },
   fonts: {
     defaults: {
@@ -18,17 +21,8 @@ export default defineNuxtConfig({
       weights: ['100 900'],
     },
   },
-  modules: [
-    '@nuxt/icon',
-    'nuxt-security',
-    '@unocss/nuxt',
-    'reka-ui/nuxt',
-    '@nuxtjs/color-mode',
-    '@nuxt/fonts',
-    '@vueuse/nuxt',
-  ],
-  colorMode: {
-    storage: 'cookie',
+  future: {
+    compatibilityVersion: 5,
   },
   imports: {
     dirs: [
@@ -38,6 +32,33 @@ export default defineNuxtConfig({
       '~/constants/**/*.ts',
       '~~/shared/**/*.ts',
     ],
-    presets: [{ package: 'tailwind-variants' }],
+    presets: [
+      { ignore: ['getQuery'], package: 'ufo' },
+      { package: 'tailwind-variants' },
+      { ignore: ['isEqual', 'isError'], package: 'es-toolkit' },
+    ],
+  },
+  modules: [
+    '@nuxt/icon',
+    'nuxt-security',
+    '@unocss/nuxt',
+    'reka-ui/nuxt',
+    '@nuxtjs/color-mode',
+    '@nuxt/fonts',
+    '@vueuse/nuxt',
+    'evlog/nuxt',
+  ],
+  nitro: {
+    imports: {
+      dirs: ['./shared/**/*.ts'],
+      presets: [
+        { ignore: ['isEqual', 'isError'], package: 'es-toolkit' },
+        { ignore: ['getQuery'], package: 'ufo' },
+        {
+          from: 'valibot',
+          imports: [{ as: 'v', name: '*' }],
+        },
+      ],
+    },
   },
 })
