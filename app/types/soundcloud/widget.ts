@@ -1,4 +1,4 @@
-import type { SCTrack } from './track'
+import type { SCTrack } from '#shared/types/soundcloud/track'
 
 export interface SCWidget {
   bind: <Value extends SCEventValue>(event: Value, callback: SCEventCallback<Value>) => void
