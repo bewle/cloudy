@@ -1,6 +1,7 @@
 import {
   defineConfig,
   presetWind4,
+  type PresetWind4Theme,
   definePreset,
   transformerDirectives,
   transformerVariantGroup,
@@ -42,7 +43,7 @@ const presetAnchorPositioning = definePreset(() => {
   }
 })
 
-export default defineConfig({
+export default defineConfig<PresetWind4Theme>({
   presets: [
     presetAnchorPositioning,
     presetWind4({
@@ -56,7 +57,7 @@ export default defineConfig({
       /^(bg|text|border)-(.+)-(hover|active)$/,
       ([, prop, name, state], { theme }) => {
         const omit = ['danger']
-        const color = (theme.colors as Record<string, any>)[name]
+        const color = theme.colors?.[name]
         if (typeof color !== 'string' || omit.includes(name)) return
         const cssProp =
           prop === 'bg' ? 'background-color' : prop === 'text' ? 'color' : 'border-color'
