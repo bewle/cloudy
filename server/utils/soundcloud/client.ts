@@ -1,5 +1,6 @@
 import { EvlogError } from 'evlog'
 import type { AvailableRouterMethod, NitroFetchOptions, NitroFetchRequest } from 'nitropack'
+import * as v from 'valibot'
 
 export type $SCOpts<TReq extends NitroFetchRequest = NitroFetchRequest> = Omit<
   NitroFetchOptions<TReq, AvailableRouterMethod<TReq>>,
@@ -40,14 +41,14 @@ export async function $scRequest<TReq extends NitroFetchRequest>(
   }
 }
 
-export async function $scResolve(url: string, kind: SCKind) {
-  const [err, res] = await attemptAsync(() =>
-    $scRequest('/resolve', {
-      query: {
-        url,
-      },
-    }),
-  )
+interface SCResolveKindSchemaMap {
+  playlist: SCPlaylist
+  track: SCTrack
+  user: SCUser
+}
+
+export async function $scResolve<K extends SCKind>(url: string, kind: K) {
+  const [err, res] = await attemptAsync(() => $scRequest('/resolve', { query: { url } }))
 
   if (EvlogError.isEvlogError(err) && err.status === 404)
     throw soundcloudErrors.INPUT_URL_NOT_FOUND({ kind })
@@ -55,8 +56,9 @@ export async function $scResolve(url: string, kind: SCKind) {
 
   const parsed = v.safeParse(scResolveSchema, res)
   if (!parsed.success) throw soundcloudErrors.INVALID_SHAPE()
+  if (parsed.output.kind !== kind) throw soundcloudErrors.INPUT_URL_INVALID({ kind })
 
-  return parsed.output
+  return parsed.output as unknown as SCResolveKindSchemaMap[K]
 }
 
 export async function getClientId(fresh: boolean = false) {
