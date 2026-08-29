@@ -1,6 +1,6 @@
 import { defineErrorCatalog } from 'evlog'
 
-import type { InputOption } from './input'
+import type { InputOption } from '../../shared/constants/input'
 
 export const validationErrors = defineErrorCatalog('validation', {
   INVALID_URL: {
@@ -32,6 +32,23 @@ export const soundcloudErrors = defineErrorCatalog('soundcloud', {
   NOT_FOUND: {
     message: 'SoundCloud resource not found',
     status: 404,
+  },
+  NO_M3U8_URLS: {
+    message: 'No URLs found in playlist file',
+    status: 422,
+  },
+  NO_STREAM_URL: {
+    message: 'No stream URL available for inputted track',
+    status: 422,
+  },
+  NO_TARGET_TRACK_TRANSCODINGS: {
+    message: ({ transcoding }: { transcoding: SCTranscodingType }) =>
+      `No ${transcoding} transcodings are available for inputted track`,
+    status: 422,
+  },
+  NO_TRACK_TRANSCODINGS: {
+    message: 'No valid transcodings are available for inputted track',
+    status: 422,
   },
 })
 
