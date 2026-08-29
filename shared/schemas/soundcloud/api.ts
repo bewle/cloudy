@@ -1,28 +1,26 @@
 import * as v from 'valibot'
 
-import { loose } from './common'
-
 export const scOembedSchema = v.looseObject({
-  author_name: loose(v.string()),
-  author_url: loose(v.string()),
-  description: loose(v.string()),
-  height: loose(v.number()),
+  author_name: v.optional(v.string()),
+  author_url: v.optional(v.string()),
+  description: v.string(),
+  height: v.number(),
   html: v.string(),
-  provider_name: loose(v.string()),
-  provider_url: loose(v.string()),
-  thumbnail_url: loose(v.string()),
-  title: loose(v.string()),
-  type: loose(v.string()),
-  version: loose(v.string()),
-  width: loose(v.union([v.string(), v.number()])),
+  provider_name: v.string(),
+  provider_url: v.string(),
+  thumbnail_url: v.optional(v.string()),
+  title: v.string(),
+  type: v.string(),
+  version: v.union([v.string(), v.number()]),
+  width: v.union([v.string(), v.number()]),
 })
 
 export const scAppSchema = v.looseObject({
-  creator: loose(v.string()),
-  external_url: loose(v.string()),
+  creator: v.string(),
+  external_url: v.string(),
   id: v.number(),
-  kind: loose(v.literal('app')),
-  name: loose(v.string()),
-  permalink_url: loose(v.string()),
-  uri: loose(v.string()),
+  kind: v.literal('app'),
+  name: v.string(),
+  permalink_url: v.string(),
+  uri: v.string(),
 })
