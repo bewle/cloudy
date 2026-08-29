@@ -23,5 +23,10 @@ export const useTrackDownload = (url: MaybeRefOrGetter<string>) => {
     },
   )
 
-  return { ...asyncData, progress }
+  return {
+    downloadTrack: asyncData.execute,
+    error: asyncData.error,
+    isDownloading: asyncData.pending,
+    progress,
+  }
 }
