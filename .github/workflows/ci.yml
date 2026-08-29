@@ -35,6 +35,9 @@ jobs:
       - name: check
         run: vp check
 
+      - name: typecheck
+        run: vp run typecheck
+
       - name: lint vue
         run: vp run lint:vue
 
