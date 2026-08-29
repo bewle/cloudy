@@ -51,6 +51,21 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'evlog/nuxt',
   ],
+  security: {
+    headers: {
+      contentSecurityPolicy: {
+        'script-src': [
+          "'self'",
+          'https:',
+          "'unsafe-inline'",
+          "'strict-dynamic'",
+          "'nonce-{{nonce}}'",
+          "'wasm-unsafe-eval'",
+        ],
+      },
+    },
+  },
+
   nitro: {
     imports: {
       dirs: ['./shared/**/*.ts'],
