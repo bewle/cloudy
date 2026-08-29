@@ -36,13 +36,13 @@ const progressPercent = computed(() => progress.value * 100)
 
 <template>
   <div
-    class="relative w-main-input-w bg-surface rounded border border-border overflow-clip p-2 flex flex-col gap-2 has-focus:(border-border-active)"
+    class="p-2 border border-border rounded bg-surface flex flex-col gap-2 w-main-input-w relative overflow-clip has-focus:(border-border-active)"
   >
     <MainInputField />
     <MainInputOptions />
 
     <div
-      class="bg-white h-full absolute inset-0"
+      class="bg-white h-full inset-0 absolute"
       :style="{
         width: `${progressPercent}%`,
         display: isDownloading ? 'block' : 'none',

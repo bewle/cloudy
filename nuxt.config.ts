@@ -51,6 +51,19 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'evlog/nuxt',
   ],
+  nitro: {
+    imports: {
+      dirs: ['./shared/**/*.ts'],
+      presets: [
+        { ignore: ['isEqual', 'isError'], package: 'es-toolkit' },
+        { ignore: ['getQuery'], package: 'ufo' },
+        {
+          from: 'valibot',
+          imports: [{ as: 'v', name: '*' }],
+        },
+      ],
+    },
+  },
   security: {
     headers: {
       contentSecurityPolicy: {
@@ -63,20 +76,6 @@ export default defineNuxtConfig({
           "'wasm-unsafe-eval'",
         ],
       },
-    },
-  },
-
-  nitro: {
-    imports: {
-      dirs: ['./shared/**/*.ts'],
-      presets: [
-        { ignore: ['isEqual', 'isError'], package: 'es-toolkit' },
-        { ignore: ['getQuery'], package: 'ufo' },
-        {
-          from: 'valibot',
-          imports: [{ as: 'v', name: '*' }],
-        },
-      ],
     },
   },
 })

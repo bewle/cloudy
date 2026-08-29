@@ -20,12 +20,12 @@ const inputOption = computed({
     :default-value="INPUT__OPTIONS[0]"
     required
     type="single"
-    class="flex items-center font-mono gap-1 isolate"
+    class="font-mono flex gap-1 items-center isolate"
   >
     <ToggleGroupItem
       v-for="o in INPUT__OPTIONS"
-      class="font-normal rounded-sm data-[active]:active:(text-foreground bg-surface-active) data-[active]:(anchor-name-option text-foreground bg-surface-active) z-1"
       :key="o"
+      class="font-normal rounded-sm z-1 data-[active]:(anchor-name-option text-foreground bg-surface-active) data-[active]:active:(text-foreground bg-surface-active)"
       as-child
       :value="o"
     >
@@ -35,7 +35,7 @@ const inputOption = computed({
     </ToggleGroupItem>
 
     <div
-      class="absolute pointer-events-none position-anchor-option anchor-inset bg-surface-active rounded-sm ease-snappy duration-100"
+      class="position-anchor-option anchor-inset rounded-sm pointer-events-none duration-100 ease-snappy absolute bg-surface-active"
     />
   </ToggleGroupRoot>
 </template>

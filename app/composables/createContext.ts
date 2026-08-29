@@ -19,7 +19,7 @@ export function createContext<ContextValue>(providerComponentName: string) {
     if (context === null) return context as any
 
     throw new Error(
-      `Injection \`${injectionKey.toString()}\` not found. Component must be used within \`${`${providerComponentName}`}\``,
+      `Injection \`${injectionKey.toString()}\` not found. Component must be used within \`${providerComponentName}\``,
     )
   }
 

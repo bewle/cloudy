@@ -19,8 +19,8 @@ export async function getTrackBuffer(url: string, onProgress?: Conversion['onPro
   const hlsUrl = await $fetch('/api/file/track', { query: { url } })
 
   const input = new Input({
-    source: new UrlSource(hlsUrl),
     formats: HLS_FORMATS,
+    source: new UrlSource(hlsUrl),
   })
 
   const target = new BufferTarget()
@@ -32,8 +32,8 @@ export async function getTrackBuffer(url: string, onProgress?: Conversion['onPro
   const conversion = await Conversion.init({
     input,
     output,
-    video: { discard: true },
     tags: async () => getTrackTags(trackMeta),
+    video: { discard: true },
   })
 
   conversion.onProgress = onProgress
@@ -45,5 +45,5 @@ export async function getTrackBuffer(url: string, onProgress?: Conversion['onPro
 
   const extension = normalizeTrackExtension(output.format.fileExtension)
 
-  return { buffer, mime, extension }
+  return { buffer, extension, mime }
 }

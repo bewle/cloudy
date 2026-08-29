@@ -5,15 +5,15 @@ const { form, submitForm, isDownloading } = injectMainInputContext()
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex gap-2 items-center">
     <input
       v-model="form.url"
-      @keydown.enter="submitForm"
-      class="h-main-input-field-h ps-2 font-medium text-sm w-full outline-none"
+      class="text-sm font-medium ps-2 outline-none h-main-input-field-h w-full"
       placeholder="https://soundcloud.com/pilarsierra/dewey-a2a"
-    />
+      @keydown.enter="submitForm"
+    >
 
-    <UButton :is-loading="isDownloading" @click="submitForm" size="icon">
+    <UButton :is-loading="isDownloading" size="icon" @click="submitForm">
       <Icon name="ph:arrow-right-bold" />
     </UButton>
   </div>

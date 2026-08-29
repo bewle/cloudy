@@ -72,10 +72,9 @@ export const getTrackTags = async (trackMeta: SCTrackSummary): Promise<MetadataT
 
   return {
     artist,
-    title,
+    comment: description,
     date,
     genre,
-    comment: description,
     images: !cover
       ? []
       : [
@@ -85,5 +84,6 @@ export const getTrackTags = async (trackMeta: SCTrackSummary): Promise<MetadataT
             mimeType: 'image/jpeg',
           },
         ],
+    title,
   }
 }

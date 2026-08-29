@@ -24,14 +24,6 @@
   "editor.quickSuggestions": {
     "strings": true
   },
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "vue",
-    "json",
-    "jsonc",
-    "yaml",
-    "css"
-  ],
-  "iconify.inplace": false,
+  "eslint.validate": ["javascript", "typescript", "vue", "json", "jsonc", "yaml", "css"],
+  "iconify.inplace": false
 }
