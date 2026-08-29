@@ -4,7 +4,7 @@ import type { VariantProps } from 'tailwind-variants'
 import type { HTMLAttributes } from 'vue'
 
 export const buttonStyles = tv({
-  base: 'inline-flex items-center font-medium select-none shrink-0 gap-2 outline-none focus-visible:ring-2 ring-border-strong disabled:(opacity-50 pointer-events-none)',
+  base: 'inline-flex items-center justify-center font-medium select-none shrink-0 gap-2 outline-none focus-visible:ring-2 ring-border-strong disabled:(opacity-50 pointer-events-none)',
   defaultVariants: {
     size: 'default',
     variant: 'default',
