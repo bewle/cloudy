@@ -5,7 +5,7 @@ export async function getTrackStreamUrl(url: string) {
 
   const _transcoding: SCTranscodingType = 'aac'
 
-  const targetTranscodings = getTargetTranscodings(transcodings as SCTranscoding[], _transcoding)
+  const targetTranscodings = getTargetTranscodings(transcodings, _transcoding)
   if (!targetTranscodings)
     throw soundcloudErrors.NO_TARGET_TRACK_TRANSCODINGS({ transcoding: _transcoding })
 
