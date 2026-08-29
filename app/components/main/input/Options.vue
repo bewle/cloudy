@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import type { AcceptableValue } from 'reka-ui'
 
-const { inputOption: inputOptionValue } = useInputForm()
+import { injectMainInputContext } from '../Input.vue'
+
+const { form } = injectMainInputContext()
 
 const inputOption = computed({
-  get: () => inputOptionValue.value,
+  get: () => form.value.option,
   set: (v: AcceptableValue | AcceptableValue[] | undefined) => {
     if (!v || !INPUT__OPTIONS.includes(v as InputOption)) return
-    inputOptionValue.value = v as InputOption
+    form.value.option = v as InputOption
   },
 })
 </script>
