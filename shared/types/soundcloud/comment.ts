@@ -1,20 +1,6 @@
-import type { SCSearch } from './api'
-import type { SCUser } from './user'
+import type * as v from 'valibot'
 
-export interface SCComment {
-  kind: 'comment'
-  id: number
-  created_at: string
-  user_id: number
-  track_id: number
-  timestamp: number
-  body: string
-  user: SCUser
-  self: {
-    urn: string
-  }
-}
+import type { scCommentSchema, scCommentSearchSchema } from '../../schemas/soundcloud/comment'
 
-export interface SCCommentSearch extends SCSearch {
-  collection: SCComment[]
-}
+export type SCComment = v.InferOutput<typeof scCommentSchema>
+export type SCCommentSearch = v.InferOutput<typeof scCommentSearchSchema>

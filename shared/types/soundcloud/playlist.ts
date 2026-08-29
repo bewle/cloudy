@@ -1,47 +1,10 @@
-import type { SCFilter, SCSearch } from './api'
-import type { SCLicense, SCTrack } from './track'
-import type { SCUser } from './user'
+import type * as v from 'valibot'
 
-export interface SCPlaylist {
-  duration: number
-  permalink_url: string
-  reposts_count: number
-  genre: string | null
-  permalink: string
-  purchase_url: string | null
-  description: string | null
-  uri: string
-  label_name: string | null
-  tag_list: string
-  set_type: string
-  public: boolean
-  track_count: number
-  user_id: number
-  last_modified: string
-  license: SCLicense
-  tracks: SCTrack[]
-  id: number
-  urn: string
-  release_date: string | null
-  display_date: string
-  sharing: 'public' | 'private'
-  secret_token: string | null
-  created_at: string
-  likes_count: number
-  kind: string
-  title: string
-  purchase_title: string | null
-  managed_by_feeds: boolean
-  artwork_url: string | null
-  is_album: boolean
-  user: SCUser
-  published_at: string | null
-  embeddable_by: 'all' | 'me' | 'none'
-}
+import type { scPlaylistSchema, scPlaylistSearchSchema } from '../../schemas/soundcloud/playlist'
+import type { SCFilter } from './api'
 
-export interface SCPlaylistSearch extends SCSearch {
-  collection: SCPlaylist[]
-}
+export type SCPlaylist = v.InferOutput<typeof scPlaylistSchema>
+export type SCPlaylistSearch = v.InferOutput<typeof scPlaylistSearchSchema>
 
 export interface SCPlaylistFilter extends SCFilter {
   'filter.genre_or_tag'?: string

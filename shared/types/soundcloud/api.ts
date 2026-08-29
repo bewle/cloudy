@@ -1,6 +1,12 @@
-export type SCKind = (typeof SC__OPTION_KINDS)[number]
+import type * as v from 'valibot'
+
+import type { scAppSchema, scOembedSchema } from '../../schemas/soundcloud/api'
+import type { scKindSchema, scSearchSchema } from '../../schemas/soundcloud/common'
+
+export type SCKind = v.InferOutput<typeof scKindSchema>
 
 export type SCImageFormat =
+  | 'original'
   | 't500x500'
   | 'crop'
   | 't300x300'
@@ -11,15 +17,7 @@ export type SCImageFormat =
   | 'tiny'
   | 'mini'
 
-export interface SCApp {
-  id: number
-  kind: 'app'
-  name: string
-  uri: string
-  permalink_url: string
-  external_url: string
-  creator: string
-}
+export type SCApp = v.InferOutput<typeof scAppSchema>
 
 export interface SCOembedFilter {
   url: string
@@ -33,26 +31,8 @@ export interface SCOembedFilter {
   iframe?: boolean
 }
 
-export interface SCOembed {
-  version: string
-  type: string
-  provider_name: string
-  provider_url: string
-  height: number
-  width: string
-  title: string
-  description: string
-  html: string
-  thumbnail_url?: string
-  author_name?: string
-  author_url?: string
-}
-
-export interface SCSearch {
-  total_results: number
-  next_href: string
-  query_urn: string
-}
+export type SCOembed = v.InferOutput<typeof scOembedSchema>
+export type SCSearch = v.InferOutput<typeof scSearchSchema>
 
 export interface SCFilter {
   q: string

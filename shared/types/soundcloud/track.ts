@@ -1,15 +1,24 @@
-import type { SCFilter, SCSearch } from './api'
-import type { SCUser } from './user'
+import type * as v from 'valibot'
 
-export type SCLicense =
-  | 'no-rights-reserved'
-  | 'all-rights-reserved'
-  | 'cc-by'
-  | 'cc-by-nc'
-  | 'cc-by-nd'
-  | 'cc-by-sa'
-  | 'cc-by-nc-nd'
-  | 'cc-by-nc-sa'
+import type {
+  SC__TRACK_SUMMARY_KEYS,
+  SC__TRANSCODING_MIME_TYPE_REGEX_MAP,
+} from '../../constants/soundcloud'
+import type { scLicenseSchema } from '../../schemas/soundcloud/common'
+import type {
+  scPublisherMetadataSchema,
+  scSecretTokenSchema,
+  scTrackOrStubSchema,
+  scTrackSchema,
+  scTrackSearchSchema,
+  scTrackStubSchema,
+  scTranscodingSchema,
+} from '../../schemas/soundcloud/track'
+import type { SCFilter } from './api'
+
+export type SCTranscodingType = keyof typeof SC__TRANSCODING_MIME_TYPE_REGEX_MAP
+export type SCTrackSummary = Pick<SCTrack, (typeof SC__TRACK_SUMMARY_KEYS)[number]>
+export type SCLicense = v.InferOutput<typeof scLicenseSchema>
 
 export type SCTrackType =
   | 'original'
@@ -26,100 +35,13 @@ export type SCTrackType =
   | 'sample'
   | 'other'
 
-export interface SCTrack {
-  comment_count: number
-  full_duration: number
-  downloadable: boolean
-  created_at: string
-  description: string | null
-  media: {
-    transcodings: SCTranscoding[]
-  }
-  title: string
-  publisher_metadata: {
-    id: number
-    urn: string
-    artist: string
-    album_title: string
-    contains_music: boolean
-    upc_or_ean: string
-    isrc: string
-    explicit: boolean
-    p_line: string
-    p_line_for_display: string
-    c_line: string
-    c_line_for_display: string
-    writer_composer: string
-    release_title: string
-    publisher: string
-  }
-  duration: number
-  has_downloads_left: boolean
-  artwork_url: string
-  public: boolean
-  streamable: boolean
-  tag_list: string
-  genre: string
-  id: number
-  reposts_count: number
-  state: 'processing' | 'failed' | 'finished'
-  label_name: string | null
-  last_modified: string
-  commentable: boolean
-  policy: string
-  visuals: string | null
-  kind: string
-  purchase_url: string | null
-  sharing: 'private' | 'public'
-  uri: string
-  secret_token: string | null
-  download_count: number
-  likes_count: number
-  urn: string
-  license: SCLicense
-  purchase_title: string | null
-  display_date: string
-  embeddable_by: 'all' | 'me' | 'none'
-  release_date: string
-  user_id: number
-  monetization_model: string
-  waveform_url: string
-  permalink: string
-  permalink_url: string
-  user: SCUser
-  playback_count: number
-
-  _resource_id?: number | null
-  _resource_type?: string | null
-  caption: string | null
-  playable?: boolean | null
-  station_urn?: string | null
-  station_permalink?: string | null
-  track_authorization?: string | null
-}
-
-export interface SCTrackSearch extends SCSearch {
-  collection: SCTrack[]
-}
-
-export interface SCSecretToken {
-  kind: 'secret-token'
-  token: string
-  uri: string
-  resource_uri: string
-}
-
-export interface SCTranscoding {
-  url: string
-  preset: string
-  duration: number
-  snipped: boolean
-  format: {
-    protocol: string
-    mime_type: string
-  }
-  quality: string
-}
+export type SCTrack = v.InferOutput<typeof scTrackSchema>
+export type SCTrackStub = v.InferOutput<typeof scTrackStubSchema>
+export type SCTrackOrStub = v.InferOutput<typeof scTrackOrStubSchema>
+export type SCTrackSearch = v.InferOutput<typeof scTrackSearchSchema>
+export type SCSecretToken = v.InferOutput<typeof scSecretTokenSchema>
+export type SCTranscoding = v.InferOutput<typeof scTranscodingSchema>
+export type SCPublisherMetadata = v.InferOutput<typeof scPublisherMetadataSchema>
 
 export interface SCTrackFilter extends SCFilter {
   'filter.genre_or_tag'?: string

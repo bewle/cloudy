@@ -1,25 +1,11 @@
-import type { SCPlaylist } from './playlist'
+import type * as v from 'valibot'
 
-export interface SCActivityCollection {
-  collection: SCActivity[]
-  next_href: string
-  future_href: string
-}
+import type {
+  scActivityCollectionSchema,
+  scActivitySchema,
+  scConnectionSchema,
+} from '../../schemas/soundcloud/me'
 
-export interface SCActivity {
-  origin: SCPlaylist
-  tags: string | null
-  created_at: string
-  type: string
-}
-
-export interface SCConnection {
-  created_at: string
-  display_name: string
-  id: number
-  post_favorite: boolean
-  post_publish: false
-  service: string
-  type: string
-  uri: string
-}
+export type SCActivityCollection = v.InferOutput<typeof scActivityCollectionSchema>
+export type SCActivity = v.InferOutput<typeof scActivitySchema>
+export type SCConnection = v.InferOutput<typeof scConnectionSchema>
