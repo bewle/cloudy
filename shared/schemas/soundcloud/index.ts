@@ -1,6 +1,7 @@
 export * from './api'
 export * from './comment'
 export * from './common'
+export * from './me'
 export * from './playlist'
 export * from './resolve'
 export * from './track'
