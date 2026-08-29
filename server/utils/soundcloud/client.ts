@@ -1,16 +1,10 @@
 import { EvlogError } from 'evlog'
-import type { AvailableRouterMethod, NitroFetchOptions, NitroFetchRequest } from 'nitropack'
+import type { NitroFetchOptions } from 'nitropack'
 import * as v from 'valibot'
 
-export type $SCOpts<TReq extends NitroFetchRequest = NitroFetchRequest> = Omit<
-  NitroFetchOptions<TReq, AvailableRouterMethod<TReq>>,
-  'baseURL'
->
+export type $SCOpts = Omit<NitroFetchOptions<string>, 'baseURL'>
 
-export async function $scRequest<TReq extends NitroFetchRequest>(
-  endpoint: TReq,
-  opts: $SCOpts<TReq> = {},
-) {
+export async function $scRequest(endpoint: string, opts: $SCOpts = {}) {
   let clientId = await getClientId()
   let res = await req()
 
