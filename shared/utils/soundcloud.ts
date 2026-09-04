@@ -1,5 +1,3 @@
-import type { MetadataTags } from 'mediabunny'
-
 export function setImageQuality(url: string, quality: SCImageFormat) {
   return url.replace(RE__SC_IMAGE_QUALITY, `-${quality}`)
 }
@@ -11,7 +9,7 @@ export function resolveTrackArtist(trackMeta: SCTrackSummary) {
 
 export function resolveTrackDate(trackMeta: SCTrackSummary) {
   const { created_at } = trackMeta
-  return new Date(created_at)
+  return created_at
 }
 
 export async function resolveHqImageUrl(url: string) {
@@ -62,28 +60,71 @@ export async function getTrackCoverBuffer(trackMeta: SCTrackSummary) {
   return res ?? undefined
 }
 
-export const getTrackTags = async (trackMeta: SCTrackSummary): Promise<MetadataTags> => {
-  const cover = await getTrackCoverBuffer(trackMeta)
-  const artist = resolveTrackArtist(trackMeta)
-  const title = trackMeta.title
-  const description = trackMeta.description ?? undefined
-  const genre = trackMeta.genre ?? undefined
-  const date = resolveTrackDate(trackMeta)
-
-  return {
-    artist,
-    comment: description,
-    date,
-    genre,
-    images: !cover
-      ? []
-      : [
-          {
-            data: new Uint8Array(cover),
-            kind: 'coverFront',
-            mimeType: 'image/jpeg',
-          },
-        ],
-    title,
-  }
+export function transcodingToMime(transcoding: SCTranscodingType) {
+  return SC__TRANSCODING_MIME_TYPE_MAP[transcoding]
 }
+
+export function transcodingToExt(transcoding: SCTranscodingType) {
+  return SC__TRANSCODING_EXTENSION_MAP[transcoding]
+}
+
+// export const getTrackTags = async (trackMeta: SCTrackSummary): Promise<MetadataTags> => {
+// export const getTrackTags = async (trackMeta: SCTrackSummary) => {
+
+//   const cover = await getTrackCoverBuffer(trackMeta)
+
+//   const artist = resolveTrackArtist(trackMeta)
+//   const title = trackMeta.title
+//   // const comment = trackMeta.description
+//   //   ? [
+//   //       {
+//   //         descriptor: 'description',
+//   //         language: 'eng',
+//   //         text: ,
+//   //       },
+//   //     ]
+//   //   : undefined
+//   const genre = trackMeta.genre ?? undefined
+//   const date = resolveTrackDate(trackMeta)
+
+//   return {
+//     artist,
+//     title,
+//     comment: trackMeta.description ?? undefined,
+
+//     v2: {
+//       APIC: !cover
+//         ? []
+//         : [
+//             {
+//               data: Array.from(new Uint8Array(cover)),
+//               description: 'Track cover',
+//               format: 'image/jpeg',
+//               type: 3,
+//             },
+//           ],
+//       TPE1: artist,
+//       TIT2: title,
+//       COMM: comment,
+//       TCON: genre,
+//       TDAT: date,
+//     },
+//   }
+
+//   // return {
+//   //   artist,
+//   //   comment: description,
+//   //   date,
+//   //   genre,
+//   //   images: !cover
+//   //     ? []
+//   //     : [
+//   //         {
+//   //           data: new Uint8Array(cover),
+//   //           kind: 'coverFront',
+//   //           mimeType: 'image/jpeg',
+//   //         },
+//   //       ],
+//   //   title,
+//   // }
+// }

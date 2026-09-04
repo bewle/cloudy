@@ -1,31 +1,33 @@
 export async function getTrackStreamSegments(url: string) {
-  return $fetch('/api/file/track', {
+  const m3u8Url = await $fetch('/api/file/track', {
     query: {
       url,
     },
   })
+
+  const m3u8 = await $fetch<string>(m3u8Url, { responseType: 'text' })
+
+  return [...(m3u8.match(RE__GENERAL_HTTPS_URL) ?? [])]
 }
 
 export async function processTrackStreamSegments(
   streamSegments: string[],
-  onSegment?: (i: number) => void,
+  onSegment?: (i: number, total: number) => void,
 ) {
-  const chunks = await queuePromises(
-    streamSegments,
-    async (seg, i) => {
-      const response = await fetch(seg)
-      const buffer = await response.arrayBuffer()
+  let progress = 0
+  const process = limitAsync(async (segUrl: string, i: number) => {
+    const response = await fetch(segUrl)
+    const buffer = await response.arrayBuffer()
 
-      onSegment?.(i)
+    onSegment?.(progress++, streamSegments.length)
 
-      return {
-        data: buffer,
-        index: i,
-      }
-    },
-    4,
-  )
+    return {
+      data: buffer,
+      index: i,
+    }
+  }, 4)
 
+  const chunks = await Promise.all(streamSegments.map((seg, i) => process(seg, i)))
   return concatArrayBuffers(chunks.map(c => c.data))
 }
 

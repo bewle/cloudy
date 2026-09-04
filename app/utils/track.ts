@@ -1,12 +1,4 @@
-import {
-  BufferTarget,
-  Conversion,
-  HLS_FORMATS,
-  Input,
-  Mp4OutputFormat,
-  Output,
-  UrlSource,
-} from 'mediabunny'
+import { ID3Writer } from 'browser-id3-writer'
 
 export async function getTrackMeta(url: string) {
   return $fetch<SCTrackSummary>('/api/meta/track', {
@@ -14,36 +6,65 @@ export async function getTrackMeta(url: string) {
   })
 }
 
-export async function getTrackBuffer(url: string, onProgress?: Conversion['onProgress']) {
-  const trackMeta = await getTrackMeta(url)
-  const hlsUrl = await $fetch('/api/file/track', { query: { url } })
+export async function getTrackBuffer(url: string, onProgress?: (i: number, total: number) => void) {
+  const segs = await getTrackStreamSegments(url)
+  return processTrackStreamSegments(segs, onProgress)
+}
 
-  const input = new Input({
-    formats: HLS_FORMATS,
-    source: new UrlSource(hlsUrl),
+export async function getTaggedTrackBuffer(
+  trackBuffer: ArrayBuffer,
+  trackMeta: SCTrackSummary,
+  frameIds: ID3FrameIdWritable[],
+) {
+  const writer = new ID3Writer(trackBuffer)
+
+  const frames = await mapAsync(frameIds, async id => {
+    let payload: any
+
+    switch (id) {
+      case 'TPE1': {
+        payload = [resolveTrackArtist(trackMeta)]
+        break
+      }
+      case 'TIT2': {
+        payload = trackMeta.title
+        break
+      }
+      case 'TDAT': {
+        payload = trackMeta.created_at
+        break
+      }
+      case 'COMM': {
+        if (trackMeta.description) {
+          payload = {
+            description: '',
+            text: trackMeta.description,
+          }
+        }
+        break
+      }
+      case 'WOAS': {
+        payload = trackMeta.permalink_url
+        break
+      }
+      case 'APIC': {
+        payload = {
+          description: 'Attached cover',
+          data: await getTrackCoverBuffer(trackMeta),
+          type: 3,
+        }
+        break
+      }
+    }
+
+    return {
+      id,
+      payload,
+    }
   })
 
-  const target = new BufferTarget()
-  const output = new Output({
-    format: new Mp4OutputFormat(),
-    target,
-  })
+  frames.forEach(({ id, payload }) => writer.setFrame(id as any, payload))
+  writer.addTag()
 
-  const conversion = await Conversion.init({
-    input,
-    output,
-    tags: async () => getTrackTags(trackMeta),
-    video: { discard: true },
-  })
-
-  conversion.onProgress = onProgress
-
-  await conversion.execute()
-
-  const buffer = target.buffer!
-  const mime = await output.getMimeType()
-
-  const extension = normalizeTrackExtension(output.format.fileExtension)
-
-  return { buffer, extension, mime }
+  return writer.getBlob()
 }

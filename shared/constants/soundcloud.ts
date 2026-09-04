@@ -5,6 +5,16 @@ import type { SCUser } from '../types/soundcloud/user'
 export const SC__API_URL = 'https://api-v2.soundcloud.com'
 export const SC__SITE_URL = 'https://soundcloud.com'
 export const SC__OPTION_KINDS = ['track', 'user', 'playlist'] as const
+export const SC__TRANSCODING_EXTENSION_MAP = {
+  aac: '.m4a',
+  mp3: '.mp3',
+  opus: '.opus',
+} as const
+export const SC__TRANSCODING_MIME_TYPE_MAP = {
+  aac: 'audio/mp4; codecs="mp4a.40.2"',
+  mp3: 'audio/mpeg',
+  opus: 'audio/ogg',
+} as const
 export const SC__TRANSCODING_MIME_TYPE_REGEX_MAP = {
   aac: RE__SC_TRANSCODING_MIME_TYPES[0],
   mp3: RE__SC_TRANSCODING_MIME_TYPES[1],
