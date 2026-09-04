@@ -25,5 +25,6 @@
     "strings": true
   },
   "eslint.validate": ["javascript", "typescript", "vue", "json", "jsonc", "yaml", "css"],
-  "iconify.inplace": false
+  "iconify.inplace": false,
+  "js/ts.experimental.useTsgo": false
 }
