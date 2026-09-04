@@ -69,14 +69,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
-}
 
-.dark {
   --shift-hover-lightness: 0.075;
   --shift-hover-chroma: 0.005;
   --shift-active-lightness: 0.1;
   --shift-active-chroma: 0.01;
+}
 
+.dark {
   --background: var(--neutral-950);
   --foreground: var(--neutral-50);
 
@@ -115,7 +115,7 @@
 
   --warn: oklch(73% 0.13 70);
 
-  --danger: oklch(0.6 0.2 23);
+  --danger: oklch(55.5% 0.162 17.4deg);
   --danger-foreground: oklch(0.985 0 0);
   --danger-hover: oklch(0.6 0.2 23 / 0.1);
   --danger-active: oklch(0.6 0.2 23 / 0.15);
@@ -124,10 +124,8 @@
 }
 
 .light {
-  --shift-hover-lightness: -0.075;
-  --shift-hover-chroma: 0.005;
-  --shift-active-lightness: -0.1;
-  --shift-active-chroma: 0.01;
+  --shift-hover-lightness: calc(var(--shift-hover-lightness) * -1);
+  --shift-active-lightness: calc(var(--shift-active-lightness) * -1);
 
   --background: var(--neutral-50);
   --foreground: var(--neutral-950);
@@ -167,7 +165,7 @@
 
   --warn: oklch(73% 0.13 70);
 
-  --danger: oklch(0.6 0.2 23);
+  --danger: oklch(55.5% 0.162 17.4deg);
   --danger-foreground: oklch(0.985 0 0);
   --danger-hover: oklch(0.6 0.2 23 / 0.1);
   --danger-active: oklch(0.6 0.2 23 / 0.15);
