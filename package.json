@@ -13,6 +13,7 @@
     "lint:fix": "vp lint --fix && vp fmt && vp run lint:vue:fix"
   },
   "dependencies": {
+    "@iconify-json/ph": "^1.2.2",
     "@nuxt/fonts": "0.14.0",
     "@nuxt/icon": "2.5.1",
     "@nuxtjs/color-mode": "4.0.1",
