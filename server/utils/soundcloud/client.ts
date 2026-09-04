@@ -2,7 +2,7 @@ import { EvlogError } from 'evlog'
 import type { NitroFetchOptions } from 'nitropack'
 import * as v from 'valibot'
 
-export type $SCOpts = Omit<NitroFetchOptions<string>, 'baseURL'>
+export type $SCOpts = Omit<NitroFetchOptions<string>, 'baseURL' | 'ignoreResponseError'>
 
 export async function $scRequest(endpoint: string, opts: $SCOpts = {}) {
   let clientId = await getClientId()
