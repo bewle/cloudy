@@ -1,6 +1,6 @@
 import { defineErrorCatalog } from 'evlog'
 
-import type { InputOption } from '../../shared/constants/input'
+import type { InputOption } from '../constants/input'
 
 export const validationErrors = defineErrorCatalog('validation', {
   INVALID_URL: {
