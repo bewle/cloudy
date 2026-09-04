@@ -31,3 +31,13 @@ export function concatArrayBuffers(buffers: ArrayBuffer[]): ArrayBuffer {
 
   return result.buffer
 }
+
+export function isUrl(value: string) {
+  try {
+    const url = new URL(value)
+
+    return (url.protocol === 'http:' || url.protocol === 'https:') && Boolean(url.hostname)
+  } catch {
+    return false
+  }
+}

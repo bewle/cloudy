@@ -8,10 +8,10 @@ const { form, submitForm, isDownloading } = injectMainInputContext()
   <div class="flex gap-2 items-center">
     <input
       v-model="form.url"
-      class="text-sm font-medium ps-2 outline-none h-main-input-field-h w-full"
+      class="text-sm ps-2 outline-none h-main-input-field-h w-full"
       placeholder="https://soundcloud.com/pilarsierra/dewey-a2a"
       @keydown.enter="submitForm"
-    >
+    />
 
     <UButton :is-loading="isDownloading" size="icon" @click="submitForm">
       <Icon name="ph:arrow-right-bold" />
