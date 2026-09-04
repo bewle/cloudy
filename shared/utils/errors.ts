@@ -1,41 +1,43 @@
 import { defineErrorCatalog } from 'evlog'
 
-import type { InputOption } from '../constants/input'
-
 export const validationErrors = defineErrorCatalog('validation', {
   INVALID_URL: {
-    message: ({ option }: { option: InputOption }) =>
-      `Invalid ${option} URL. Did you select the right option?`,
+    message: ({ option }: { option: InputOption }) => `Invalid ${option} URL`,
     status: 422,
+    why: 'Input is not a valid URL',
   },
 })
 
 export const soundcloudErrors = defineErrorCatalog('soundcloud', {
   INPUT_URL_INVALID: {
-    message: ({ kind }: { kind: SCKind }) =>
-      `Invalid ${kind} URL. Did you select the right option?`,
+    message: ({ kind }: { kind: SCKind }) => `Invalid ${kind} URL`,
     status: 422,
+    why: 'Did you select the right option?',
   },
   INPUT_URL_NOT_FOUND: {
-    message: ({ kind }: { kind: SCKind }) =>
-      `Could not find ${kind} URL. Did you provide a valid URL?`,
+    message: ({ kind }: { kind: SCKind }) => `Could not find ${kind} URL`,
     status: 404,
+    why: 'Did you provide a valid URL?',
   },
   INVALID_RESPONSE: {
     message: 'Invalid response from SoundCloud',
     status: 500,
+    title: 'Invalid response',
   },
   INVALID_SHAPE: {
     message: 'Failed to parse body from SoundCloud',
     status: 422,
+    title: 'Invalid response shape',
   },
   NOT_FOUND: {
     message: 'SoundCloud resource not found',
     status: 404,
+    title: 'Not found',
   },
   NO_M3U8_URLS: {
     message: 'No URLs found in playlist file',
     status: 422,
+    title: 'No m3u8 URLs found',
   },
   NO_STREAM_URL: {
     message: 'No stream URL available for inputted track',
