@@ -38,6 +38,7 @@ export async function getTaggedTrackBuffer(
         if (trackMeta.description) {
           payload = {
             description: '',
+            language: 'eng',
             text: trackMeta.description,
           }
         }
@@ -63,7 +64,9 @@ export async function getTaggedTrackBuffer(
     }
   })
 
-  frames.forEach(({ id, payload }) => writer.setFrame(id as any, payload))
+  frames.forEach(({ id, payload }) => {
+    if (payload) writer.setFrame(id as any, payload)
+  })
   writer.addTag()
 
   return writer.getBlob()
