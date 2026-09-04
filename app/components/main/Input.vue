@@ -38,8 +38,8 @@ const progressPercent = computed(() => progress.value * 100)
 </script>
 
 <template>
-  <div class="grid grid-rows-3 gap-4">
-    <div class="flex items-end justify-center pb-2">
+  <div class="gap-4 grid grid-rows-3">
+    <div class="pb-2 flex items-end justify-center">
       <MainInputTitle />
     </div>
 

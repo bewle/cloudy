@@ -18,12 +18,6 @@ export default defineNuxtConfig({
   experimental: {
     asyncContext: true,
   },
-  icon: {
-    clientBundle: {
-      scan: true,
-    },
-    collections: ['ph'],
-  },
   fonts: {
     defaults: {
       preload: true,
@@ -32,6 +26,12 @@ export default defineNuxtConfig({
   },
   future: {
     compatibilityVersion: 5,
+  },
+  icon: {
+    clientBundle: {
+      scan: true,
+    },
+    collections: ['ph'],
   },
   imports: {
     dirs: [

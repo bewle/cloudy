@@ -14,15 +14,19 @@ const parsedError = computed(() => {
   <Transition name="zoom">
     <div
       v-if="error"
-      class="w-full w-main-input-w h-fit relative rounded border-danger border bg-danger/50 flex flex-col gap-1 p-4"
+      class="p-4 border border-danger rounded bg-danger/50 flex flex-col gap-1 h-fit w-full w-main-input-w relative"
     >
-      <h3 class="font-medium text-clip">{{ parsedError.message ?? 'Unexpected error' }}</h3>
-      <p class="text-sm text-clip">{{ parsedError.why }}</p>
+      <h3 class="font-medium text-clip">
+        {{ parsedError.message ?? 'Unexpected error' }}
+      </h3>
+      <p class="text-sm text-clip">
+        {{ parsedError.why }}
+      </p>
 
       <UButton
         size="icon"
         variant="ghost-danger"
-        class="absolute top-2 right-2"
+        class="right-2 top-2 absolute"
         @click="error = undefined"
       >
         <Icon name="ph:x" />
