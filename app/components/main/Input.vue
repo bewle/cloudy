@@ -38,11 +38,11 @@ const progressPercent = computed(() => progress.value * 100)
 </script>
 
 <template>
-  <div class="grid grid-rows-3 gap-2">
+  <div class="gap-2 grid grid-rows-3">
     <div aria-hidden="true" />
 
     <div
-      class="p-2 border border-border rounded bg-surface shrink-0 flex flex-col gap-2 w-main-input-w relative overflow-clip has-focus:(border-border-active)"
+      class="p-2 border border-border rounded bg-surface flex shrink-0 flex-col gap-2 w-main-input-w relative overflow-clip has-focus:(border-border-active)"
     >
       <MainInputField />
       <MainInputOptions />

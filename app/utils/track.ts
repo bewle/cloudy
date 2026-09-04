@@ -49,8 +49,8 @@ export async function getTaggedTrackBuffer(
       }
       case 'APIC': {
         payload = {
-          description: 'Attached cover',
           data: await getTrackCoverBuffer(trackMeta),
+          description: 'Attached cover',
           type: 3,
         }
         break

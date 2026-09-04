@@ -11,7 +11,7 @@ const { form, submitForm, isDownloading } = injectMainInputContext()
       class="text-sm ps-2 outline-none h-main-input-field-h w-full"
       placeholder="https://soundcloud.com/pilarsierra/dewey-a2a"
       @keydown.enter="submitForm"
-    />
+    >
 
     <UButton :is-loading="isDownloading" size="icon" @click="submitForm">
       <Icon name="ph:arrow-right-bold" />
