@@ -18,7 +18,7 @@ export const [injectMainInputContext, provideMainInputContext] =
 <script lang="ts" setup>
 const form = ref<MainInputForm>({
   option: 'track',
-  url: 'https://soundcloud.com/pilarsierra/dewey-a2a',
+  url: '',
 })
 
 const { downloadTrack, isDownloading, progress, error } = useTrackDownload(() => form.value.url)
@@ -38,8 +38,10 @@ const progressPercent = computed(() => progress.value * 100)
 </script>
 
 <template>
-  <div class="gap-2 grid grid-rows-3">
-    <div aria-hidden="true" />
+  <div class="grid grid-rows-3 gap-4">
+    <div class="flex items-end justify-center pb-2">
+      <MainInputTitle />
+    </div>
 
     <div
       class="p-2 border border-border rounded bg-surface flex shrink-0 flex-col gap-2 w-main-input-w relative overflow-clip has-focus:(border-border-active)"
@@ -56,6 +58,6 @@ const progressPercent = computed(() => progress.value * 100)
       />
     </div>
 
-    <MainInputError v-if="error" />
+    <MainInputError />
   </div>
 </template>

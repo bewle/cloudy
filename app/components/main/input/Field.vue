@@ -2,18 +2,27 @@
 import { injectMainInputContext } from '../Input.vue'
 
 const { form, submitForm, isDownloading } = injectMainInputContext()
+
+const placeholder = useState('main-input-field-placeholder', () =>
+  sample(INPUT__FIELD_PLACEHOLDERS),
+)
 </script>
 
 <template>
   <div class="flex gap-2 items-center">
     <input
       v-model="form.url"
-      class="text-sm ps-2 outline-none h-main-input-field-h w-full"
-      placeholder="https://soundcloud.com/pilarsierra/dewey-a2a"
+      class="text-sm ps-1.5 outline-none h-main-input-field-h w-full"
+      :placeholder
       @keydown.enter="submitForm"
-    >
+    />
 
-    <UButton :is-loading="isDownloading" size="icon" @click="submitForm">
+    <UButton
+      :disabled="!form.url.trim()"
+      :is-loading="isDownloading"
+      size="icon"
+      @click="submitForm"
+    >
       <Icon name="ph:arrow-right-bold" />
     </UButton>
   </div>
