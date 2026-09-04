@@ -60,7 +60,7 @@ export async function getClientId(fresh: boolean = false) {
   const logger = getLogger()
 
   if (!fresh) {
-    const kvCached = await kv.get<string>(KV__KEY_CLIENT_ID)
+    const kvCached = await kv.get<string>(STORAGE__KV_KEY_CLIENT_ID)
     if (kvCached) return kvCached
   }
 
@@ -91,6 +91,6 @@ export async function getClientId(fresh: boolean = false) {
 
   if (!foundClientId) throw clientIdErrors.NO_CLIENT_ID_FOUND()
 
-  await kv.set(KV__KEY_CLIENT_ID, foundClientId)
+  await kv.set(STORAGE__KV_KEY_CLIENT_ID, foundClientId)
   return foundClientId
 }

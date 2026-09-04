@@ -4,8 +4,8 @@ export default defineNitroPlugin(() => {
   const storage = useStorage()
 
   const driver = fsDriver({
-    base: KV__BASE_DIR,
+    base: STORAGE__KV_BASE_DIR,
   })
 
-  storage.mount(KV__BASE_NAME, driver)
+  storage.mount(STORAGE__KV_BASE_NAME, driver)
 })

@@ -1,1 +1,1 @@
-export const useKV = () => useStorage(KV__BASE_NAME)
+export const useKV = () => useStorage(STORAGE__KV_BASE_NAME)
