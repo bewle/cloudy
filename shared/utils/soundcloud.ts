@@ -66,10 +66,12 @@ export function getUrlType(url: string): InputSourceOption | undefined {
   const parsed = parseURL(withoutTrailingSlash(url))
   if (parsed.host !== 'soundcloud.com') return
 
-  const splits = new Set(parsed.pathname?.split('/') ?? [])
-  if (splits.size === 2) return 'artist'
-  if (splits.size === 4 && splits.has('sets')) return 'playlist'
-  if (splits.size <= 3) return 'track'
+  const segments = parsed.pathname?.split('/').filter(Boolean) ?? []
+  if (!segments[0] || SC__RESERVED_PATHS.includes(segments[0])) return
+
+  if (segments.length === 1) return 'artist'
+  if (segments.length === 2) return 'track'
+  if (segments.length === 3 && segments[1] === 'sets') return 'playlist'
 }
 
 export function transcodingToMime(transcoding: SCTranscodingType) {

@@ -46,3 +46,13 @@ export const SC__USER_SUMMARY_KEYS = [
   'permalink_url',
   'username',
 ] as const satisfies readonly (keyof SCUser)[]
+
+export const SC__RESERVED_PATHS: readonly string[] = [
+  'discover',
+  'feed',
+  'search',
+  'settings',
+  'stream',
+  'upload',
+  'you',
+]
