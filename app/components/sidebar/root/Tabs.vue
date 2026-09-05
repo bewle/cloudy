@@ -3,15 +3,12 @@ const { tab } = useSidebarState()
 </script>
 
 <template>
-  <UToggleGroupRoot
-    v-model:model-value="tab"
-    class="flex flex-col gap-2"
-    @update:model-value="console.log"
-  >
+  <UToggleGroupRoot v-model:model-value="tab" class="flex flex-col gap-2">
     <UToggleGroupItem
       v-for="item in objectKeys(sidebarTabIconMap)"
       :key="item"
       :value="item"
+      :aria-label="sidebarTabNameMap[item]"
       size="icon"
       class="rounded-sm h-auto w-14 aspect-square"
     >

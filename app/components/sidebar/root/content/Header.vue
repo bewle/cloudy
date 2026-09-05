@@ -19,7 +19,7 @@ whenever(tab, newTab => (previousTab = newTab))
       {{ tabNameMap[previousTab] }}
     </h3>
 
-    <UButton size="icon" @click="tab = undefined">
+    <UButton size="icon" aria-label="Close sidebar" @click="tab = undefined">
       <Icon :name="ICON__SIDEBAR_CLOSE" />
     </UButton>
   </header>
