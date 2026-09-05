@@ -8,11 +8,12 @@ export interface UToggleGroupItemAnimationProps extends PrimitiveProps {
   class?: HTMLAttributes['class']
 }
 
-const { animating, nodePresent } = injectToggleGroupAnimationContext()
-
 const props = withDefaults(defineProps<UToggleGroupItemAnimationProps>(), {
   as: 'span',
 })
+
+const { animating, nodePresent } = injectToggleGroupAnimationContext()
+
 const delegated = reactiveOmit(props, 'class')
 
 onMounted(() => (nodePresent.value = true))

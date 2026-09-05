@@ -15,13 +15,13 @@ const inputOption = computed({
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
+  <div class="flex gap-1 items-center">
     <UToggleGroupRoot
       v-model:model-value="inputOption"
       :default-value="INPUT__OPTIONS[0]"
       required
       type="single"
-      class="font-mono flex gap-1 items-center isolate flex-1"
+      class="font-mono flex flex-1 gap-1 items-center isolate"
     >
       <UToggleGroupItem
         v-for="o in without(INPUT__OPTIONS, 'multitrack')"

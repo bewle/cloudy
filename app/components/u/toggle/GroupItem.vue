@@ -25,8 +25,7 @@ const forwarded = useForwardPropsEmits(delegated)
       cn(
         buttonStyles({ variant, size }),
         'relative z-1',
-        nodePresent &&
-          'data-[active]:(anchor-name-toggle bg-surface-active) data-[active]:active:(bg-surface-active)',
+        nodePresent && 'data-[active]:(anchor-name-toggle bg-surface-active)',
         props.class,
       )
     "

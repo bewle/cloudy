@@ -1,0 +1,4 @@
+export const GENERAL__INDEX_RAIL = 86
+export const GENERAL__INDEX_DEFAULT_SIZE = 520
+export const GENERAL__INDEX_MIN_SIZE = 480
+export const GENERAL__INDEX_MAX_SIZE = 840
