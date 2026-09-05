@@ -20,8 +20,8 @@ watch(tab, t => {
   <div class="flex h-screen items-center">
     <SplitterGroup id="index-splitter" direction="horizontal" @layout="tab && (layout = $event)">
       <SplitterPanel
-        ref="sidebar"
         id="index-splitter-panel-1"
+        ref="sidebar"
         as="aside"
         size-unit="px"
         class="h-full"
@@ -31,7 +31,7 @@ watch(tab, t => {
         :default-size="tab ? (layout?.[0] ?? GENERAL__INDEX_DEFAULT_SIZE) : GENERAL__INDEX_RAIL"
         :style="mounted ? undefined : { flexGrow: 0, flexBasis: `${GENERAL__INDEX_RAIL}px` }"
       >
-        <div class="h-full p-2">
+        <div class="p-2 h-full">
           <SidebarRoot />
         </div>
       </SplitterPanel>

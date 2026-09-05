@@ -5,15 +5,15 @@ const { tab } = useSidebarState()
 <template>
   <UToggleGroupRoot
     v-model:model-value="tab"
-    @update:model-value="console.log"
     class="flex flex-col gap-2"
+    @update:model-value="console.log"
   >
     <UToggleGroupItem
       v-for="item in objectKeys(sidebarTabIconMap)"
       :key="item"
       :value="item"
       size="icon"
-      class="w-14 rounded-sm aspect-square h-auto"
+      class="rounded-sm h-auto w-14 aspect-square"
     >
       <Icon :name="sidebarTabIconMap[item]" class="size-1lh" />
     </UToggleGroupItem>

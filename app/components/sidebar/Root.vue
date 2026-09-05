@@ -12,7 +12,7 @@ provideSidebarRootContext({})
 </script>
 
 <template>
-  <div class="bg-surface h-full p-1.5 rounded border border-border flex overflow-hidden">
+  <div class="p-1.5 border border-border rounded bg-surface flex h-full overflow-hidden">
     <SidebarRootTabs class="shrink-0" />
 
     <Transition :name="tab ? '' : 'fade'">
