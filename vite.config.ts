@@ -1,3 +1,4 @@
+import { defineVitestProject } from '@nuxt/test-utils/config'
 import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
@@ -60,6 +61,24 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['test/**/*.{test,spec}.ts'],
+    projects: [
+      {
+        test: {
+          environment: 'node',
+          include: ['test/unit/**/*.{test,spec}.ts'],
+          name: 'unit',
+        },
+      },
+      await defineVitestProject({
+        test: {
+          environment: 'nuxt',
+          environmentOptions: {
+            nuxt: { domEnvironment: 'happy-dom' },
+          },
+          include: ['test/nuxt/**/*.{test,spec}.ts'],
+          name: 'nuxt',
+        },
+      }),
+    ],
   },
 })

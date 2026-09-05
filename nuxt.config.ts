@@ -56,6 +56,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@vueuse/nuxt',
     'evlog/nuxt',
+    '@nuxt/test-utils',
   ],
   nitro: {
     imports: {
