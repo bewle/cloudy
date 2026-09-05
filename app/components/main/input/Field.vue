@@ -15,7 +15,7 @@ const placeholder = useState('main-input-field-placeholder', () =>
       class="text-sm ps-1.5 outline-none h-main-input-field-h w-full"
       :placeholder
       @keydown.enter="submitForm"
-    >
+    />
 
     <UButton
       :disabled="!form.url.trim()"
