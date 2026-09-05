@@ -23,7 +23,7 @@ const placeholder = useState('main-input-field-placeholder', () =>
       size="icon"
       @click="submitForm"
     >
-      <Icon name="ph:arrow-right-bold" />
+      <Icon :name="ICON__RIGHT_ARROW" />
     </UButton>
   </div>
 </template>

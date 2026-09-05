@@ -1,0 +1,6 @@
+export const ICON__MULTITRACK = 'tabler:layout-grid'
+export const ICON__CLOSE = 'tabler:x'
+export const ICON__RIGHT_ARROW = 'tabler:arrow-right'
+export const ICON__PASTE = 'tabler:clipboard'
+export const ICON__ARTIST = 'tabler:user'
+export const ICON__PLAYLIST = 'tabler:playlist'

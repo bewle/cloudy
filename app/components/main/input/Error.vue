@@ -29,7 +29,7 @@ const parsedError = computed(() => {
         class="right-2 top-2 absolute"
         @click="error = undefined"
       >
-        <Icon name="ph:x" />
+        <Icon :name="ICON__CLOSE" />
       </UButton>
     </div>
   </Transition>

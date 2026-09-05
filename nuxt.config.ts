@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
-    collections: ['ph'],
+    collections: ['tabler'],
   },
   imports: {
     dirs: [
