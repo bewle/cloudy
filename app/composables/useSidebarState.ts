@@ -6,6 +6,12 @@ export const sidebarTabIconMap = {
 }
 export type SidebarTab = keyof typeof sidebarTabIconMap
 
+export const sidebarTabNameMap: Record<SidebarTab, string> = {
+  artist: 'Artist',
+  multitrack: 'Multi-track',
+  playlist: 'Playlist',
+}
+
 export const useSidebarState = createGlobalState(() => {
   const tab = ref<SidebarTab | undefined>()
 

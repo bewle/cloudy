@@ -1,22 +1,14 @@
-<script lang="ts">
-const tabNameMap: Record<SidebarTab, string> = {
-  artist: 'Artist',
-  multitrack: 'Multi-track',
-  playlist: 'Playlist',
-}
-</script>
-
 <script lang="ts" setup>
-let previousTab: SidebarTab = 'multitrack'
 const { tab } = useSidebarState()
+const previousTab = ref<SidebarTab>(tab.value ?? 'multitrack')
 
-whenever(tab, newTab => (previousTab = newTab))
+whenever(tab, newTab => (previousTab.value = newTab))
 </script>
 
 <template>
   <header class="pe-2 ps-4 flex h-14 w-full items-center justify-between">
     <h3 class="text-xl font-medium">
-      {{ tabNameMap[previousTab] }}
+      {{ sidebarTabNameMap[previousTab] }}
     </h3>
 
     <UButton size="icon" aria-label="Close sidebar" @click="tab = undefined">
