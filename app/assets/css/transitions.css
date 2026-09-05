@@ -9,13 +9,13 @@
   opacity: 0;
 }
 
-.zoom-in-enter-active,
-.zoom-in-leave-active {
+.zoom-enter-active,
+.zoom-leave-active {
   transition: all 100ms ease;
 }
 
-.zoom-in-enter-from,
-.zoom-in-leave-to {
+.zoom-enter-from,
+.zoom-leave-to {
   opacity: 0;
   scale: 96.5%;
 }
