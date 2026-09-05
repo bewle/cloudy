@@ -1,7 +1,31 @@
+/* fade */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 150ms;
+  @apply ease-snappy;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 150ms;
+  @apply ease-snappy;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 /* zoom */
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 100ms ease;
+  transition: opacity 150ms;
+  @apply ease-snappy;
 }
 
 .v-enter-from,
@@ -11,7 +35,8 @@
 
 .zoom-enter-active,
 .zoom-leave-active {
-  transition: all 100ms ease;
+  transition: all 150ms;
+  @apply ease-snappy;
 }
 
 .zoom-enter-from,
@@ -23,7 +48,8 @@
 /* flip up */
 .flip-up-enter-active,
 .flip-up-leave-active {
-  transition: all 200ms ease;
+  transition: all 150ms;
+  @apply ease-snappy;
 }
 
 .flip-up-enter-to,
@@ -45,7 +71,8 @@
 /* flip down */
 .flip-down-enter-active,
 .flip-down-leave-active {
-  transition: all 200ms ease;
+  transition: all 150ms;
+  @apply ease-snappy;
 }
 
 .flip-down-enter-to,
