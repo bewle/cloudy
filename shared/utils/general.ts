@@ -11,6 +11,11 @@ export function concatArrayBuffers(buffers: ArrayBuffer[]): ArrayBuffer {
   return result.buffer
 }
 
+/** https://docs.tsafe.dev/objectKeys */
+export function objectKeys<T extends Record<string, unknown>>(o: T): (keyof T)[] {
+  return Object.keys(o)
+}
+
 export function isUrl(value: string) {
   try {
     const url = new URL(value)
