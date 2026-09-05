@@ -24,6 +24,12 @@ const presetAnchorPositioning = definePreset(() => {
         }),
       ],
       [
+        /(?<=anchor-scope-)(?<name>[a-zA-Z0-9]+)/g,
+        ([name]) => ({
+          'anchor-scope': `--${name}`,
+        }),
+      ],
+      [
         /(?<=anchor-)(?<pos>left|right|top|bottom|inset)/g,
         ([pos]) => {
           if (pos === 'inset') {
@@ -64,6 +70,13 @@ export default defineConfig<PresetWind4Theme>({
         return {
           [cssProp]: `oklch(from ${color} calc(l + var(--shift-${state}-lightness)) calc(c + var(--shift-${state}-chroma)) h)`,
         }
+      },
+    ],
+    [
+      'ease-snappy',
+      {
+        'animation-timing-function': 'cubic-bezier(0.33, 1, 0.68, 1)',
+        'transition-timing-function': 'cubic-bezier(0.33, 1, 0.68, 1)',
       },
     ],
   ],
