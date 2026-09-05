@@ -49,7 +49,12 @@ export async function $scResolve<K extends SCKind>(url: string, kind: K) {
   if (isPlainObject(res) && res.kind !== kind) throw soundcloudErrors.INPUT_URL_INVALID({ kind })
 
   const parsed = v.safeParse(scResolveSchema, res)
-  if (!parsed.success) throw soundcloudErrors.INVALID_SHAPE()
+  if (!parsed.success)
+    throw soundcloudErrors.INVALID_SHAPE({
+      internal: {
+        issues: v.flatten(parsed.issues),
+      },
+    })
   if (parsed.output.kind !== kind) throw soundcloudErrors.INPUT_URL_INVALID({ kind })
 
   return parsed.output as unknown as SCResolveKindSchemaMap[K]

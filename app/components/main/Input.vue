@@ -9,6 +9,7 @@ export interface MainInputContext {
   submitForm: () => void
   isDownloading: Ref<boolean>
   error: Ref<Error | undefined>
+  autoDetect: Ref<boolean>
 }
 
 export const [injectMainInputContext, provideMainInputContext] =
@@ -20,8 +21,11 @@ const form = ref<MainInputForm>({
   option: 'track',
   url: '',
 })
+const autoDetect = useCookie<boolean>('auto-detect', { default: () => true })
 
-const { downloadTrack, isDownloading, progress, error } = useTrackDownload(() => form.value.url)
+const { downloadTrack, isDownloading, progress, error } = useTrackDownload(() =>
+  withoutTrailingSlash(form.value.url),
+)
 
 const submitForm = () => {
   if (!isUrl(form.value.url)) {
@@ -29,12 +33,18 @@ const submitForm = () => {
       option: resolveInputSourceOption(form.value.option),
     }))
   }
+  const url = withoutTrailingSlash(form.value.url)
+
+  if (autoDetect.value) {
+    const detectedType = getUrlType(url)
+    if (detectedType) form.value.option = detectedType
+  }
 
   error.value = undefined
   return downloadTrack()
 }
 
-provideMainInputContext({ error, form, isDownloading, submitForm })
+provideMainInputContext({ autoDetect, error, form, isDownloading, submitForm })
 
 const progressPercent = computed(() => progress.value * 100)
 </script>

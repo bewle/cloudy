@@ -3,7 +3,7 @@ import type { AcceptableValue } from 'reka-ui'
 
 import { injectMainInputContext } from '../Input.vue'
 
-const { form } = injectMainInputContext()
+const { form, autoDetect } = injectMainInputContext()
 
 const inputOption = computed({
   get: () => form.value.option,
@@ -41,6 +41,14 @@ const inputOption = computed({
       <UToggleGroupItemAnimation v-if="inputOption !== 'multitrack'" />
     </UToggleGroupRoot>
 
+    <UToggle
+      v-model:model-value="autoDetect"
+      size="icon"
+      class="rounded-sm shrink-0"
+      aria-label="Automatically detect URL type"
+    >
+      <Icon :name="ICON__AUTO_DETECT" />
+    </UToggle>
     <UButton size="icon" class="rounded-sm shrink-0">
       <Icon :name="ICON__PASTE" />
     </UButton>

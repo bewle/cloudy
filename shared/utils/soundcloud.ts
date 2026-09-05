@@ -1,3 +1,5 @@
+import type { InputSourceOption } from '../constants/input'
+
 export function setImageQuality(url: string, quality: SCImageFormat) {
   return url.replace(RE__SC_IMAGE_QUALITY, `-${quality}`)
 }
@@ -58,6 +60,18 @@ export async function getTrackCoverBuffer(trackMeta: SCTrackSummary) {
   )
   if (err) return
   return res ?? undefined
+}
+
+export function getUrlType(url: string): InputSourceOption | undefined {
+  const parsed = parseURL(withoutTrailingSlash(url))
+  if (parsed.host !== 'soundcloud.com') return
+
+  const segments = parsed.pathname?.split('/').filter(Boolean) ?? []
+  if (!segments[0] || SC__RESERVED_PATHS.includes(segments[0])) return
+
+  if (segments.length === 1) return 'artist'
+  if (segments.length === 2) return 'track'
+  if (segments.length === 3 && segments[1] === 'sets') return 'playlist'
 }
 
 export function transcodingToMime(transcoding: SCTranscodingType) {
