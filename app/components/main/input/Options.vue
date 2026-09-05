@@ -15,27 +15,34 @@ const inputOption = computed({
 </script>
 
 <template>
-  <ToggleGroupRoot
-    v-model:model-value="inputOption"
-    :default-value="INPUT__OPTIONS[0]"
-    required
-    type="single"
-    class="font-mono flex gap-1 items-center isolate"
-  >
-    <ToggleGroupItem
-      v-for="o in INPUT__OPTIONS"
-      :key="o"
-      class="font-normal rounded-sm z-1 data-[active]:(anchor-name-option text-foreground bg-surface-active) data-[active]:active:(text-foreground bg-surface-active)"
-      as-child
-      :value="o"
+  <div class="flex items-center gap-1">
+    <UToggleGroupRoot
+      v-model:model-value="inputOption"
+      :default-value="INPUT__OPTIONS[0]"
+      required
+      type="single"
+      class="font-mono flex gap-1 items-center isolate flex-1"
     >
-      <UButton>
+      <UToggleGroupItem
+        v-for="o in without(INPUT__OPTIONS, 'multitrack')"
+        :key="o"
+        class="font-normal rounded-sm"
+        :value="o"
+      >
         {{ o }}
-      </UButton>
-    </ToggleGroupItem>
+      </UToggleGroupItem>
 
-    <div
-      class="position-anchor-option anchor-inset rounded-sm pointer-events-none duration-100 ease-snappy absolute bg-surface-active"
-    />
-  </ToggleGroupRoot>
+      <div class="flex-1" />
+
+      <UToggleGroupItem class="font-normal rounded-sm" value="multitrack">
+        <Icon :name="ICON__MULTITRACK" />
+      </UToggleGroupItem>
+
+      <UToggleGroupItemAnimation v-if="inputOption !== 'multitrack'" />
+    </UToggleGroupRoot>
+
+    <UButton size="icon" class="rounded-sm shrink-0">
+      <Icon :name="ICON__PASTE" />
+    </UButton>
+  </div>
 </template>

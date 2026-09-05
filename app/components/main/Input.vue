@@ -25,7 +25,9 @@ const { downloadTrack, isDownloading, progress, error } = useTrackDownload(() =>
 
 const submitForm = () => {
   if (!isUrl(form.value.url)) {
-    return (error.value = validationErrors.INVALID_URL({ option: form.value.option }))
+    return (error.value = validationErrors.INVALID_URL({
+      option: resolveInputSourceOption(form.value.option),
+    }))
   }
 
   error.value = undefined

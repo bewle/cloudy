@@ -1,5 +1,7 @@
-export const INPUT__OPTIONS = ['track', 'artist', 'playlist'] as const
+export const INPUT__SOURCE_OPTIONS = ['track', 'artist', 'playlist'] as const
+export const INPUT__OPTIONS = [...INPUT__SOURCE_OPTIONS, 'multitrack'] as const
 export type InputOption = (typeof INPUT__OPTIONS)[number]
+export type InputSourceOption = (typeof INPUT__SOURCE_OPTIONS)[number]
 
 export const INPUT__FIELD_PLACEHOLDERS = [
   'https://soundcloud.com/gunjump/komodo',

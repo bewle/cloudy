@@ -1,8 +1,10 @@
 import { defineErrorCatalog } from 'evlog'
 
+import type { InputSourceOption } from '../constants/input'
+
 export const validationErrors = defineErrorCatalog('validation', {
   INVALID_URL: {
-    message: ({ option }: { option: InputOption }) => `Invalid ${option} URL`,
+    message: ({ option }: { option: InputSourceOption }) => `Invalid ${option} URL`,
     status: 422,
     why: 'Input is not a valid URL',
   },

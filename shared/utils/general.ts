@@ -25,3 +25,12 @@ export function isUrl(value: string) {
     return false
   }
 }
+
+export function resolveInputSourceOption(inputOption: InputOption): InputSourceOption {
+  switch (inputOption) {
+    case 'multitrack':
+      return 'track'
+    default:
+      return inputOption
+  }
+}
