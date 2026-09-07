@@ -27,11 +27,11 @@ const rowVirtualizer = useVirtualizer(
         :key="track.index"
         :track="collection[track.index]!"
       /> -->
-      <div class="relative w-full" :style="{ height: `${rowVirtualizer.getTotalSize()}px` }">
+      <div class="w-full relative" :style="{ height: `${rowVirtualizer.getTotalSize()}px` }">
         <SidebarRootContentTabArtistCard
           v-for="row in rowVirtualizer.getVirtualItems()"
           :key="row.index"
-          class="absolute top-0 left-0 w-full"
+          class="w-full left-0 top-0 absolute"
           :style="{ transform: `translateY(${row.start}px)` }"
           :track="collection[row.index]!"
         />

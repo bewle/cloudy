@@ -21,14 +21,14 @@ const subheading = computed(() => {
 </script>
 
 <template>
-  <header class="flex h-14 w-full gap-2 items-center justify-between shrink-0">
-    <div class="flex flex-col w-full shrink justify-center">
+  <header class="flex shrink-0 gap-2 h-14 w-full items-center justify-between">
+    <div class="flex shrink flex-col w-full justify-center">
       <h3 class="text-xl font-medium w-fit">
         {{ sidebarTabNameMap[previousTab] }}
       </h3>
 
       <USkeleton v-if="pendingArtist || pendingPlaylist" class="text-xs h-1lh w-24" />
-      <p v-else :title="subheading" class="font-mono text-xs text-muted-foreground truncate">
+      <p v-else :title="subheading" class="text-xs text-muted-foreground font-mono truncate">
         {{ subheading }}
       </p>
     </div>

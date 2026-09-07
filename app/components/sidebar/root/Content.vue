@@ -14,7 +14,7 @@ const { tab } = useSidebarState()
 
 <template>
   <div
-    class="h-full pe-2 ps-4 flex flex-col gap-2"
+    class="pe-2 ps-4 flex flex-col gap-2 h-full"
     :style="{
       'min-width': `${(layout[0] ?? GENERAL__INDEX_DEFAULT_SIZE) - GENERAL__INDEX_RAIL}px`,
     }"
@@ -22,7 +22,7 @@ const { tab } = useSidebarState()
     <SidebarRootContentHeader />
     <SidebarRootContentSearch />
 
-    <div class="size-full flex-1 shrink overflow-auto">
+    <div class="flex-1 shrink size-full overflow-auto">
       <component :is="tab && tabComponentMap[tab]" />
     </div>
   </div>
