@@ -4,25 +4,19 @@ const src = computed(() => resolveTrackCover(props.track))
 </script>
 
 <template>
-  <div class="p-3 border border-border rounded bg-surface flex gap-3">
-    <Img class="rounded-sm shrink-0 size-16" :src :alt="track.title" />
+  <SidebarRootContentListCard>
+    <SidebarRootContentListCardImg :src :alt="track.title" />
 
-    <div class="flex flex-col gap-3 justify-center *:text-clip">
-      <NuxtLink
-        :to="track.permalink_url"
-        external
-        class="font-medium py-0.5 underline-offset-px truncate -my-0.5 hover:underline"
-        target="_blank"
-      >
+    <SidebarRootContentListCardContent>
+      <SidebarRootContentListCardTitle :to="track.permalink_url">
         {{ track.title }}
-      </NuxtLink>
-      <p class="text-sm text-muted-foreground py-0.5 truncate -my-0.5">
+      </SidebarRootContentListCardTitle>
+
+      <SidebarRootContentListCardArtist>
         {{ resolveTrackArtist(track) }}
-      </p>
-      <NuxtTime
-        class="text-xs text-muted-foreground font-mono"
-        :datetime="resolveTrackDate(track)"
-      />
-    </div>
-  </div>
+      </SidebarRootContentListCardArtist>
+
+      <SidebarRootContentListCardDate :datetime="resolveTrackDate(track)" />
+    </SidebarRootContentListCardContent>
+  </SidebarRootContentListCard>
 </template>
