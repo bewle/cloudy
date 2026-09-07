@@ -7,11 +7,16 @@ const src = computed(() => resolveTrackCover(props.track))
   <div class="p-3 border border-border rounded bg-surface flex gap-3">
     <Img class="rounded-sm shrink-0 size-16" :src :alt="track.title" />
 
-    <div class="flex flex-col gap-3 justify-center *:text-clip">
-      <p class="font-medium py-0.5 truncate -my-0.5">
+    <div class="flex flex-col justify-center gap-3 *:text-clip">
+      <NuxtLink
+        :to="track.permalink_url"
+        external
+        class="hover:underline underline-offset-px font-medium truncate py-0.5 -my-0.5"
+        target="_blank"
+      >
         {{ track.title }}
-      </p>
-      <p class="text-sm text-muted-foreground py-0.5 truncate -my-0.5">
+      </NuxtLink>
+      <p class="text-sm text-muted-foreground truncate py-0.5 -my-0.5">
         {{ resolveTrackArtist(track) }}
       </p>
       <NuxtTime
