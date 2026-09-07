@@ -36,7 +36,7 @@ export const scPlaylistSchema = v.looseObject({
   track_count: v.number(),
   tracks: v.array(scTrackOrStubSchema),
   uri: v.string(),
-  urn: v.string(),
+  urn: v.optional(v.string()),
   user: scUserMiniSchema,
   user_id: v.number(),
 })
