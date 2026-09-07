@@ -57,6 +57,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'evlog/nuxt',
     '@nuxt/test-utils',
+    '@nuxt/image',
   ],
   nitro: {
     imports: {
@@ -74,6 +75,7 @@ export default defineNuxtConfig({
   security: {
     headers: {
       contentSecurityPolicy: {
+        'img-src': ["'self'", 'data:', 'https://i1.sndcdn.com'],
         'script-src': [
           "'self'",
           'https:',
