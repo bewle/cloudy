@@ -21,7 +21,7 @@ export const scEmbeddableBySchema = v.picklist(['all', 'me', 'none'])
 
 export const scSearchSchema = v.looseObject({
   next_href: v.nullable(v.string()),
-  query_urn: v.optional(v.string()),
+  query_urn: v.nullish(v.string()),
   total_results: v.optional(v.number()),
 })
 

@@ -14,6 +14,13 @@ export function resolveTrackDate(trackMeta: SCTrackSummary) {
   return created_at
 }
 
+export function resolveTrackCover(trackMeta: SCTrackSummary) {
+  const { artwork_url, user } = trackMeta
+  const { avatar_url } = user ?? {}
+
+  return artwork_url ?? avatar_url ?? undefined
+}
+
 export async function resolveHqImageUrl(url: string) {
   if (!SC__IMAGE_FORMAT_EXTENSIONS.some(ext => url.endsWith(ext))) return url
 
@@ -44,10 +51,7 @@ export function normalizeTrackExtension(extension: string) {
 }
 
 export async function getTrackCoverBuffer(trackMeta: SCTrackSummary) {
-  const { artwork_url, user } = trackMeta
-  const { avatar_url } = user ?? {}
-
-  const artworkUrl = artwork_url ?? avatar_url
+  const artworkUrl = resolveTrackCover(trackMeta)
   if (!artworkUrl) return
 
   const parsed = parseURL(artworkUrl)
@@ -82,6 +86,43 @@ export function transcodingToMime(transcoding: SCTranscodingType) {
 export function transcodingToExt(transcoding: SCTranscodingType) {
   return SC__TRANSCODING_EXTENSION_MAP[transcoding]
 }
+
+export function isFullTrack(track: SCTrackOrStub): track is SCTrack {
+  return typeof track.title === 'string'
+}
+
+export function isTrackSummary(track: SCTrackSummary | SCTrackStub): track is SCTrackSummary {
+  return typeof track.title === 'string'
+}
+
+export function summarizeUser(user: SCUser): SCUserSummary {
+  return pick(user, SC__USER_SUMMARY_KEYS)
+}
+
+export function summarizeUserMini(user: SCUserMini): SCUserMiniSummary {
+  return pick(user, SC__USER_MINI_SUMMARY_KEYS)
+}
+
+export function summarizeTrack(track: SCTrackOrStub): SCTrackSummary | SCTrackStub {
+  if (!isFullTrack(track)) return track
+  const picked = pick(track, SC__TRACK_SUMMARY_KEYS)
+  return { ...picked, user: summarizeUserMini(track.user) }
+}
+
+export function summarizeTracks(tracks: SCTrackOrStub[]): (SCTrackSummary | SCTrackStub)[] {
+  const summarized: (SCTrackSummary | SCTrackStub)[] = []
+  for (const track of tracks) {
+    summarized.push(summarizeTrack(track))
+  }
+  return summarized
+}
+
+export function summarizeTrackSearch(search: SCTrackSearch): SCTrackSearchSummary {
+  const picked = pick(search, SC__TRACK_SEARCH_SUMMARY_KEYS)
+  return { ...picked, collection: summarizeTracks(picked.collection) }
+}
+
+// export function summarizePlaylist(playlist: SCPlaylist): SCPlaylistSummary {}
 
 // export const getTrackTags = async (trackMeta: SCTrackSummary): Promise<MetadataTags> => {
 // export const getTrackTags = async (trackMeta: SCTrackSummary) => {

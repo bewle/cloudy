@@ -1,5 +1,4 @@
 import { RE__SC_TRANSCODING_MIME_TYPES } from '../regex/soundcloud'
-import type { SCTrack } from '../types/soundcloud/track'
 import type { SCUser } from '../types/soundcloud/user'
 
 export const SC__API_URL = 'https://api-v2.soundcloud.com'
@@ -39,13 +38,32 @@ export const SC__TRACK_SUMMARY_KEYS = [
   'publisher_metadata',
   'title',
   'user',
-] as const satisfies readonly (keyof SCTrack)[]
+] as const satisfies readonly (keyof SCTrackOrStub)[]
+
+export const SC__TRACK_SEARCH_SUMMARY_KEYS = [
+  'collection',
+  'next_href',
+] as const satisfies readonly (keyof SCTrackSearch)[]
 
 export const SC__USER_SUMMARY_KEYS = [
   'avatar_url',
   'permalink_url',
   'username',
+  'name',
+  'track_count',
 ] as const satisfies readonly (keyof SCUser)[]
+
+export const SC__USER_MINI_SUMMARY_KEYS = [
+  'avatar_url',
+  'permalink_url',
+  'username',
+] as const satisfies readonly (keyof SCUserMini)[]
+
+export const SC__PLAYLIST_SUMMARY_KEYS = [
+  'tracks',
+  'title',
+  'track_count',
+] as const satisfies (keyof SCPlaylist)[]
 
 export const SC__RESERVED_PATHS: readonly string[] = [
   'discover',
