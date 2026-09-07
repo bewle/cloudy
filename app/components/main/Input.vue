@@ -26,6 +26,7 @@ const autoDetect = useCookie<boolean>('auto-detect', { default: () => true })
 const { downloadTrack, isDownloading, progress, error } = useTrackDownload(() =>
   withoutTrailingSlash(form.value.url),
 )
+const sidebarState = useSidebarState()
 
 const submitForm = () => {
   if (!isUrl(form.value.url)) {
@@ -41,7 +42,19 @@ const submitForm = () => {
   }
 
   error.value = undefined
-  return downloadTrack()
+  switch (form.value.option) {
+    case 'track': {
+      downloadTrack()
+      break
+    }
+    case 'artist': {
+      sidebarState.artist.value = url
+      sidebarState.tab.value = 'artist'
+      break
+    }
+    // case 'playlist':
+    // case 'multitrack':
+  }
 }
 
 provideMainInputContext({ autoDetect, error, form, isDownloading, submitForm })

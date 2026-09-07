@@ -181,3 +181,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+* {
+  @apply min-w-0 min-h-0;
+}
