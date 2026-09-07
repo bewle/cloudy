@@ -37,13 +37,13 @@ useIntersectionObserver(loadSentinel, ([entry]) => {
   <UScrollAreaRoot>
     <UScrollAreaViewport ref="viewport" class="pe-3.5">
       <div class="w-full relative" :style="{ height: `${rowVirtualizer.getTotalSize()}px` }">
-        <slot :rowVirtualizer />
+        <slot :row-virtualizer />
       </div>
 
       <div
         ref="loadSentinel"
         style="height: 5.625rem"
-        class="flex items-center justify-center w-full mt-2"
+        class="mt-2 flex w-full items-center justify-center"
       >
         <USpinner class="text-2xl size-1lh" />
       </div>

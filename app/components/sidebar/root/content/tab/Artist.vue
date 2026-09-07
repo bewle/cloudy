@@ -6,7 +6,7 @@ const collection = computed(() => data.value?.collection.filter(isTrackSummary) 
 </script>
 
 <template>
-  <SidebarRootContentList :list="collection" item-key="id" v-slot="{ rowVirtualizer }">
+  <SidebarRootContentList v-slot="{ rowVirtualizer }" :list="collection" item-key="id">
     <SidebarRootContentTabArtistCard
       v-for="row in rowVirtualizer.getVirtualItems()"
       :key="row.index"
