@@ -49,11 +49,14 @@ export async function getTaggedTrackBuffer(
         break
       }
       case 'APIC': {
-        payload = {
-          data: await getTrackCoverBuffer(trackMeta),
-          description: 'Attached cover',
-          type: 3,
-        }
+        const data = await getTrackCoverBuffer(trackMeta)
+        if (data)
+          payload = {
+            data: await getTrackCoverBuffer(trackMeta),
+            description: 'Attached cover',
+            type: 3,
+          }
+
         break
       }
     }
