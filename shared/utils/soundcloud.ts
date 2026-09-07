@@ -72,7 +72,7 @@ export function getUrlType(url: string): InputSourceOption | undefined {
   if (segments.length === 1) return 'artist'
   if (segments.length === 2) return 'track'
   if (segments.length === 3 && segments[1] === 'sets') return 'playlist'
-  if (segments.length === 3 && segments[2].startsWith('s-')) return 'track'
+  if (segments.length === 3 && segments[2]?.startsWith('s-')) return 'track'
 }
 
 export function transcodingToMime(transcoding: SCTranscodingType) {
