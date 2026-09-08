@@ -10,7 +10,7 @@ const breakpoint = active()
 </script>
 
 <template>
-  <div class="text-xs absolute top-2 right-2 text-muted-foreground font-mono z-100000">
+  <div class="text-xs text-muted-foreground font-mono right-2 top-2 absolute z-100000">
     {{ fps }}
     <span>{{ breakpoint }}</span>
   </div>
