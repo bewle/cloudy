@@ -10,7 +10,10 @@ const { data: playlistMeta, pending: pendingPlaylist } = usePlaylistMeta(playlis
 const subheading = computed(() => {
   if (tab.value === 'artist') {
     return (
-      artistMeta.value?.name ?? artistMeta.value?.username ?? artist.value ?? 'No artist selected'
+      artistMeta.value?.full_name ||
+      artistMeta.value?.username ||
+      artist.value ||
+      'No artist selected'
     )
   }
   if (tab.value === 'playlist') {

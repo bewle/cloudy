@@ -49,7 +49,7 @@ export const SC__USER_SUMMARY_KEYS = [
   'avatar_url',
   'permalink_url',
   'username',
-  'name',
+  'full_name',
   'track_count',
 ] as const satisfies readonly (keyof SCUser)[]
 
