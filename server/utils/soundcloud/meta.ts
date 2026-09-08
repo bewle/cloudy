@@ -48,7 +48,9 @@ export const getPlaylistTracks = defineCachedFunction(
       const res = await $scRequest('/tracks', {
         query: { ids: c.join(',') },
       })
-      tracks.push(...parseSc(v.array(scTrackSchema), res))
+      // reindex
+      const byId = new Map(parseSc(v.array(scTrackSchema), res).map(t => [t.id, t]))
+      tracks.push(...c.map(id => byId.get(id)).filter(t => t !== undefined))
     }
 
     return { collection: tracks, next_href: null } satisfies SCTrackSearch
