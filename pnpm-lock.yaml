@@ -230,6 +230,9 @@ importers:
       '@unocss/nuxt':
         specifier: 66.8.1
         version: 66.8.1(@voidzero-dev/vite-plus-core@0.3.0(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.0)(typescript@6.0.3)(yaml@2.9.0))(esbuild@0.28.2)(magic-string@1.2.3)(magicast@0.5.4)(oxc-parser@0.131.0)(rolldown@1.2.6)(rollup@4.63.0)(unplugin@3.3.0(@voidzero-dev/vite-plus-core@0.3.0(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.0)(typescript@6.0.3)(yaml@2.9.0))(esbuild@0.28.2)(rolldown@1.2.6)(rollup@4.63.0)(webpack@5.109.2(cssnano@8.0.9(postcss@8.5.26))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26)))(webpack@5.109.2(cssnano@8.0.9(postcss@8.5.26))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26))
+      '@vueuse/core':
+        specifier: ^14.4.0
+        version: 14.4.0(vue@3.6.0-rc.5(typescript@6.0.3))
       '@vueuse/nuxt':
         specifier: 14.4.0
         version: 14.4.0(magic-string@1.2.3)(magicast@0.5.4)(nuxt@4.5.2(e2595a2323dfb322d843345ba8c37ddc))(oxc-parser@0.131.0)(rolldown@1.2.6)(unplugin@3.3.0(@voidzero-dev/vite-plus-core@0.3.0(@types/node@26.3.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.0)(typescript@6.0.3)(yaml@2.9.0))(esbuild@0.28.2)(rolldown@1.2.6)(rollup@4.63.0)(webpack@5.109.2(cssnano@8.0.9(postcss@8.5.26))(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.26)))(vue@3.6.0-rc.5(typescript@6.0.3))

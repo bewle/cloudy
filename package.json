@@ -19,6 +19,7 @@
     "@nuxtjs/color-mode": "4.0.1",
     "@tanstack/vue-virtual": "^3.13.36",
     "@unocss/nuxt": "66.8.1",
+    "@vueuse/core": "^14.4.0",
     "@vueuse/nuxt": "14.4.0",
     "browser-id3-writer": "^6.4.0",
     "es-toolkit": "^1.51.0",
