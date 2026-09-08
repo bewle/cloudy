@@ -17,6 +17,10 @@ export const validationErrors = defineErrorCatalog('validation', {
     message: 'Not enough information provided to identify an artist',
     status: 422,
   },
+  NOT_ENOUGH_PLAYLIST_INFO: {
+    message: 'Not enough information provided to identify a playlist',
+    status: 422,
+  },
 })
 
 export const soundcloudErrors = defineErrorCatalog('soundcloud', {
