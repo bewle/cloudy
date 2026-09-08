@@ -7,7 +7,7 @@ const placeholder = computed(() => {
     if (sidebarState.artistMeta.pending.value) return '...'
 
     const { track_count } = sidebarState.artistMeta.data.value ?? {}
-    return `Search ${track_count} tracks`
+    return typeof track_count === 'number' ? `Search ${track_count} tracks` : 'Search tracks'
   }
 
   if (sidebarState.tab.value === 'playlist') {
@@ -15,7 +15,7 @@ const placeholder = computed(() => {
     if (sidebarState.playlistMeta.pending.value) return '...'
 
     const { track_count } = sidebarState.playlistMeta.data.value ?? {}
-    return `Search ${track_count} tracks`
+    return typeof track_count === 'number' ? `Search ${track_count} tracks` : 'Search tracks'
   }
 
   return `Search ${sidebarState.multitrackList.size} tracks`
