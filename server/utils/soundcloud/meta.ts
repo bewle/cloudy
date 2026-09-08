@@ -1,3 +1,5 @@
+import { hash } from 'ohash'
+
 export const getTrackMeta = defineCachedFunction(async (url: string) => {
   const logger = getLogger()
   logger.set({ url })
@@ -31,7 +33,7 @@ export const getUserTracks = defineCachedFunction(
     return parseSc(scTrackSearchSchema, res)
   },
   {
-    getKey: (urn: string) => urn,
+    getKey: hash,
     maxAge: 60 * 15,
     name: 'sc-user-tracks',
     swr: true,
@@ -73,7 +75,7 @@ export const userUrlToId = defineCachedFunction(
     return String(meta.id)
   },
   {
-    getKey: (url: string) => normalizeURL(url),
+    getKey: (url: string) => hash(normalizeURL(url)),
     maxAge: 60 * 60 * 24,
     name: 'sc-user-url-to-id',
     swr: true,
@@ -86,7 +88,7 @@ export const playlistUrlToId = defineCachedFunction(
     return String(meta.id)
   },
   {
-    getKey: (url: string) => normalizeURL(url),
+    getKey: (url: string) => hash(normalizeURL(url)),
     maxAge: 60 * 60 * 24,
     name: 'sc-playlist-url-to-id',
     swr: true,

@@ -25,6 +25,7 @@
     "evlog": "^2.27.1",
     "nuxt": "^4.5.2",
     "nuxt-security": "2.6.0",
+    "ohash": "^2.0.12",
     "reka-ui": "2.10.4",
     "soundcloud.ts": "^0.7.4",
     "ufo": "^1.6.4",
