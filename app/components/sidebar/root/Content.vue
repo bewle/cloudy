@@ -1,9 +1,9 @@
 <script lang="ts">
-import { SidebarRootContentTabArtist } from '#components'
+import { SidebarRootContentTabArtist, SidebarRootContentTabPlaylist } from '#components'
 const tabComponentMap = {
   artist: SidebarRootContentTabArtist,
   multitrack: SidebarRootContentTabArtist,
-  playlist: SidebarRootContentTabArtist,
+  playlist: SidebarRootContentTabPlaylist,
 }
 </script>
 
