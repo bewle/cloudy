@@ -42,7 +42,7 @@ export const getUserTracksPage = defineCachedFunction(async (href: string) =>
   parseSc(scTrackSearchSchema, await $scRequest(href)),
 )
 
-export const urlToId = defineCachedFunction(
+export const userUrlToId = defineCachedFunction(
   async (url: string) => {
     const meta = await $scResolve(url, 'user')
     return String(meta.id)
@@ -50,7 +50,7 @@ export const urlToId = defineCachedFunction(
   {
     getKey: (url: string) => normalizeURL(url),
     maxAge: 60 * 60 * 24,
-    name: 'sc-url-to-id',
+    name: 'sc-user-url-to-id',
     swr: true,
   },
 )
