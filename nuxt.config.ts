@@ -75,7 +75,7 @@ export default defineNuxtConfig({
   security: {
     headers: {
       contentSecurityPolicy: {
-        'img-src': ["'self'", 'data:', 'https://i1.sndcdn.com'],
+        'img-src': ["'self'", 'data:', 'https://i1.sndcdn.com', 'https://a1.sndcdn.com'],
         'script-src': [
           "'self'",
           'https:',
