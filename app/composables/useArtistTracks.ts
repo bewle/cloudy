@@ -50,6 +50,8 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
     { immediate: false },
   )
 
+  const isLoading = computed(() => asyncState.isLoading.value || artistMetaPending.value)
+
   watch(
     artistUrlRef,
     () => {
@@ -74,7 +76,7 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
 
   return {
     canLoadMore,
-    isLoading: asyncState.isLoading,
+    isLoading,
     loadNextHref: load,
     tracks,
   }
