@@ -1,30 +1,13 @@
 <script lang="ts" setup>
 const { playlist } = useSidebarState()
 const { tracks, loadNextHref, canLoadMore, isLoading } = usePlaylistTracks(playlist)
-
-const collection = computed(() => tracks.value?.filter(isTrackSummary) ?? [])
-
-const intersecting = ref(false)
-
-watch([intersecting, isLoading], ([hit, loading]) => {
-  if (hit && !loading && canLoadMore.value) loadNextHref()
-})
 </script>
 
 <template>
-  <SidebarRootContentList
-    v-slot="{ rowVirtualizer }"
-    :show-sentinel="canLoadMore"
-    :list="collection"
-    item-key="id"
-    @sentinel="intersecting = $event"
-  >
-    <SidebarRootContentTabPlaylistCard
-      v-for="row in rowVirtualizer.getVirtualItems()"
-      :key="row.index"
-      class="w-full left-0 top-0 absolute"
-      :style="{ transform: `translateY(${row.start}px)` }"
-      :track="collection[row.index]!"
-    />
-  </SidebarRootContentList>
+  <SidebarRootContentTabTrackList
+    :tracks="tracks"
+    :can-load-more="canLoadMore"
+    :is-loading="isLoading"
+    @load-more="loadNextHref"
+  />
 </template>
