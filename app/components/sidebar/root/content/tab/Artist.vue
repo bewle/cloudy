@@ -1,12 +1,24 @@
 <script lang="ts" setup>
 const { artist } = useSidebarState()
-const { data } = useArtistTracks(artist)
+const { tracks, loadNextHref, canLoadMore, isLoading } = useArtistTracks(artist)
 
-const collection = computed(() => data.value?.collection.filter(isTrackSummary) ?? [])
+const collection = computed(() => tracks.value?.filter(isTrackSummary) ?? [])
+
+const intersecting = ref(false)
+
+watch([intersecting, isLoading], ([hit, loading]) => {
+  if (hit && !loading && canLoadMore.value) loadNextHref()
+})
 </script>
 
 <template>
-  <SidebarRootContentList v-slot="{ rowVirtualizer }" :list="collection" item-key="id">
+  <SidebarRootContentList
+    :show-sentinel="canLoadMore"
+    :list="collection"
+    item-key="id"
+    v-slot="{ rowVirtualizer }"
+    @sentinel="intersecting = $event"
+  >
     <SidebarRootContentTabArtistCard
       v-for="row in rowVirtualizer.getVirtualItems()"
       :key="row.index"
