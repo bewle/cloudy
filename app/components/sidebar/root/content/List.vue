@@ -2,7 +2,7 @@
 import type { VirtualizerOptions } from '@tanstack/vue-virtual'
 import { useVirtualizer, type PartialKeys } from '@tanstack/vue-virtual'
 
-const props = defineProps<{ list: T[]; itemKey: keyof T }>()
+const props = defineProps<{ list: T[]; itemKey: keyof T; showSentinel?: boolean }>()
 const emit = defineEmits<{
   sentinel: [intersecting: boolean]
 }>()
@@ -28,8 +28,11 @@ const rowVirtualizer = useVirtualizer(
 )
 
 const loadSentinel = useTemplateRef('loadSentinel')
-useIntersectionObserver(loadSentinel, ([entry]) => {
-  emit('sentinel', !!entry?.isIntersecting)
+useIntersectionObserver(loadSentinel, entries => {
+  emit(
+    'sentinel',
+    entries.some(e => e.isIntersecting),
+  )
 })
 </script>
 
@@ -41,6 +44,7 @@ useIntersectionObserver(loadSentinel, ([entry]) => {
       </div>
 
       <div
+        v-if="showSentinel"
         ref="loadSentinel"
         style="height: 5.625rem"
         class="mt-2 flex w-full items-center justify-center"
