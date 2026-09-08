@@ -34,6 +34,8 @@ useIntersectionObserver(loadSentinel, entries => {
     entries.some(e => e.isIntersecting),
   )
 })
+
+defineExpose({ rowVirtualizer })
 </script>
 
 <template>

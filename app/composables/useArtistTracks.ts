@@ -1,81 +1,59 @@
-const artistTracksCache = new Map<string, { tracks: SCTrackSummary[]; nextHref?: string }>()
+interface ArtistTracksPages {
+  nextHref?: string
+  tracks: SCTrackSummary[]
+  url?: string
+}
+
+const NO_TRACKS: ArtistTracksPages = { nextHref: undefined, tracks: [], url: undefined }
 
 export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>) {
   const artistUrlRef = toRef(artistUrl)
-  const tracks = shallowRef(artistTracksCache.get(artistUrlRef.value ?? '')?.tracks ?? [])
 
-  const nextHref = ref(artistTracksCache.get(artistUrlRef.value ?? '')?.nextHref)
+  const { pending: artistMetaPending } = useArtistMeta(artistUrl)
 
-  const { data: artistMeta, pending: artistMetaPending } = useArtistMeta(artistUrl)
+  const { data, pending, refresh } = useCachedData(
+    () => `artist-tracks-${artistUrlRef.value}`,
+    async (nuxtApp, { signal }) => {
+      const url = artistUrlRef.value
+      if (!url) return NO_TRACKS
 
-  const canLoadMore = computed(() =>
-    Boolean(
-      !artistMetaPending.value &&
-      artistUrlRef.value &&
-      (!!nextHref.value || !tracks.value.length) &&
-      !!artistMeta.value?.track_count &&
-      tracks.value.length <= artistMeta.value.track_count,
-    ),
-  )
-
-  const asyncState = useAsyncState(
-    async () => {
-      await until(artistMetaPending).toBe(false)
-      if (!canLoadMore.value || !artistUrlRef.value) return
-
-      const query = !tracks.value.length
-        ? { url: artistUrlRef.value }
-        : !!tracks.value.length && nextHref.value
-          ? { nextHref: nextHref.value }
-          : undefined
-
-      if (!query) return
+      const prev = nuxtApp.payload.data[`artist-tracks-${url}`] as ArtistTracksPages | undefined
+      if (prev?.tracks.length && !prev.nextHref) return { ...prev, url }
 
       const { collection, next_href } = await $fetch<SCTrackSearchSummary>('/api/artist/tracks', {
-        query,
+        query: prev?.nextHref ? { nextHref: prev.nextHref } : { url },
+        signal,
       })
 
-      const newTracks = [...tracks.value, ...(collection as SCTrackSummary[])]
-      const newNextHref = next_href ?? undefined
-
-      artistTracksCache.set(artistUrlRef.value, {
-        nextHref: newNextHref,
-        tracks: newTracks,
-      })
-
-      tracks.value = newTracks
-      nextHref.value = newNextHref
+      return {
+        nextHref: next_href ?? undefined,
+        tracks: [...(prev?.tracks ?? []), ...(collection as SCTrackSummary[])],
+        url,
+      }
     },
-    undefined,
-    { immediate: false },
+    {
+      default: (): ArtistTracksPages => ({ tracks: [] }),
+      getCachedData: (key, nuxtApp, { cause }) =>
+        // skip cache if manual
+        cause === 'refresh:manual'
+          ? undefined
+          : ((nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]) as
+              | ArtistTracksPages
+              | undefined),
+    },
   )
 
-  watch(
-    artistUrlRef,
-    () => {
-      tracks.value = getCachedTracks()
-      nextHref.value = getCachedNextHref()
+  const current = computed(() => (data.value.url === artistUrlRef.value ? data.value : NO_TRACKS))
 
-      if (!tracks.value.length) load()
-    },
-    { immediate: true },
-  )
-
-  function load() {
-    if (!asyncState.isLoading.value) void asyncState.executeImmediate()
-  }
-
-  function getCachedTracks() {
-    return artistTracksCache.get(artistUrlRef.value ?? '')?.tracks ?? []
-  }
-  function getCachedNextHref() {
-    return artistTracksCache.get(artistUrlRef.value ?? '')?.nextHref
-  }
+  const canLoadMore = computed(() => !!current.value.nextHref)
+  const isLoading = computed(() => pending.value || artistMetaPending.value)
+  const loadNextHref = () => void refresh()
+  const tracks = computed(() => current.value.tracks)
 
   return {
     canLoadMore,
-    isLoading: asyncState.isLoading,
-    loadNextHref: load,
+    isLoading,
+    loadNextHref,
     tracks,
   }
 }

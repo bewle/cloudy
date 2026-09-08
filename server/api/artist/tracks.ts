@@ -12,7 +12,7 @@ export default defineEventHandler(async (event): Promise<SCTrackSearchSummary> =
 
   if (isNil(query.url) && isNil(query.userId)) throw validationErrors.NOT_ENOUGH_ARTIST_INFO()
 
-  const userId = query.userId ?? (query.url ? await urlToId(query.url) : undefined)
+  const userId = query.userId ?? (query.url ? await userUrlToId(query.url) : undefined)
   if (!userId) throw validationErrors.NOT_ENOUGH_ARTIST_INFO()
 
   const search = await getUserTracks(userId)

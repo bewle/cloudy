@@ -1,3 +1,5 @@
+import { hash } from 'ohash'
+
 export const getTrackMeta = defineCachedFunction(async (url: string) => {
   const logger = getLogger()
   logger.set({ url })
@@ -31,9 +33,34 @@ export const getUserTracks = defineCachedFunction(
     return parseSc(scTrackSearchSchema, res)
   },
   {
-    getKey: (urn: string) => urn,
+    getKey: hash,
     maxAge: 60 * 15,
     name: 'sc-user-tracks',
+    swr: true,
+  },
+)
+
+export const getPlaylistTracks = defineCachedFunction(
+  async (playlist: SCPlaylist) => {
+    const ids = playlist.tracks.map(t => t.id)
+    if (!ids.length) return { collection: [], next_href: null }
+
+    const tracks: SCTrack[] = []
+    for (const c of chunk(ids, 50)) {
+      const res = await $scRequest('/tracks', {
+        query: { ids: c.join(',') },
+      })
+      // reindex
+      const byId = new Map(parseSc(v.array(scTrackSchema), res).map(t => [t.id, t]))
+      tracks.push(...c.map(id => byId.get(id)).filter(t => t !== undefined))
+    }
+
+    return { collection: tracks, next_href: null } satisfies SCTrackSearch
+  },
+  {
+    getKey: (playlist: SCPlaylist) => String(playlist.id),
+    maxAge: 60 * 15,
+    name: 'sc-playlist-tracks',
     swr: true,
   },
 )
@@ -42,15 +69,28 @@ export const getUserTracksPage = defineCachedFunction(async (href: string) =>
   parseSc(scTrackSearchSchema, await $scRequest(href)),
 )
 
-export const urlToId = defineCachedFunction(
+export const userUrlToId = defineCachedFunction(
   async (url: string) => {
     const meta = await $scResolve(url, 'user')
     return String(meta.id)
   },
   {
-    getKey: (url: string) => normalizeURL(url),
+    getKey: (url: string) => hash(normalizeURL(url)),
     maxAge: 60 * 60 * 24,
-    name: 'sc-url-to-id',
+    name: 'sc-user-url-to-id',
+    swr: true,
+  },
+)
+
+export const playlistUrlToId = defineCachedFunction(
+  async (url: string) => {
+    const meta = await $scResolve(url, 'playlist')
+    return String(meta.id)
+  },
+  {
+    getKey: (url: string) => hash(normalizeURL(url)),
+    maxAge: 60 * 60 * 24,
+    name: 'sc-playlist-url-to-id',
     swr: true,
   },
 )

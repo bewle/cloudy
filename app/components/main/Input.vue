@@ -52,7 +52,11 @@ const submitForm = () => {
       sidebarState.tab.value = 'artist'
       break
     }
-    // case 'playlist':
+    case 'playlist': {
+      sidebarState.playlist.value = url
+      sidebarState.tab.value = 'playlist'
+      break
+    }
     // case 'multitrack':
   }
 }
