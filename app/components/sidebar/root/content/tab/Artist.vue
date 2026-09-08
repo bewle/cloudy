@@ -13,10 +13,10 @@ watch([intersecting, isLoading], ([hit, loading]) => {
 
 <template>
   <SidebarRootContentList
+    v-slot="{ rowVirtualizer }"
     :show-sentinel="canLoadMore"
     :list="collection"
     item-key="id"
-    v-slot="{ rowVirtualizer }"
     @sentinel="intersecting = $event"
   >
     <SidebarRootContentTabArtistCard
