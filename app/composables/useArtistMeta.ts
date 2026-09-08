@@ -6,7 +6,7 @@ export function useArtistMeta(artistUrl: MaybeRefOrGetter<string | undefined>) {
     async () => {
       const url = artistUrlRef.value
       if (!url) return null
-      return $fetch('/api/meta/user', { query: { url } })
+      return $fetch('/api/artist/meta', { query: { url } })
     },
   )
 

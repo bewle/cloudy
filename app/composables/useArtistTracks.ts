@@ -31,7 +31,7 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
 
       if (!query) return
 
-      const { collection, next_href } = await $fetch<SCTrackSearchSummary>('/api/track', {
+      const { collection, next_href } = await $fetch<SCTrackSearchSummary>('/api/artist/tracks', {
         query,
       })
 

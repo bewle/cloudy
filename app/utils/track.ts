@@ -1,7 +1,7 @@
 import { ID3Writer } from 'browser-id3-writer'
 
 export async function getTrackMeta(url: string) {
-  return $fetch<SCTrackSummary>('/api/meta/track', {
+  return $fetch<SCTrackSummary>('/api/track/meta', {
     query: { url },
   })
 }

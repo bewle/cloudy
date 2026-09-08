@@ -1,5 +1,5 @@
 export async function getTrackStreamSegments(url: string) {
-  const m3u8Url = await $fetch('/api/file/track', {
+  const m3u8Url = await $fetch('/api/track/stream', {
     query: {
       url,
     },
