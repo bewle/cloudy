@@ -14,6 +14,12 @@ export const sidebarTabNameMap: Record<SidebarTab, string> = {
 
 export const useSidebarState = createGlobalState(() => {
   const tab = ref<SidebarTab | undefined>()
+  const multitrackList = shallowReactive(new Set<string>())
+  const artist = ref<string>() // url
+  const playlist = ref<string>() // url
 
-  return { tab }
+  const artistMeta = useArtistMeta(artist)
+  const playlistMeta = usePlaylistMeta(playlist)
+
+  return { artist, artistMeta, multitrackList, playlist, playlistMeta, tab }
 })

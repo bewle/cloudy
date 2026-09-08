@@ -14,6 +14,14 @@ export const scCreatorSubscriptionSchema = v.looseObject({
 
 export const scUserMiniSchema = v.looseObject({
   avatar_url: v.nullable(v.string()),
+  badges: v.optional(
+    v.looseObject({
+      creator_mid_tier: v.boolean(),
+      pro: v.boolean(),
+      pro_unlimited: v.boolean(),
+      verified: v.boolean(),
+    }),
+  ),
   city: v.optional(v.nullable(v.string())),
   country_code: v.optional(v.nullable(v.string())),
   first_name: v.optional(v.string()),
@@ -26,6 +34,8 @@ export const scUserMiniSchema = v.looseObject({
   permalink: v.string(),
   permalink_url: v.string(),
   reposts_count: v.optional(v.nullable(v.number())),
+  station_permalink: v.optional(v.nullable(v.string())),
+  station_urn: v.optional(v.nullable(v.string())),
   uri: v.string(),
   urn: v.optional(v.string()),
   username: v.string(),
@@ -37,7 +47,7 @@ export const scUserSchema = v.looseObject({
   city: v.nullable(v.string()),
   comments_count: v.number(),
   country_code: v.nullable(v.string()),
-  created_at: v.string(),
+  created_at: v.nullable(v.string()),
   creator_subscription: v.nullable(scCreatorSubscriptionSchema),
   creator_subscriptions: v.array(scCreatorSubscriptionSchema),
   description: v.nullable(v.string()),

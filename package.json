@@ -15,7 +15,9 @@
   "dependencies": {
     "@nuxt/fonts": "0.14.0",
     "@nuxt/icon": "2.5.1",
+    "@nuxt/image": "^2.1.0",
     "@nuxtjs/color-mode": "4.0.1",
+    "@tanstack/vue-virtual": "^3.13.36",
     "@unocss/nuxt": "66.8.1",
     "@vueuse/nuxt": "14.4.0",
     "browser-id3-writer": "^6.4.0",

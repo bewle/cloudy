@@ -79,6 +79,12 @@ export default defineConfig<PresetWind4Theme>({
         'transition-timing-function': 'cubic-bezier(0.33, 1, 0.68, 1)',
       },
     ],
+    [
+      'text-clip',
+      {
+        'text-box': 'trim-both cap alphabetic',
+      },
+    ],
   ],
   theme: {
     colors: {

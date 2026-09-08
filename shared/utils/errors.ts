@@ -3,10 +3,19 @@ import { defineErrorCatalog } from 'evlog'
 import type { InputSourceOption } from '../constants/input'
 
 export const validationErrors = defineErrorCatalog('validation', {
+  INVALID_NEXT_HREF: {
+    message: 'Invalid pagination cursor',
+    status: 422,
+    why: 'Cursor did not point at the SoundCloud API',
+  },
   INVALID_URL: {
     message: ({ option }: { option: InputSourceOption }) => `Invalid ${option} URL`,
     status: 422,
     why: 'Input is not a valid URL',
+  },
+  NOT_ENOUGH_ARTIST_INFO: {
+    message: 'Not enough information provided to identify an artist',
+    status: 422,
   },
 })
 

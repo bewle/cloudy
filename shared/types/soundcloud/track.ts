@@ -1,6 +1,7 @@
 import type * as v from 'valibot'
 
 import type {
+  SC__TRACK_SEARCH_SUMMARY_KEYS,
   SC__TRACK_SUMMARY_KEYS,
   SC__TRANSCODING_MIME_TYPE_REGEX_MAP,
 } from '../../constants/soundcloud'
@@ -17,7 +18,10 @@ import type {
 import type { SCFilter } from './api'
 
 export type SCTranscodingType = keyof typeof SC__TRANSCODING_MIME_TYPE_REGEX_MAP
-export type SCTrackSummary = Pick<SCTrack, (typeof SC__TRACK_SUMMARY_KEYS)[number]>
+export type SCTrackSummary = Omit<
+  Pick<SCTrack, (typeof SC__TRACK_SUMMARY_KEYS)[number]>,
+  'user'
+> & { user: SCUserMiniSummary }
 export type SCLicense = v.InferOutput<typeof scLicenseSchema>
 
 export type SCTrackType =
@@ -39,6 +43,12 @@ export type SCTrack = v.InferOutput<typeof scTrackSchema>
 export type SCTrackStub = v.InferOutput<typeof scTrackStubSchema>
 export type SCTrackOrStub = v.InferOutput<typeof scTrackOrStubSchema>
 export type SCTrackSearch = v.InferOutput<typeof scTrackSearchSchema>
+export interface SCTrackSearchSummary extends Omit<
+  Pick<SCTrackSearch, (typeof SC__TRACK_SEARCH_SUMMARY_KEYS)[number]>,
+  'collection'
+> {
+  collection: (SCTrackSummary | SCTrackStub)[]
+}
 export type SCSecretToken = v.InferOutput<typeof scSecretTokenSchema>
 export type SCTranscoding = v.InferOutput<typeof scTranscodingSchema>
 export type SCPublisherMetadata = v.InferOutput<typeof scPublisherMetadataSchema>

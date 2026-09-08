@@ -1,5 +1,6 @@
 import { EvlogError } from 'evlog'
 import type { NitroFetchOptions } from 'nitropack'
+import type { GenericSchema } from 'valibot'
 import * as v from 'valibot'
 
 export type $SCOpts = Omit<NitroFetchOptions<string>, 'baseURL' | 'ignoreResponseError'>
@@ -35,6 +36,25 @@ export async function $scRequest(endpoint: string, opts: $SCOpts = {}) {
   }
 }
 
+export function parseSc<const S extends GenericSchema>(schema: S, res: unknown) {
+  const parsed = v.safeParse(schema, res)
+  if (!parsed.success)
+    throw soundcloudErrors.INVALID_SHAPE({
+      internal: {
+        issues: v.flatten(parsed.issues),
+      },
+    })
+  return parsed.output
+}
+
+export function assertScHref(href: string) {
+  const url = URL.parse(href)
+  if (!url || url.origin !== SC__API_URL) throw validationErrors.INVALID_NEXT_HREF()
+
+  url.searchParams.delete('client_id')
+  return url.toString()
+}
+
 interface SCResolveKindSchemaMap {
   playlist: SCPlaylist
   track: SCTrack
@@ -48,16 +68,10 @@ export async function $scResolve<K extends SCKind>(url: string, kind: K) {
     throw soundcloudErrors.INPUT_URL_NOT_FOUND({ kind })
   if (isPlainObject(res) && res.kind !== kind) throw soundcloudErrors.INPUT_URL_INVALID({ kind })
 
-  const parsed = v.safeParse(scResolveSchema, res)
-  if (!parsed.success)
-    throw soundcloudErrors.INVALID_SHAPE({
-      internal: {
-        issues: v.flatten(parsed.issues),
-      },
-    })
-  if (parsed.output.kind !== kind) throw soundcloudErrors.INPUT_URL_INVALID({ kind })
+  const parsed = parseSc(scResolveSchema, res)
+  if (parsed.kind !== kind) throw soundcloudErrors.INPUT_URL_INVALID({ kind })
 
-  return parsed.output as unknown as SCResolveKindSchemaMap[K]
+  return parsed as unknown as SCResolveKindSchemaMap[K]
 }
 
 export async function getClientId(fresh: boolean = false) {

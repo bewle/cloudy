@@ -16,10 +16,10 @@ const parsedError = computed(() => {
       v-if="error"
       class="p-4 border border-danger rounded bg-danger/50 flex flex-col gap-1 h-fit w-full w-main-input-w relative"
     >
-      <h3 class="font-medium text-clip">
+      <h3 class="font-medium">
         {{ parsedError.message ?? 'Unexpected error' }}
       </h3>
-      <p class="text-sm text-clip">
+      <p class="text-sm">
         {{ parsedError.why }}
       </p>
 
