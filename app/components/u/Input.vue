@@ -1,7 +1,6 @@
 <script lang="ts">
-import { useForwardPropsEmits } from 'reka-ui'
 import type { VariantProps } from 'tailwind-variants'
-import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
+import type { HTMLAttributes } from 'vue'
 
 import { buttonStyles } from './Button.vue'
 
@@ -22,7 +21,7 @@ export type ButtonStyles = VariantProps<typeof buttonStyles>
 </script>
 
 <script lang="ts" setup>
-export interface UInputProps extends InputHTMLAttributes {
+export interface UInputProps {
   class?: HTMLAttributes['class']
   defaultValue?: string | number
   modelValue?: string | number
@@ -37,16 +36,8 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: props.defaultValue,
   passive: true,
 })
-
-const delegated = reactiveOmit(props, 'class')
-const forwarded = useForwardPropsEmits(delegated, emits)
 </script>
 
 <template>
-  <input
-    v-bind="forwarded"
-    v-model="modelValue"
-    :class="cn(inputStyles(), props.class)"
-    data-slot="input"
-  />
+  <input v-model="modelValue" :class="cn(inputStyles(), props.class)" data-slot="input" />
 </template>
