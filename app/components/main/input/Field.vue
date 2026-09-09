@@ -23,7 +23,7 @@ const placeholder = useState('main-input-field-placeholder', () =>
       size="icon"
       @click="submitForm"
     >
-      <Icon :name="ICON__RIGHT_ARROW" />
+      <Icon :name="form.option === 'multitrack' ? ICON__PLUS : ICON__RIGHT_ARROW" />
     </UButton>
   </div>
 </template>
