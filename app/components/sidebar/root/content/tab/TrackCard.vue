@@ -7,7 +7,9 @@ const parsedError = computed(() =>
 </script>
 
 <template>
-  <SidebarRootContentListCard :class="row.status === 'pending' && 'p-0 border-none'">
+  <SidebarRootContentTabTrackCardSkeleton v-if="row.status === 'pending'" />
+
+  <SidebarRootContentListCard v-else>
     <template v-if="row.status === 'ready'">
       <SidebarRootContentListCardImg>
         <Img :src="resolveTrackCover(row.track)" :alt="row.track.title" />
@@ -28,7 +30,7 @@ const parsedError = computed(() =>
       </SidebarRootContentListCardContent>
     </template>
 
-    <template v-else-if="row.status === 'error'">
+    <template v-else>
       <SidebarRootContentListCardImg
         class="border border-border border-dashed flex items-center justify-center"
       >
@@ -49,7 +51,5 @@ const parsedError = computed(() =>
         </SidebarRootContentListCardDate>
       </SidebarRootContentListCardContent>
     </template>
-
-    <USkeleton v-else class="rounded size-full" />
   </SidebarRootContentListCard>
 </template>
