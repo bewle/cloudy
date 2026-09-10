@@ -11,7 +11,7 @@ const handleDownloadAll = () => {
 
   const rows = sources[tab.value].items.value
 
-  downloadBatch(
+  return downloadBatch(
     rows.map(row => ({
       meta: row.status === 'ready' ? row.track : undefined,
       url: row.url,
