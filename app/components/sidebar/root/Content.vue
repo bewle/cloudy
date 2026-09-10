@@ -43,7 +43,7 @@ watch([artist, playlist], () => virtualizer.value?.rowVirtualizer.scrollToIndex(
     }"
   >
     <SidebarRootContentHeader />
-    <div class="flex items-center gap-2">
+    <div class="flex gap-2 items-center">
       <SidebarRootContentSearch />
       <SidebarRootContentDownloadAll />
     </div>

@@ -13,7 +13,7 @@ const removeMultitrackItem = () => multitrackList.delete(props.trackRow.url)
 </script>
 
 <template>
-  <div class="flex flex-col justify-between flex-1 items-end *:rounded-sm">
+  <div class="flex flex-1 flex-col items-end justify-between *:rounded-sm">
     <UButton :disabled="isBatchRunning" size="icon" @click="removeMultitrackItem">
       <Icon :name="ICON__DOWNLOAD" />
     </UButton>

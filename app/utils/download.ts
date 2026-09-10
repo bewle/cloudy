@@ -29,7 +29,7 @@ export async function downloadTrack(
   const mime = transcodingToMime('mp3')
   const extension = transcodingToExt('mp3')
 
-  return { blob, mime, extension, trackMeta }
+  return { blob, extension, mime, trackMeta }
 }
 
 export interface BatchStreamUrlResult {
