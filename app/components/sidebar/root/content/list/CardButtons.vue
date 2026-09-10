@@ -7,7 +7,7 @@ const { downloadSingle, isBatchRunning, downloads } = useDownloads()
 
 const { multitrackList } = useSidebarState()
 const inMultitrackList = computed(() => multitrackList.has(props.trackRow.url))
-const isDownloading = computed(() => downloads.has(props.trackRow.url))
+const isDownloading = computed(() => downloads.get(props.trackRow.url)?.status === 'downloading')
 
 const addMultitrackItem = () => multitrackList.add(props.trackRow.url)
 const removeMultitrackItem = () => multitrackList.delete(props.trackRow.url)
