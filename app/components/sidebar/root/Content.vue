@@ -1,25 +1,26 @@
+<script lang="ts">
+export interface SidebarRootContentContext {
+  sources: Record<SidebarTab, TrackSource>
+}
+
+export const [injectSidebarRootContentContext, provideSidebarRootContentContext] =
+  createContext<SidebarRootContentContext>('SidebarRootContent')
+</script>
+
 <script lang="ts" setup>
 const layout = useIndexSplitterState()
 const { tab, artist, playlist, multitrackMeta } = useSidebarState()
 
-const artistSource = useArtistTracks(artist)
-const playlistSource = usePlaylistTracks(playlist)
-
-const sourceMap = {
-  artist: artistSource,
+const sources: Record<SidebarTab, TrackSource> = {
+  artist: useArtistTracks(artist),
   multitrack: multitrackMeta,
-  playlist: playlistSource,
-} satisfies Record<SidebarTab, unknown>
+  playlist: usePlaylistTracks(playlist),
+}
+provideSidebarRootContentContext({ sources })
 
-const active = computed(() => (tab.value ? sourceMap[tab.value] : undefined))
+const active = computed(() => (tab.value ? sources[tab.value] : undefined))
 
-const rows = computed<TrackRow[]>(() =>
-  tab.value === 'multitrack'
-    ? multitrackMeta.items.value
-    : (active.value?.tracks.value ?? [])
-        .filter(isTrackSummary)
-        .map(track => ({ key: String(track.id), status: 'ready' as const, track })),
-)
+const rows = computed(() => active.value?.items.value ?? [])
 
 const canLoadMore = computed(() => active.value?.canLoadMore.value ?? false)
 const isLoading = computed(() => active.value?.isLoading.value ?? false)
@@ -42,7 +43,10 @@ watch([artist, playlist], () => virtualizer.value?.rowVirtualizer.scrollToIndex(
     }"
   >
     <SidebarRootContentHeader />
-    <SidebarRootContentSearch />
+    <div class="flex items-center gap-2">
+      <SidebarRootContentSearch />
+      <SidebarRootContentDownloadAll />
+    </div>
 
     <div class="flex-1 shrink size-full overflow-auto">
       <SidebarRootContentList
@@ -51,7 +55,7 @@ watch([artist, playlist], () => virtualizer.value?.rowVirtualizer.scrollToIndex(
         v-slot="{ rowVirtualizer }"
         :show-sentinel="canLoadMore"
         :list="rows"
-        item-key="key"
+        item-key="url"
         @sentinel="intersecting = $event"
       >
         <template v-if="!isLoadingInitial">
@@ -60,7 +64,7 @@ watch([artist, playlist], () => virtualizer.value?.rowVirtualizer.scrollToIndex(
             :key="virtualRow.index"
             class="w-full left-0 top-0 absolute"
             :style="{ transform: `translateY(${virtualRow.start}px)` }"
-            :row="rows[virtualRow.index]!"
+            :track-row="rows[virtualRow.index]!"
           />
         </template>
 

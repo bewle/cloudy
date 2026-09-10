@@ -1,33 +1,44 @@
 <script lang="ts" setup>
-const props = defineProps<{ row: TrackRow }>()
+const props = defineProps<{ trackRow: TrackRow }>()
 
 const parsedError = computed(() =>
-  props.row.status === 'error' ? parseError(props.row.error) : undefined,
+  props.trackRow.status === 'error' ? parseError(props.trackRow.error) : undefined,
 )
+
+const { downloads } = useDownloads()
+const downloadState = computed(() => downloads.get(props.trackRow.url))
 </script>
 
 <template>
-  <SidebarRootContentTabTrackCardSkeleton v-if="row.status === 'pending'" />
+  <SidebarRootContentTabTrackCardSkeleton v-if="trackRow.status === 'pending'" />
 
   <SidebarRootContentListCard v-else>
-    <template v-if="row.status === 'ready'">
+    <template v-if="trackRow.status === 'ready'">
       <SidebarRootContentListCardImg>
-        <Img :src="resolveTrackCover(row.track)" :alt="row.track.title" />
+        <Img :src="resolveTrackCover(trackRow.track)" :alt="trackRow.track.title" />
       </SidebarRootContentListCardImg>
 
       <SidebarRootContentListCardContent>
-        <SidebarRootContentListCardTitle :to="row.track.permalink_url">
-          {{ row.track.title }}
+        <SidebarRootContentListCardTitle :to="trackRow.track.permalink_url">
+          {{ trackRow.track.title }}
         </SidebarRootContentListCardTitle>
 
         <SidebarRootContentListCardArtist>
-          {{ resolveTrackArtist(row.track) }}
+          {{ resolveTrackArtist(trackRow.track) }}
         </SidebarRootContentListCardArtist>
 
         <SidebarRootContentListCardDate>
-          <NuxtTime :datetime="resolveTrackDate(row.track)" />
+          <NuxtTime :datetime="resolveTrackDate(trackRow.track)" />
         </SidebarRootContentListCardDate>
       </SidebarRootContentListCardContent>
+
+      <SidebarRootContentListCardButtons :track-row />
+
+      <UProgressUnderlay
+        v-if="downloadState?.status === 'downloading'"
+        :progress="downloadState.progress"
+      />
+      <UProgressUnderlay v-else-if="downloadState?.status === 'done'" :progress="1" />
     </template>
 
     <template v-else>
@@ -38,8 +49,8 @@ const parsedError = computed(() =>
       </SidebarRootContentListCardImg>
 
       <SidebarRootContentListCardContent class="flex-1 shrink">
-        <SidebarRootContentListCardTitle :to="row.url">
-          {{ row.url }}
+        <SidebarRootContentListCardTitle :to="trackRow.url">
+          {{ trackRow.url }}
         </SidebarRootContentListCardTitle>
 
         <SidebarRootContentListCardArtist class="text-danger">
