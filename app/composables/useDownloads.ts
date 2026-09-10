@@ -71,7 +71,7 @@ export const useDownloads = createGlobalState(() => {
       await saveViaMemory(entries)
     } finally {
       isBatchRunning.value = false
-      for (const { url } of list) downloads.delete(url)
+      for (const { url } of list) if (downloads.get(url)?.status !== 'error') downloads.delete(url)
     }
   }
 
