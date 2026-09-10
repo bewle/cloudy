@@ -24,7 +24,7 @@ const download = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col ml-auto items-end self-end justify-between shrink-0 *:rounded-sm">
+  <div class="ml-auto flex shrink-0 flex-col items-end self-end justify-between *:rounded-sm">
     <UButton
       :disabled="isDownloading || isBatchRunning || trackRow.status !== 'ready'"
       size="icon"
