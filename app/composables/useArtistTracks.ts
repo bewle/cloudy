@@ -48,12 +48,12 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
   const canLoadMore = computed(() => !!current.value.nextHref)
   const isLoading = computed(() => pending.value || artistMetaPending.value)
   const loadNextHref = () => void refresh()
-  const tracks = computed(() => current.value.tracks)
+  const items = computed(() => current.value.tracks.filter(isTrackSummary).map(toReadyTrackRow))
 
   return {
     canLoadMore,
     isLoading,
+    items,
     loadNextHref,
-    tracks,
-  }
+  } satisfies TrackSource
 }

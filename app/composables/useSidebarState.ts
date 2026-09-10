@@ -19,7 +19,8 @@ export const useSidebarState = createGlobalState(() => {
   const playlist = ref<string>() // url
 
   const artistMeta = useArtistMeta(artist)
+  const multitrackMeta = useMultitrackMeta(multitrackList)
   const playlistMeta = usePlaylistMeta(playlist)
 
-  return { artist, artistMeta, multitrackList, playlist, playlistMeta, tab }
+  return { artist, artistMeta, multitrackList, multitrackMeta, playlist, playlistMeta, tab }
 })

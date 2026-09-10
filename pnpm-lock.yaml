@@ -239,6 +239,9 @@ importers:
       browser-id3-writer:
         specifier: ^6.4.0
         version: 6.4.0
+      client-zip:
+        specifier: ^2.5.0
+        version: 2.5.0
       es-toolkit:
         specifier: ^1.51.0
         version: 1.51.0
@@ -3339,6 +3342,9 @@ packages:
 
   citty@0.2.2:
     resolution: {integrity: sha512-+6vJA3L98yv+IdfKGZHBNiGW5KHn22e/JwID0Strsz8h4S/csAu/OuICwxrg44k5MRiZHWIo8XXuJgQTriRP4w==}
+
+  client-zip@2.5.0:
+    resolution: {integrity: sha512-ydG4nDZesbFurnNq0VVCp/yyomIBh+X/1fZPI/P24zbnG4dtC4tQAfI5uQsomigsUMeiRO2wiTPizLWQh+IAyQ==}
 
   cliui@9.0.1:
     resolution: {integrity: sha512-k7ndgKhwoQveBL+/1tqGJYNz097I7WOvwbmmU2AR5+magtbjPWQTS1C5vzGkBC8Ym8UWRzfKUzUUqFLypY4Q+w==}
@@ -9552,6 +9558,8 @@ snapshots:
       consola: 3.4.2
 
   citty@0.2.2: {}
+
+  client-zip@2.5.0: {}
 
   cliui@9.0.1:
     dependencies:

@@ -1,13 +1,35 @@
 import { ID3Writer } from 'browser-id3-writer'
 
+export type TrackRow =
+  | { status: 'pending'; url: string }
+  | { status: 'ready'; track: SCTrackSummary; url: string }
+  | { error: Error; status: 'error'; url: string }
+
+export interface TrackSource {
+  canLoadMore: Ref<boolean>
+  isLoading: Ref<boolean>
+  items: Ref<TrackRow[]>
+  loadNextHref: () => void
+  retry?: (url: string) => void
+}
+
+export const toReadyTrackRow = (track: SCTrackSummary): TrackRow => ({
+  status: 'ready',
+  track,
+  url: track.permalink_url,
+})
+
 export async function getTrackMeta(url: string) {
   return $fetch<SCTrackSummary>('/api/track/meta', {
     query: { url },
   })
 }
 
-export async function getTrackBuffer(url: string, onProgress?: (i: number, total: number) => void) {
-  const segs = await getTrackStreamSegments(url)
+export async function getTrackBuffer(
+  url: string,
+  { onProgress, streamUrl }: Pick<DownloadTrackOptions, 'onProgress' | 'streamUrl'> = {},
+) {
+  const segs = await getTrackStreamSegments(url, streamUrl)
   return processTrackStreamSegments(segs, onProgress)
 }
 

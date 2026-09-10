@@ -7,8 +7,7 @@ interface MainInputForm {
 export interface MainInputContext {
   form: Ref<MainInputForm>
   submitForm: () => void
-  isDownloading: Ref<boolean>
-  error: Ref<Error | undefined>
+  downloadState: ComputedRef<DownloadEntry | undefined>
   autoDetect: Ref<boolean>
 }
 
@@ -23,17 +22,19 @@ const form = ref<MainInputForm>({
 })
 const autoDetect = useCookie<boolean>('auto-detect', { default: () => true })
 
-const { downloadTrack, isDownloading, progress, error } = useTrackDownload(() =>
-  withoutTrailingSlash(form.value.url),
-)
+const { downloadSingle, downloads, setDownloadState, isBatchRunning } = useDownloads()
+const downloadState = computed(() => downloads.get(form.value.url))
+
 const sidebarState = useSidebarState()
 
 const submitForm = () => {
-  if (!isUrl(form.value.url)) {
-    return (error.value = validationErrors.INVALID_URL({
-      option: resolveInputSourceOption(form.value.option),
-    }))
-  }
+  if (!isUrl(form.value.url))
+    return setDownloadState(form.value.url, {
+      error: validationErrors.INVALID_URL({
+        option: resolveInputSourceOption(form.value.option),
+      }),
+      status: 'error',
+    })
   const url = withoutTrailingSlash(form.value.url)
 
   if (autoDetect.value) {
@@ -41,10 +42,9 @@ const submitForm = () => {
     if (detectedType) form.value.option = detectedType
   }
 
-  error.value = undefined
   switch (form.value.option) {
     case 'track': {
-      downloadTrack()
+      downloadSingle(form.value.url, { save: true })
       break
     }
     case 'artist': {
@@ -57,13 +57,15 @@ const submitForm = () => {
       sidebarState.tab.value = 'playlist'
       break
     }
-    // case 'multitrack':
+    case 'multitrack': {
+      sidebarState.multitrackList.add(url)
+      sidebarState.tab.value = 'multitrack'
+      break
+    }
   }
 }
 
-provideMainInputContext({ autoDetect, error, form, isDownloading, submitForm })
-
-const progressPercent = computed(() => progress.value * 100)
+provideMainInputContext({ autoDetect, downloadState, form, submitForm })
 </script>
 
 <template>
@@ -78,12 +80,9 @@ const progressPercent = computed(() => progress.value * 100)
       <MainInputField />
       <MainInputOptions />
 
-      <div
-        class="bg-primary/10 h-full inset-0 absolute"
-        :style="{
-          width: `${progressPercent}%`,
-          display: isDownloading ? 'block' : 'none',
-        }"
+      <UProgressUnderlay
+        v-if="!isBatchRunning && downloadState?.status === 'downloading'"
+        :progress="downloadState.progress"
       />
     </div>
 

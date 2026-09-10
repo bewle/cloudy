@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { injectMainInputContext } from '../Input.vue'
 
-const { form, submitForm, isDownloading } = injectMainInputContext()
+const { form, submitForm, downloadState } = injectMainInputContext()
+const isDownloading = computed(() => downloadState.value?.status === 'downloading')
 
 const placeholder = useState('main-input-field-placeholder', () =>
   sample(INPUT__FIELD_PLACEHOLDERS),
@@ -23,7 +24,7 @@ const placeholder = useState('main-input-field-placeholder', () =>
       size="icon"
       @click="submitForm"
     >
-      <Icon :name="ICON__RIGHT_ARROW" />
+      <Icon :name="form.option === 'multitrack' ? ICON__PLUS : ICON__RIGHT_ARROW" />
     </UButton>
   </div>
 </template>
