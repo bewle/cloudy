@@ -1,3 +1,5 @@
+import { getTrackMeta } from '~~/server/utils/soundcloud/meta'
+
 const bodySchema = v.object({
   url: v.pipe(v.array(v.pipe(v.string(), v.url())), v.maxLength(50)),
 })
