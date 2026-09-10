@@ -22,7 +22,7 @@ const form = ref<MainInputForm>({
 })
 const autoDetect = useCookie<boolean>('auto-detect', { default: () => true })
 
-const { downloadSingle, downloads, setDownloadState } = useDownloads()
+const { downloadSingle, downloads, setDownloadState, isBatchRunning } = useDownloads()
 const downloadState = computed(() => downloads.get(form.value.url))
 
 const sidebarState = useSidebarState()
@@ -81,7 +81,7 @@ provideMainInputContext({ autoDetect, downloadState, form, submitForm })
       <MainInputOptions />
 
       <UProgressUnderlay
-        v-if="downloadState?.status === 'downloading'"
+        v-if="!isBatchRunning && downloadState?.status === 'downloading'"
         :progress="downloadState.progress"
       />
     </div>
