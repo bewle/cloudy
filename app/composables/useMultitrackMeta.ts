@@ -3,11 +3,6 @@ type MultitrackEntry =
   | { status: 'ready'; track: SCTrackSummary }
   | { error: Error; status: 'error' }
 
-export type TrackRow =
-  | { key: string; status: 'pending' }
-  | { key: string; status: 'ready'; track: SCTrackSummary }
-  | { error: Error; key: string; status: 'error'; url: string }
-
 export function useMultitrackMeta(multitrackUrls: MaybeRefOrGetter<Set<string>>) {
   const multitrackUrlsRef = toRef(multitrackUrls)
 
@@ -32,20 +27,21 @@ export function useMultitrackMeta(multitrackUrls: MaybeRefOrGetter<Set<string>>)
     Array.from(multitrackUrlsRef.value, (url): TrackRow => {
       const entry = entries.get(url)
 
-      if (entry?.status === 'ready') return { key: url, status: 'ready', track: entry.track }
-      if (entry?.status === 'error') return { error: entry.error, key: url, status: 'error', url }
-      return { key: url, status: 'pending' }
+      if (entry?.status === 'ready') return { status: 'ready', track: entry.track, url }
+      if (entry?.status === 'error') return { error: entry.error, status: 'error', url }
+      return { status: 'pending', url }
     }),
+  )
+
+  const isLoading = computed(() =>
+    [...multitrackUrlsRef.value].some(url => entries.get(url)?.status === 'pending'),
   )
 
   return {
     canLoadMore: ref(false),
-    isLoading: computed(() =>
-      [...multitrackUrlsRef.value].some(url => entries.get(url)?.status === 'pending'),
-    ),
+    isLoading,
     items,
     loadNextHref: noop,
     retry: load,
-    tracks: computed(() => items.value.flatMap(row => (row.status === 'ready' ? [row.track] : []))),
-  }
+  } satisfies TrackSource
 }
