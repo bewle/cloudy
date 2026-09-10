@@ -48,19 +48,27 @@ const downloadState = computed(() => downloads.get(props.trackRow.url))
         <Icon name="tabler:ghost-3" class="text-2xl text-muted-foreground" />
       </SidebarRootContentListCardImg>
 
-      <SidebarRootContentListCardContent class="flex-1 shrink">
+      <SidebarRootContentListCardContent class="flex-1">
         <SidebarRootContentListCardTitle :to="trackRow.url">
           {{ trackRow.url }}
         </SidebarRootContentListCardTitle>
 
-        <SidebarRootContentListCardArtist class="text-danger">
+        <SidebarRootContentListCardArtist
+          :title="parsedError?.message ?? 'Failed to load track'"
+          class="text-danger truncate"
+        >
           {{ parsedError?.message ?? 'Failed to load track' }}
         </SidebarRootContentListCardArtist>
 
-        <SidebarRootContentListCardDate class="text-danger">
+        <SidebarRootContentListCardDate
+          :title="parsedError?.why ?? 'Failed to load track'"
+          class="text-danger truncate"
+        >
           {{ parsedError?.why ?? 'Failed to load track' }}
         </SidebarRootContentListCardDate>
       </SidebarRootContentListCardContent>
+
+      <SidebarRootContentListCardButtons :track-row />
     </template>
   </SidebarRootContentListCard>
 </template>
