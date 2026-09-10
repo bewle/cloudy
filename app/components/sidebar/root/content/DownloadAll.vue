@@ -14,9 +14,12 @@ const hasValidTracks = computed(() => {
 })
 
 const handleDownloadAll = () => {
-  if (hasValidTracks.value) return
-
-  if (!tab.value || !['artist', 'playlist', 'multitrack'].includes(tab.value)) return
+  if (
+    !hasValidTracks.value ||
+    !tab.value ||
+    !['artist', 'playlist', 'multitrack'].includes(tab.value)
+  )
+    return
 
   const rows = sources[tab.value].items.value
 
