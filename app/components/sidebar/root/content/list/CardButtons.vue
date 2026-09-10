@@ -3,18 +3,24 @@ const props = defineProps<{
   trackRow: TrackRow
 }>()
 
-const { isBatchRunning } = useDownloads()
+const { downloadSingle, isBatchRunning } = useDownloads()
 
 const { multitrackList } = useSidebarState()
 const inMultitrackList = computed(() => multitrackList.has(props.trackRow.url))
 
 const addMultitrackItem = () => multitrackList.add(props.trackRow.url)
 const removeMultitrackItem = () => multitrackList.delete(props.trackRow.url)
+
+const download = () =>
+  downloadSingle(props.trackRow.url, {
+    meta: props.trackRow.status === 'ready' ? props.trackRow.track : undefined,
+    save: true,
+  })
 </script>
 
 <template>
   <div class="flex flex-1 flex-col items-end justify-between *:rounded-sm">
-    <UButton :disabled="isBatchRunning" size="icon" @click="removeMultitrackItem">
+    <UButton :disabled="isBatchRunning" size="icon" @click="download">
       <Icon :name="ICON__DOWNLOAD" />
     </UButton>
 
