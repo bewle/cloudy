@@ -25,8 +25,11 @@ export async function getTrackMeta(url: string) {
   })
 }
 
-export async function getTrackBuffer(url: string, onProgress?: (i: number, total: number) => void) {
-  const segs = await getTrackStreamSegments(url)
+export async function getTrackBuffer(
+  url: string,
+  { onProgress, streamUrl }: Pick<DownloadTrackOptions, 'onProgress' | 'streamUrl'> = {},
+) {
+  const segs = await getTrackStreamSegments(url, streamUrl)
   return processTrackStreamSegments(segs, onProgress)
 }
 

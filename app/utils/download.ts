@@ -1,9 +1,58 @@
-export async function getTrackStreamSegments(url: string) {
-  const m3u8Url = await $fetch('/api/track/stream', {
-    query: {
-      url,
-    },
+export interface DownloadTrackResult {
+  blob: Blob
+  mime: string
+  extension: string
+  trackMeta: SCTrackSummary
+}
+
+export interface DownloadTrackOptions {
+  meta?: SCTrackSummary
+  onProgress?: (i: number, total: number) => void
+  streamUrl?: string
+}
+
+export async function downloadTrack(
+  url: string,
+  { meta, onProgress, streamUrl }: DownloadTrackOptions = {},
+): Promise<DownloadTrackResult> {
+  const trackMeta = meta ?? (await getTrackMeta(url))
+
+  const trackBuffer = await getTrackBuffer(url, { onProgress, streamUrl })
+  const blob = await getTaggedTrackBuffer(trackBuffer, trackMeta, [
+    'APIC',
+    'COMM',
+    'TDAT',
+    'TIT2',
+    'TPE1',
+    'WOAS',
+  ])
+  const mime = transcodingToMime('mp3')
+  const extension = transcodingToExt('mp3')
+
+  return { blob, mime, extension, trackMeta }
+}
+
+export interface BatchStreamUrlResult {
+  error?: { message: string }
+  streamUrl?: string
+  url: string
+}
+
+export async function getTrackStreamUrls(urls: string[]) {
+  return $fetch<BatchStreamUrlResult[]>('/api/track/stream', {
+    body: { url: urls },
+    method: 'POST',
   })
+}
+
+export async function getTrackStreamSegments(url: string, streamUrl?: string) {
+  const m3u8Url =
+    streamUrl ??
+    (await $fetch<string>('/api/track/stream', {
+      query: {
+        url,
+      },
+    }))
 
   const m3u8 = await $fetch<string>(m3u8Url, { responseType: 'text' })
 
