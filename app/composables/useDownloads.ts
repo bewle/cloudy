@@ -68,7 +68,7 @@ export const useDownloads = createGlobalState(() => {
       )
       const entries = mixedEntries.filter(isDefined) as InputWithSizeMeta[]
 
-      await saveViaMemory(entries)
+      if (entries.length) await saveViaMemory(entries)
     } finally {
       isBatchRunning.value = false
       for (const { url } of list) if (downloads.get(url)?.status !== 'error') downloads.delete(url)
