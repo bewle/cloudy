@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { injectMainInputContext } from '../Input.vue'
 
-const { form, submitForm, isDownloading } = injectMainInputContext()
+const { form, submitForm, downloadState } = injectMainInputContext()
+const isDownloading = computed(() => downloadState.value?.status === 'downloading')
 
 const placeholder = useState('main-input-field-placeholder', () =>
   sample(INPUT__FIELD_PLACEHOLDERS),
