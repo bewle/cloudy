@@ -7,10 +7,9 @@ const { tab } = useSidebarState()
 const { downloadBatch, isBatchRunning } = useDownloads()
 
 const hasValidTracks = computed(() => {
-  if (tab.value !== 'multitrack') return false
-  if (!sources.multitrack.items.value.length) return false
+  if (!tab.value) return false
 
-  return sources.multitrack.items.value.some(row => row.status === 'ready')
+  return sources[tab.value].items.value.some(row => row.status === 'ready')
 })
 
 const handleDownloadAll = () => {
