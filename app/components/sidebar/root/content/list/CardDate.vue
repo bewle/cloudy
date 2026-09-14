@@ -1,19 +1,15 @@
 <script lang="ts" setup>
-import type { NuxtTimeProps } from 'nuxt/app'
 import type { HTMLAttributes } from 'vue'
 
-interface Props extends NuxtTimeProps {
+interface Props {
   class?: HTMLAttributes['class']
 }
 
 const props = defineProps<Props>()
-
-const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <NuxtTime
-    v-bind="delegated"
-    :class="cn('text-xs text-muted-foreground font-mono', props.class)"
-  />
+  <div :class="cn('text-xs text-muted-foreground font-mono', props.class)">
+    <slot />
+  </div>
 </template>
