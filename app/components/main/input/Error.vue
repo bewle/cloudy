@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { injectMainInputContext } from '../Input.vue'
 
-const { error } = injectMainInputContext()
+const { downloadState } = injectMainInputContext()
+const error = computed(() =>
+  downloadState.value?.status === 'error' ? downloadState.value.error : undefined,
+)
 
 const parsedError = computed(() => {
   const parsed = parseError(error.value)
