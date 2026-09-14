@@ -33,7 +33,7 @@ export const scPublisherMetadataSchema = v.looseObject({
   writer_composer: v.optional(v.nullable(v.string())),
 })
 
-export const scTrackSchema = v.looseObject({
+export const scTrackSchema = v.object({
   artwork_url: v.nullable(v.string()),
   caption: v.nullable(v.string()),
   comment_count: v.nullable(v.number()),

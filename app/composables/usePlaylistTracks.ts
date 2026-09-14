@@ -27,15 +27,17 @@ export function usePlaylistTracks(playlistUrl: MaybeRefOrGetter<string | undefin
   )
 
   const isLoading = computed(() => pending.value || playlistMetaPending.value)
-  const tracks = computed(() =>
-    data.value.url === playlistUrlRef.value ? data.value.tracks : NO_TRACKS.tracks,
+  const items = computed(() =>
+    (data.value.url === playlistUrlRef.value ? data.value.tracks : NO_TRACKS.tracks)
+      .filter(isTrackSummary)
+      .map(toReadyTrackRow),
   )
 
   return {
     // only one response
     canLoadMore: ref(false),
     isLoading,
+    items,
     loadNextHref: noop,
-    tracks,
-  }
+  } satisfies TrackSource
 }
