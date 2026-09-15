@@ -23,11 +23,11 @@ const parsedError = computed(() =>
         <SidebarRootContentListCardArtist>
           {{ resolveTrackArtist(trackRow.track) }}
         </SidebarRootContentListCardArtist>
-
-        <SidebarRootContentListCardDate>
-          <NuxtTime :datetime="resolveTrackDate(trackRow.track)" />
-        </SidebarRootContentListCardDate>
       </SidebarRootContentListCardContent>
+
+      <SidebarRootContentListCardDate>
+        <NuxtTime :datetime="resolveTrackDate(trackRow.track)" />
+      </SidebarRootContentListCardDate>
 
       <SidebarRootContentListCardButtons :track-row />
     </template>
@@ -36,7 +36,7 @@ const parsedError = computed(() =>
       <SidebarRootContentListCardImg
         class="border border-border border-dashed flex items-center justify-center"
       >
-        <Icon name="tabler:ghost-3" class="text-2xl text-muted-foreground" />
+        <Icon name="tabler:ghost-3" class="text-lg text-muted-foreground" />
       </SidebarRootContentListCardImg>
 
       <SidebarRootContentListCardContent class="flex-1">
@@ -50,13 +50,6 @@ const parsedError = computed(() =>
         >
           {{ parsedError?.message ?? 'Failed to load track' }}
         </SidebarRootContentListCardArtist>
-
-        <SidebarRootContentListCardDate
-          :title="parsedError?.why ?? 'Failed to load track'"
-          class="text-danger truncate"
-        >
-          {{ parsedError?.why ?? 'Failed to load track' }}
-        </SidebarRootContentListCardDate>
       </SidebarRootContentListCardContent>
 
       <SidebarRootContentListCardButtons :track-row />
