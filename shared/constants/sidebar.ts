@@ -47,6 +47,9 @@ export const SIDEBAR__BUTTON_META = {
 >
 
 export type SidebarButtonKey = (typeof SIDEBAR__BUTTON_KEYS)[number]
+export type SidebarTabKey = {
+  [K in SidebarButtonKey]: (typeof SIDEBAR__BUTTON_META)[K]['isTab'] extends true ? K : never
+}[SidebarButtonKey]
 export type SidebarTrackSourceKey = {
   [K in SidebarButtonKey]: (typeof SIDEBAR__BUTTON_META)[K]['isTrackSource'] extends true
     ? K
