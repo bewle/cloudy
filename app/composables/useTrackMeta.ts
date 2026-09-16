@@ -1,11 +1,16 @@
 export const useTrackMeta = createGlobalState(() => {
   const metas = shallowReactive(new Map<string /* url */, SCTrackSummary>())
 
-  function setTrackMeta(tracks: Iterable<SCTrackSummary | SCTrackStub>) {
+  function setTrackMetaFor(url: string, track: SCTrackSummary) {
     if (import.meta.server) return
 
+    metas.set(url, track)
+    metas.set(track.permalink_url, track)
+  }
+
+  function setTrackMeta(tracks: Iterable<SCTrackSummary | SCTrackStub>) {
     for (const t of tracks) {
-      if (isTrackSummary(t)) metas.set(t.permalink_url, t)
+      if (isTrackSummary(t)) setTrackMetaFor(t.permalink_url, t)
     }
   }
 
@@ -13,5 +18,5 @@ export const useTrackMeta = createGlobalState(() => {
     return metas.get(url)
   }
 
-  return { getTrackMeta, metas, setTrackMeta }
+  return { getTrackMeta, metas, setTrackMeta, setTrackMetaFor }
 })
