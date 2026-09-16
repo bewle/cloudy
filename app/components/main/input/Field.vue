@@ -6,6 +6,13 @@ const { form, submitForm, isDownloading } = injectMainInputContext()
 const placeholder = useState('main-input-field-placeholder', () =>
   sample(INPUT__FIELD_PLACEHOLDERS),
 )
+
+const handleRight = (e: Event) => {
+  if (form.value.url) return
+
+  e.preventDefault()
+  form.value.url = placeholder.value
+}
 </script>
 
 <template>
@@ -15,6 +22,7 @@ const placeholder = useState('main-input-field-placeholder', () =>
       class="text-sm ps-1.5 outline-none h-main-input-field-h w-full"
       :placeholder
       @keydown.enter="submitForm"
+      @keydown.right="handleRight"
     />
 
     <UButton
