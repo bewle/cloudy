@@ -105,10 +105,6 @@ export const useDownloads = createGlobalState(() => {
       if (entries.length) await saveViaMemory(entries)
     } finally {
       isBatchRunning.value = false
-      for (const { url } of list) {
-        const key = getBatchTrackKey(batchId, url)
-        if (downloads.get(key)?.status !== 'error') downloads.delete(key)
-      }
     }
   }
 
