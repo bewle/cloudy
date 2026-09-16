@@ -185,3 +185,7 @@ body {
 * {
   @apply min-w-0 min-h-0;
 }
+
+.font-mono {
+  font-feature-settings: 'cv01';
+}

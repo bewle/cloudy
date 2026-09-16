@@ -124,7 +124,7 @@ export default defineConfig<PresetWind4Theme>({
       long: '150ms',
     },
     font: {
-      mono: 'IBM Plex Mono',
+      mono: '"Monaspace Neon", ui-monospace, monospace',
       sans: 'Inter',
     },
     fontWeight: {

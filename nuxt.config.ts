@@ -23,6 +23,15 @@ export default defineNuxtConfig({
       preload: true,
       weights: ['100 900'],
     },
+    families: [
+      {
+        display: 'swap',
+        global: true,
+        name: 'Monaspace Neon',
+        src: '/fonts/monaspace-neon-100-900.woff2',
+        weight: '100 900',
+      },
+    ],
   },
   future: {
     compatibilityVersion: 5,
