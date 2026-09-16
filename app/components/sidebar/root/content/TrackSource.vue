@@ -1,6 +1,7 @@
 <script lang="ts">
 export interface SidebarTrackSourceContentContext {
   sources: Record<SidebarTrackSourceKey, TrackSource>
+  activeSource: Ref<TrackSource | undefined>
 }
 
 export const [injectSidebarTrackSourceContentContext, provideSidebarTrackSourceContentContext] =
@@ -17,7 +18,6 @@ const sources: Record<SidebarTrackSourceKey, TrackSource> = {
   multitrack: multitrackMeta,
   playlist: usePlaylistTracks(playlist),
 }
-provideSidebarTrackSourceContentContext({ sources })
 
 const active = computed(() => sources[trackSourceTab])
 
@@ -34,11 +34,17 @@ watch([intersecting, isLoading], ([hit, loading]) => {
 
 const virtualizer = useTemplateRef('list')
 watch([artist, playlist], () => virtualizer.value?.rowVirtualizer.scrollToIndex(0))
+
+provideSidebarTrackSourceContentContext({ activeSource: active, sources })
 </script>
 
 <template>
   <SidebarRootContentHeader />
-  <SidebarRootContentSearch />
+
+  <div class="flex items-center gap-2">
+    <SidebarRootContentSearch />
+    <SidebarRootContentDownloadAll />
+  </div>
 
   <div class="flex-1 shrink size-full overflow-auto">
     <SidebarRootContentList

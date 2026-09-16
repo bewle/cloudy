@@ -31,5 +31,5 @@ const disabled = computed(() => {
 </script>
 
 <template>
-  <UInput :placeholder :disabled />
+  <UInput class="flex-1" :placeholder :disabled />
 </template>
