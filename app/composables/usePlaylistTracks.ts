@@ -7,6 +7,7 @@ const NO_TRACKS: PlaylistTracks = { tracks: [], url: undefined }
 
 export function usePlaylistTracks(playlistUrl: MaybeRefOrGetter<string | undefined>) {
   const playlistUrlRef = toRef(playlistUrl)
+  const { setTrackMeta } = useTrackMeta()
 
   const { pending: playlistMetaPending } = usePlaylistMeta(playlistUrl)
 
@@ -32,6 +33,8 @@ export function usePlaylistTracks(playlistUrl: MaybeRefOrGetter<string | undefin
       .filter(isTrackSummary)
       .map(toReadyTrackRow),
   )
+
+  watchImmediate(() => data.value.tracks, setTrackMeta)
 
   return {
     // only one response

@@ -2,10 +2,14 @@ export const useTrackDownload = (url: MaybeRefOrGetter<string>) => {
   const urlRef = toRef(url)
   const progress = ref(0)
 
+  const { getTrackMeta: getCachedTrackMeta, setTrackMetaFor } = useTrackMeta()
+
   const asyncState = useAsyncState(
     async () => {
       try {
-        const trackMeta = await getTrackMeta(urlRef.value)
+        const cached = getCachedTrackMeta(urlRef.value)
+        const trackMeta = cached ?? (await getTrackMeta(urlRef.value))
+        if (!cached) setTrackMetaFor(urlRef.value, trackMeta)
 
         const trackBuffer = await getTrackBuffer(
           urlRef.value,
