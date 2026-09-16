@@ -42,7 +42,7 @@ defineExpose({ rowVirtualizer })
   <UScrollAreaRoot>
     <UScrollAreaViewport ref="viewport" class="pe-3.5">
       <div
-        class="w-full relative min-h-fit divide-y divide-border has-[*]:border border-border rounded of-clip"
+        class="border-border rounded min-h-fit w-full relative of-clip divide-border divide-y has-[*]:border"
         :style="{ height: `${rowVirtualizer.getTotalSize()}px` }"
       >
         <slot :row-virtualizer />
