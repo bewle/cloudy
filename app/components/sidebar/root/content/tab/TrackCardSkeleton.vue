@@ -1,5 +1,5 @@
 <template>
   <SidebarRootContentListCard class="p-0">
-    <USkeleton class="size-full rounded-none" />
+    <USkeleton class="rounded-none size-full" />
   </SidebarRootContentListCard>
 </template>
