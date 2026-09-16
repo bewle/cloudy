@@ -17,7 +17,7 @@ const handleClick = () => {
   if (!hasTracks.value) return
   const tracks = activeSource.value?.items.value ?? []
 
-  downloadBatch(tracks)
+  downloadBatch(tracks.filter(t => t.status === 'ready').map(t => ({ meta: t.track, url: t.url })))
   tab.value = 'downloads'
 }
 </script>
