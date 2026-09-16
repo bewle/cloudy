@@ -1,6 +1,7 @@
 import { downloadZip, type InputWithSizeMeta } from 'client-zip'
 
 export type DownloadEntry =
+  | { status: 'queued' }
   | { progress: number; status: 'downloading' }
   | { status: 'done' }
   | { error: Error; status: 'error' }
@@ -104,7 +105,6 @@ export const useDownloads = createGlobalState(() => {
       if (entries.length) await saveViaMemory(entries)
     } finally {
       isBatchRunning.value = false
-      for (const { url } of list) if (downloads.get(url)?.status !== 'error') downloads.delete(url)
     }
   }
 
