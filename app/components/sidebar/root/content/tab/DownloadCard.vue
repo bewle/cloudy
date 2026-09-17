@@ -17,8 +17,7 @@ const progress = computed(() =>
 </script>
 
 <template>
-  <!-- <SidebarRootContentListCard> {{ props.entry.status }} </SidebarRootContentListCard> -->
-  <SidebarRootContentListCard>
+  <SidebarRootContentListCard class="of-clip">
     <SidebarRootContentListCardImg>
       <Img :src="resolveTrackCover(trackMeta)" :alt="trackMeta.title" />
     </SidebarRootContentListCardImg>
@@ -37,15 +36,6 @@ const progress = computed(() =>
       <NuxtTime :datetime="resolveTrackDate(trackMeta)" />
     </SidebarRootContentListCardDate>
 
-    <div class="flex shrink-0 h-full items-center justify-between *:rounded-sm">
-      <!-- <UButton v-if="inMultitrackList" size="icon" @click="removeMultitrackItem">
-        <Icon :name="ICON__TRASH" />
-      </UButton> -->
-      <!-- <UButton v-else size="icon" @click="addMultitrackItem">
-        <Icon :name="ICON__PLUS" />
-      </UButton> -->
-    </div>
-
-    <UProgressUnderlay :progress />
+    <UProgressUnderlay :progress :dim="progress === 1" />
   </SidebarRootContentListCard>
 </template>
