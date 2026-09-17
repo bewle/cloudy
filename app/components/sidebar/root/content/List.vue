@@ -1,31 +1,15 @@
-<script lang="ts" setup generic="T extends object">
-import type { VirtualizerOptions } from '@tanstack/vue-virtual'
-import { useVirtualizer, type PartialKeys } from '@tanstack/vue-virtual'
+<script lang="ts" setup>
+import type { Virtualizer } from '@tanstack/vue-virtual'
 
-const props = defineProps<{ list: T[]; itemKey: keyof T; showSentinel?: boolean }>()
+defineProps<{
+  showSentinel?: boolean
+  virtualizer: Virtualizer<HTMLElement, Element>
+}>()
 const emit = defineEmits<{
   sentinel: [intersecting: boolean]
 }>()
 
 const viewport = useTemplateRef('viewport')
-const rowVirtualizer = useVirtualizer(
-  computed<
-    PartialKeys<
-      VirtualizerOptions<HTMLElement, Element>,
-      'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
-    >
-  >(() => ({
-    count: props.list.length,
-    estimateSize: () => 52,
-    gap: 0,
-    getItemKey: index => {
-      const item = props.list[index]!
-      return item[props.itemKey] as number | string | bigint
-    },
-    getScrollElement: () => viewport.value?.viewportElement ?? null,
-    overscan: 5,
-  })),
-)
 
 const loadSentinel = useTemplateRef('loadSentinel')
 useIntersectionObserver(loadSentinel, entries => {
@@ -35,17 +19,14 @@ useIntersectionObserver(loadSentinel, entries => {
   )
 })
 
-defineExpose({ rowVirtualizer })
+defineExpose({ viewportRef: viewport })
 </script>
 
 <template>
   <UScrollAreaRoot>
     <UScrollAreaViewport ref="viewport" class="pe-3.5">
-      <div
-        class="border-border rounded min-h-fit w-full relative of-clip divide-border divide-y has-[*]:border"
-        :style="{ height: `${rowVirtualizer.getTotalSize()}px` }"
-      >
-        <slot :row-virtualizer />
+      <div class="min-h-fit w-full relative" :style="{ height: `${virtualizer.getTotalSize()}px` }">
+        <slot />
       </div>
 
       <div
