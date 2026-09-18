@@ -22,3 +22,20 @@ export function validateQuery<TSchema extends GenericSchema>(
 
   return output
 }
+
+export async function validateBody<TSchema extends GenericSchema>(
+  event: H3Event<EventHandlerRequest>,
+  schema: TSchema,
+) {
+  const body = await readBody(event)
+  const { success, output, issues } = v.safeParse(schema, body)
+  if (!success)
+    throw validationErrors.INVALID_URL({
+      internal: {
+        issues,
+      },
+      option: 'track',
+    })
+
+  return output
+}
