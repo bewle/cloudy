@@ -7,7 +7,10 @@ const delegated = reactiveOmit(props, 'class')
 </script>
 
 <template>
-  <div v-bind="delegated" :class="cn('rounded-sm shrink-0 size-16', props.class)">
+  <div
+    v-bind="delegated"
+    :class="cn('rounded-sm of-clip shrink-0 aspect-square h-full', props.class)"
+  >
     <slot />
   </div>
 </template>

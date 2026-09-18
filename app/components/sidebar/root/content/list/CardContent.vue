@@ -5,7 +5,7 @@ defineProps<{ class?: HTMLAttributes['class'] }>()
 </script>
 
 <template>
-  <div :class="cn('flex flex-col justify-center gap-3 *:text-clip', $props.class)">
+  <div :class="cn('flex flex-col justify-around h-full *:text-clip mr-auto', $props.class)">
     <slot />
   </div>
 </template>
