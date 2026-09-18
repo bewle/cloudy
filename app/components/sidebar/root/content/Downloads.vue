@@ -15,11 +15,12 @@ const flatBatches = computed(() => {
       type: 'heading',
     })
 
-    batch.tracks.forEach((url, i) => {
-      const key = getBatchTrackKey(batchId, url)
-      const entry = downloads.get(key)!
-      flat.push({ entry, key, last: i === batch.tracks.length - 1, type: 'entry', url })
-    })
+    if (!batch.collapsed)
+      batch.tracks.forEach((url, i) => {
+        const key = getBatchTrackKey(batchId, url)
+        const entry = downloads.get(key)!
+        flat.push({ entry, key, last: i === batch.tracks.length - 1, type: 'entry', url })
+      })
   }
 
   return flat
@@ -51,13 +52,10 @@ const virtualRows = computed(() =>
         :class="row.type === 'entry' && row.last ? 'of-clip rounded-b' : ''"
         :style="{ transform: `translateY(${v.start}px)` }"
       >
-        <SidebarRootContentListHeader
+        <SidebarRootContentTabDownloadHeader
           v-if="row.type === 'heading'"
-          class="border border-border rounded-t text-sm gap-1 text-xs"
-        >
-          <Icon :name="SIDEBAR__BUTTON_META[row.source].icon" />
-          <span class="font-medium">{{ row.name }}</span>
-        </SidebarRootContentListHeader>
+          :batch="batches.get(row.id)!"
+        />
 
         <SidebarRootContentTabDownloadCard
           v-else-if="row.type === 'entry'"
