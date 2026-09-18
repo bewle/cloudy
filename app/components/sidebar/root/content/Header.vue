@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { downloads } = useDownloads()
+const { batches } = useDownloads()
 const { tab, multitrackList, artist, playlist, previousTab } = useSidebarState()
 const { data: artistMeta, pending: pendingArtist } = useArtistMeta(artist)
 const { data: playlistMeta, pending: pendingPlaylist } = usePlaylistMeta(playlist)
@@ -15,7 +15,7 @@ const subheading = computed(() => {
   if (tab.value === 'playlist')
     return playlistMeta.value?.title ?? playlist.value ?? 'No playlist selected'
 
-  if (tab.value === 'downloads') return `${downloads.size} downloads`
+  if (tab.value === 'downloads') return `${batches.size} batch${batches.size !== 1 ? 'es' : ''}`
 
   return `${multitrackList.size} tracks`
 })
