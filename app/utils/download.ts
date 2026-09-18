@@ -9,15 +9,16 @@ export interface DownloadTrackOptions {
   meta?: SCTrackSummary
   onProgress?: (i: number, total: number) => void
   streamUrl?: string
+  signal?: AbortSignal
 }
 
 export async function downloadTrack(
   url: string,
-  { meta, onProgress, streamUrl }: DownloadTrackOptions = {},
+  { meta, onProgress, signal, streamUrl }: DownloadTrackOptions = {},
 ): Promise<DownloadTrackResult> {
-  const trackMeta = meta ?? (await getTrackMeta(url))
+  const trackMeta = meta ?? (await getTrackMeta(url, signal))
 
-  const trackBuffer = await getTrackBuffer(url, { onProgress, streamUrl })
+  const trackBuffer = await getTrackBuffer(url, { onProgress, signal, streamUrl })
   const blob = await getTaggedTrackBuffer(trackBuffer, trackMeta, [
     'APIC',
     'COMM',
@@ -38,37 +39,48 @@ export interface BatchStreamUrlResult {
   url: string
 }
 
-export async function getTrackStreamUrls(urls: string[]) {
+export async function getTrackStreamUrls(urls: string[], signal?: AbortSignal) {
   return $fetch<BatchStreamUrlResult[]>('/api/track/stream', {
     body: { url: urls },
     method: 'POST',
+    signal,
   })
 }
 
-export async function getTrackStreamSegments(url: string, streamUrl?: string) {
+export async function getTrackStreamSegments(
+  url: string,
+  streamUrl?: string,
+  signal?: AbortSignal,
+) {
   const m3u8Url =
     streamUrl ??
     (await $fetch<string>('/api/track/stream', {
       query: {
         url,
       },
+      signal,
     }))
 
-  const m3u8 = await $fetch<string>(m3u8Url, { responseType: 'text' })
+  const m3u8 = await $fetch<string>(m3u8Url, { responseType: 'text', signal })
 
   return [...(m3u8.match(RE__GENERAL_HTTPS_URL) ?? [])]
 }
 
+export interface ProcessTrackStreamSegmentsOptions {
+  onProgress?: (i: number, total: number) => void
+  signal?: AbortSignal
+}
+
 export async function processTrackStreamSegments(
   streamSegments: string[],
-  onSegment?: (i: number, total: number) => void,
+  { onProgress, signal }: ProcessTrackStreamSegmentsOptions = {},
 ) {
   let progress = 0
   const process = limitAsync(async (segUrl: string, i: number) => {
-    const response = await fetch(segUrl)
+    const response = await fetch(segUrl, { signal })
     const buffer = await response.arrayBuffer()
 
-    onSegment?.(progress++, streamSegments.length)
+    onProgress?.(progress++, streamSegments.length)
 
     return {
       data: buffer,
