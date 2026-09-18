@@ -4,6 +4,7 @@ export type DownloadEntry =
   | { status: 'queued' }
   | { progress: number; status: 'downloading' }
   | { status: 'done' }
+  | { status: 'aborted' }
   | { error: Error; status: 'error' }
 
 export interface BatchDownloadItem {
@@ -16,6 +17,9 @@ export interface DownloadBatch {
   name: string
   source: SidebarTrackSourceKey
   tracks: string[]
+  status: 'idle' | 'downloading' | 'done' | 'aborted'
+  collapsed: boolean
+  abortController?: AbortController
 }
 
 const BATCH_SIZE = 50
@@ -38,6 +42,7 @@ export const useDownloads = createGlobalState(() => {
     downloads.set(key, { progress: 0, status: 'downloading' })
 
     try {
+      opts.signal?.throwIfAborted()
       const res = await downloadTrack(url, {
         ...opts,
         onProgress: (progress, total) =>
@@ -49,7 +54,10 @@ export const useDownloads = createGlobalState(() => {
 
       return res
     } catch (error) {
-      downloads.set(key, { error: error as Error, status: 'error' })
+      downloads.set(
+        key,
+        opts.signal?.aborted ? { status: 'aborted' } : { error: error as Error, status: 'error' },
+      )
     }
   }
 
@@ -60,14 +68,21 @@ export const useDownloads = createGlobalState(() => {
   ) => {
     const list = [...items]
 
+    const abortController = new AbortController()
+    const { signal } = abortController
+
     const batchId = crypto.randomUUID()
     const batch: DownloadBatch = {
+      abortController,
+      // TODO: make default setting
+      collapsed: false,
       id: batchId,
       name: batchName,
       source,
+      status: 'downloading',
       tracks: list.map(({ url }) => url),
     }
-    batches.set(batch.id, batch)
+    batches.set(batchId, batch)
 
     for (const { url } of list) {
       downloads.set(getBatchTrackKey(batchId, url), { status: 'queued' })
@@ -80,7 +95,7 @@ export const useDownloads = createGlobalState(() => {
         list.map(i => i.url),
         BATCH_SIZE,
       )) {
-        for (const res of await getTrackStreamUrls(c))
+        for (const res of await getTrackStreamUrls(c, signal))
           if (res.streamUrl) streamUrls.set(res.url, res.streamUrl)
       }
 
@@ -90,6 +105,7 @@ export const useDownloads = createGlobalState(() => {
           const res = await run(url, {
             key: getBatchTrackKey(batchId, url),
             meta,
+            signal,
             streamUrl: streamUrls.get(url),
           })
           if (!res) return
@@ -100,23 +116,48 @@ export const useDownloads = createGlobalState(() => {
           } satisfies InputWithSizeMeta
         }),
       )
+      signal.throwIfAborted()
       const entries = mixedEntries.filter(isDefined) as InputWithSizeMeta[]
 
       if (entries.length) await saveViaMemory(entries)
+
+      batches.set(batchId, { ...batches.get(batchId)!, status: 'done' })
+    } catch (err) {
+      if (!signal.aborted) throw err
+      batches.set(batchId, { ...batches.get(batchId)!, status: 'aborted' })
     } finally {
       isBatchRunning.value = false
     }
   }
 
+  const abortBatch = (batchId: DownloadBatch['id']) =>
+    batches.get(batchId)?.abortController?.abort()
+  const deleteBatch = (batchId: DownloadBatch['id']) => {
+    const batch = batches.get(batchId)
+    if (!batch) return
+
+    if (batch.status === 'downloading') abortBatch(batchId)
+    batches.delete(batchId)
+  }
+
   const setDownloadState = (url: string, entry: DownloadEntry) => downloads.set(url, entry)
+  const toggleCollapseBatch = (batchId: string) => {
+    const batch = batches.get(batchId)
+    if (!batch) return
+
+    batches.set(batchId, { ...batch, collapsed: !batch.collapsed })
+  }
 
   return {
+    abortBatch,
     batches,
+    deleteBatch,
     downloadBatch,
     downloadSingle,
     downloads,
     isBatchRunning,
     setDownloadState,
+    toggleCollapseBatch,
   }
 })
 
