@@ -38,7 +38,7 @@ export function getTrackFilename(trackMeta: SCTrackSummary, extension: string) {
   const { user, title, publisher_metadata } = trackMeta
   const artist = publisher_metadata?.artist ?? user.username
 
-  return `${artist} - ${title}${extension}`
+  return sanitizeFilename(`${artist} - ${title}${extension}`)
 }
 
 export function normalizeTrackExtension(extension: string) {
