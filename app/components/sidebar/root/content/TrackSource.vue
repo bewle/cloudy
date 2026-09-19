@@ -35,9 +35,10 @@ watch([intersecting, isLoading], ([hit, loading]) => {
 })
 
 const viewport = useTemplateRef('viewport')
-const virtualizer = useTrackSourceVirtualizer(
+const virtualizer = useListVirtualizer(
   rows,
   () => viewport.value?.viewportRef?.viewportElement ?? null,
+  { estimateSize: () => 52, getItemKey: row => row.url },
 )
 watch([artist, playlist], () => virtualizer.value.scrollToIndex(0))
 

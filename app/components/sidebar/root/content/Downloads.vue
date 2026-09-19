@@ -8,12 +8,7 @@ const flatBatches = computed(() => {
     if (lastBatchId && batchId !== lastBatchId) flat.push({ id: flat.length, type: 'separator' })
     lastBatchId = batchId
 
-    flat.push({
-      id: batchId,
-      name: batch.name,
-      source: batch.source,
-      type: 'heading',
-    })
+    flat.push({ id: batchId, type: 'heading' })
 
     if (!batch.collapsed)
       batch.tracks.forEach((url, i) => {
@@ -27,9 +22,14 @@ const flatBatches = computed(() => {
 })
 
 const viewport = useTemplateRef('viewport')
-const virtualizer = useDownloadsVirtualizer(
+const ROW_HEIGHTS = { entry: 52, heading: 26, separator: 12 }
+const virtualizer = useListVirtualizer(
   flatBatches,
   () => viewport.value?.viewportRef?.viewportElement ?? null,
+  {
+    estimateSize: row => ROW_HEIGHTS[row.type],
+    getItemKey: row => (row.type === 'entry' ? row.key : row.id),
+  },
 )
 const virtualRows = computed(() =>
   virtualizer.value.getVirtualItems().map(v => ({ row: flatBatches.value[v.index]!, v })),
