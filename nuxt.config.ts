@@ -1,3 +1,5 @@
+import { STORAGE__LOG_DRAIN_DATASET_NAME } from './shared/constants/storage'
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -79,6 +81,15 @@ export default defineNuxtConfig({
           imports: [{ as: 'v', name: '*' }],
         },
       ],
+    },
+  },
+  runtimeConfig: {
+    axiom: {
+      apiKey: '',
+      dataset: STORAGE__LOG_DRAIN_DATASET_NAME,
+    },
+    posthog: {
+      apiKey: '',
     },
   },
   security: {
