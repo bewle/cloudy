@@ -38,7 +38,11 @@ const progress = computed(() =>
 
     <div class="flex shrink-0 h-full items-center justify-between *:rounded-sm gap-1">
       <USpinner v-if="entry.status === 'downloading'" class="size-1em" />
-      <Icon v-else-if="entry.status === 'queued'" class="size-1em" :name="ICON__QUEUED" />
+      <Icon
+        v-else-if="entry.status === 'queued'"
+        class="size-1em opacity-50"
+        :name="ICON__QUEUED"
+      />
       <Icon v-else-if="entry.status === 'done'" class="size-1em text-primary" :name="ICON__CHECK" />
       <Icon
         v-else-if="entry.status === 'aborted'"

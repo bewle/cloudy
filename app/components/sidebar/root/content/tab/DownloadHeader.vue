@@ -38,7 +38,7 @@ const batchProgress = computed(
 
       <div class="flex-1" />
 
-      <USpinner v-if="batch.status === 'downloading'" class="size-1em" />
+      <USpinner v-if="batch.status === 'downloading'" class="size-1em scale-75" />
       <Icon v-else-if="batch.status === 'done'" :name="ICON__CHECK" class="size-1em text-primary" />
 
       <div
