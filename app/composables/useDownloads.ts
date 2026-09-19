@@ -145,7 +145,6 @@ export const useDownloads = createGlobalState(() => {
     batches.delete(batchId)
   }
 
-  const setDownloadState = (url: string, entry: DownloadEntry) => downloads.set(url, entry)
   const toggleCollapseBatch = (batchId: string) => {
     const batch = batches.get(batchId)
     if (!batch) return
@@ -161,7 +160,6 @@ export const useDownloads = createGlobalState(() => {
     downloadSingle,
     downloads,
     isBatchRunning,
-    setDownloadState,
     toggleCollapseBatch,
   }
 })

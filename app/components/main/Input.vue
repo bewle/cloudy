@@ -22,14 +22,14 @@ const form = ref<MainInputForm>({
 })
 const autoDetect = useCookie<boolean>('auto-detect', { default: () => true })
 
-const { downloadSingle, downloads, setDownloadState, isBatchRunning } = useDownloads()
+const { downloadSingle, downloads, isBatchRunning } = useDownloads()
 const downloadState = computed(() => downloads.get(form.value.url))
 
 const sidebarState = useSidebarState()
 
 const submitForm = () => {
   if (!isUrl(form.value.url))
-    return setDownloadState(form.value.url, {
+    return downloads.set(form.value.url, {
       error: validationErrors.INVALID_URL({
         option: resolveInputSourceOption(form.value.option),
       }),
