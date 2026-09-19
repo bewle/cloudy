@@ -17,7 +17,7 @@ const batchProgress = computed(
 
 <template>
   <SidebarRootContentListHeader
-    class="border border-border p-0 rounded-t text-sm gap-0 text-xs relative"
+    class="border border-border p-0 rounded-t gap-0 text-xs relative"
     :class="batch.collapsed && 'rounded-b'"
     :style="{
       '--progress-color': batch.status === 'aborted' ? 'var(--danger)' : 'var(--primary)',
