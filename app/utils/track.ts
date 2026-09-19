@@ -10,7 +10,6 @@ export interface TrackSource {
   isLoading: Ref<boolean>
   items: Ref<TrackRow[]>
   loadNextHref: () => void
-  retry?: (url: string) => void
 }
 
 export const toReadyTrackRow = (track: SCTrackSummary): TrackRow => ({
