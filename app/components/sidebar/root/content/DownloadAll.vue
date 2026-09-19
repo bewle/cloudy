@@ -4,12 +4,9 @@ import { injectSidebarTrackSourceContentContext } from './TrackSource.vue'
 const { tab, playlistMeta, artistMeta } = useSidebarState()
 
 const { activeSource, activeSourceKey } = injectSidebarTrackSourceContentContext()
-const hasTracks = computed(() => {
-  const items = activeSource.value?.items.value ?? []
-
-  if (!items.length) return false
-  return items.some(i => i.status === 'ready')
-})
+const hasTracks = computed(
+  () => activeSource.value?.items.value.some(i => i.status === 'ready') ?? false,
+)
 
 const { downloadBatch } = useDownloads()
 
