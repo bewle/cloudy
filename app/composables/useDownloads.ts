@@ -22,6 +22,11 @@ export interface DownloadBatch {
   abortController?: AbortController
 }
 
+export type FlatBatch =
+  | { type: 'heading'; id: string }
+  | { type: 'entry'; url: string; last: boolean; key: string; entry: DownloadEntry }
+  | { type: 'separator'; id: number }
+
 const BATCH_SIZE = 50
 
 export const useDownloads = createGlobalState(() => {

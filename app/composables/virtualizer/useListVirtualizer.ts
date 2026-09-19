@@ -1,9 +1,13 @@
 import type { VirtualizerOptions } from '@tanstack/vue-virtual'
 import { useVirtualizer, type PartialKeys } from '@tanstack/vue-virtual'
 
-export const useTrackSourceVirtualizer = (
-  list: MaybeRefOrGetter<TrackRow[]>,
+export const useListVirtualizer = <T>(
+  list: MaybeRefOrGetter<T[]>,
   scrollElement: MaybeRefOrGetter<HTMLElement | null>,
+  {
+    estimateSize,
+    getItemKey,
+  }: { estimateSize: (item: T) => number; getItemKey: (item: T) => number | string },
 ) =>
   useVirtualizer(
     computed<
@@ -16,9 +20,8 @@ export const useTrackSourceVirtualizer = (
       const scrollElementValue = toValue(scrollElement)
       return {
         count: listValue.length,
-        estimateSize: () => 52,
-        gap: 0,
-        getItemKey: index => listValue[index]!.url,
+        estimateSize: i => estimateSize(listValue[i]!),
+        getItemKey: i => getItemKey(listValue[i]!),
         getScrollElement: () => scrollElementValue,
         overscan: 5,
       }
