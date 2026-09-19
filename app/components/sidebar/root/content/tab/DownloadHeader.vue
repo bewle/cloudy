@@ -1,16 +1,10 @@
 <script lang="ts" setup>
 const props = defineProps<{ batch: DownloadBatch }>()
 
-const { downloads, batches, toggleCollapseBatch, abortBatch, deleteBatch } = useDownloads()
-const batchDownloads = computed(() => {
-  const batch = batches.get(props.batch.id)
-  if (!batch) return []
-
-  return batch.tracks.map(url => {
-    const key = getBatchTrackKey(props.batch.id, url)
-    return downloads.get(key)!
-  })
-})
+const { downloads, toggleCollapseBatch, abortBatch, deleteBatch } = useDownloads()
+const batchDownloads = computed(() =>
+  props.batch.tracks.map(url => downloads.get(getBatchTrackKey(props.batch.id, url))!),
+)
 
 const batchProgress = computed(
   () =>
