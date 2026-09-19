@@ -1,7 +1,5 @@
 <script lang="ts">
-import { toRef } from '@vueuse/core'
 export interface SidebarTrackSourceContentContext {
-  sources: Record<SidebarTrackSourceKey, TrackSource>
   activeSource: Ref<TrackSource | undefined>
   activeSourceKey: Ref<SidebarTrackSourceKey>
 }
@@ -13,7 +11,7 @@ export const [injectSidebarTrackSourceContentContext, provideSidebarTrackSourceC
 <script lang="ts" setup>
 const { tab: trackSourceTab } = defineProps<{ tab: SidebarTrackSourceKey }>()
 
-const { tab, artist, playlist, multitrackMeta } = useSidebarState()
+const { artist, playlist, multitrackMeta } = useSidebarState()
 
 const sources: Record<SidebarTrackSourceKey, TrackSource> = {
   artist: useArtistTracks(artist),
@@ -45,7 +43,6 @@ watch([artist, playlist], () => virtualizer.value.scrollToIndex(0))
 provideSidebarTrackSourceContentContext({
   activeSource: active,
   activeSourceKey: toRef(() => trackSourceTab),
-  sources,
 })
 </script>
 
@@ -59,7 +56,6 @@ provideSidebarTrackSourceContentContext({
 
   <div class="flex-1 shrink size-full overflow-auto">
     <SidebarRootContentList
-      v-if="tab"
       ref="viewport"
       :virtualizer
       :show-sentinel="canLoadMore"
