@@ -42,10 +42,7 @@ const batchProgress = computed(
           width: `${batchProgress * 100}%`,
         }"
       >
-        <div
-          class="size-full"
-          :class="batch.collapsed ? 'collapsed-progress-bar' : 'bg-[var(--progress-color)]'"
-        />
+        <div class="size-full bg-[var(--progress-color)]" />
       </div>
     </div>
 
@@ -69,15 +66,3 @@ const batchProgress = computed(
     </div>
   </SidebarRootContentListHeader>
 </template>
-
-<style scoped>
-.collapsed-progress-bar {
-  background: linear-gradient(
-    to right,
-    var(--border),
-    var(--progress-color) 2.5%,
-    var(--progress-color) 97.5%,
-    var(--border)
-  );
-}
-</style>
