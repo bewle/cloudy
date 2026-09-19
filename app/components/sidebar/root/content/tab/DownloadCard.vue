@@ -36,17 +36,17 @@ const progress = computed(() =>
       <NuxtTime :datetime="resolveTrackDate(trackMeta)" />
     </SidebarRootContentListCardDate>
 
-    <div class="flex shrink-0 h-full items-center justify-between *:rounded-sm gap-1">
+    <div class="flex shrink-0 gap-1 h-full items-center justify-between *:rounded-sm">
       <USpinner v-if="entry.status === 'downloading'" class="size-1em" />
       <Icon
         v-else-if="entry.status === 'queued'"
-        class="size-1em opacity-50"
+        class="opacity-50 size-1em"
         :name="ICON__QUEUED"
       />
-      <Icon v-else-if="entry.status === 'done'" class="size-1em text-primary" :name="ICON__CHECK" />
+      <Icon v-else-if="entry.status === 'done'" class="text-primary size-1em" :name="ICON__CHECK" />
       <Icon
         v-else-if="entry.status === 'aborted'"
-        class="size-1em text-danger"
+        class="text-danger size-1em"
         :name="ICON__ABORT"
       />
       <Icon v-else-if="entry.status === 'error'" class="size-1em" :name="ICON__ERROR" />

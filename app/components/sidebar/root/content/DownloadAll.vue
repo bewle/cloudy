@@ -33,10 +33,10 @@ const handleClick = () => {
 <template>
   <UButton
     :disabled="!hasTracks"
-    @click="handleClick"
     variant="outline"
     class="shrink-0"
     size="icon"
+    @click="handleClick"
   >
     <Icon :name="ICON__DOWNLOAD" />
   </UButton>
