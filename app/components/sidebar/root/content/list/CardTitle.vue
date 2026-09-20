@@ -19,7 +19,10 @@ const delegated = reactiveOmit(props, 'class')
   <NuxtLink
     v-bind="delegated"
     :class="
-      cn('hover:underline underline-offset-px font-medium truncate py-0.5 -my-0.5', props.class)
+      cn(
+        'hover:underline text-sm underline-offset-px font-medium truncate py-0.5 -my-0.5',
+        props.class,
+      )
     "
   >
     <slot />

@@ -16,8 +16,8 @@ const rowVirtualizer = useVirtualizer(
     >
   >(() => ({
     count: props.list.length,
-    estimateSize: () => 90,
-    gap: 8,
+    estimateSize: () => 52,
+    gap: 0,
     getItemKey: index => {
       const item = props.list[index]!
       return item[props.itemKey] as number | string | bigint
@@ -41,7 +41,10 @@ defineExpose({ rowVirtualizer })
 <template>
   <UScrollAreaRoot>
     <UScrollAreaViewport ref="viewport" class="pe-3.5">
-      <div class="w-full relative" :style="{ height: `${rowVirtualizer.getTotalSize()}px` }">
+      <div
+        class="border-border rounded min-h-fit w-full relative of-clip divide-border divide-y has-[*]:border"
+        :style="{ height: `${rowVirtualizer.getTotalSize()}px` }"
+      >
         <slot :row-virtualizer />
       </div>
 
