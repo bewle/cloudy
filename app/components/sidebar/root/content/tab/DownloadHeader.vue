@@ -20,7 +20,8 @@ const batchProgress = computed(
     class="border border-border p-0 rounded-t gap-0 text-xs relative"
     :class="batch.collapsed && 'rounded-b'"
     :style="{
-      '--progress-color': batch.status === 'aborted' ? 'var(--danger)' : 'var(--primary)',
+      '--progress-color':
+        batch.status === 'aborted' || batch.status === 'error' ? 'var(--danger)' : 'var(--primary)',
     }"
   >
     <div

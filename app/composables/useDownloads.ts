@@ -17,7 +17,7 @@ export interface DownloadBatch {
   name: string
   source: SidebarTrackSourceKey
   tracks: string[]
-  status: 'idle' | 'downloading' | 'done' | 'aborted'
+  status: 'idle' | 'downloading' | 'done' | 'aborted' | 'error'
   collapsed: boolean
   abortController?: AbortController
 }
@@ -93,6 +93,11 @@ export const useDownloads = createGlobalState(() => {
       downloads.set(getBatchTrackKey(batchId, url), { status: 'queued' })
     }
 
+    const setBatchStatus = (status: DownloadBatch['status']) => {
+      const current = batches.get(batchId)
+      if (current) batches.set(batchId, { ...current, status })
+    }
+
     isBatchRunning.value = true
     try {
       const streamUrls = new Map<string, string>()
@@ -126,10 +131,17 @@ export const useDownloads = createGlobalState(() => {
 
       if (entries.length) await saveViaMemory(entries)
 
-      batches.set(batchId, { ...batches.get(batchId)!, status: 'done' })
-    } catch (err) {
-      if (!signal.aborted) throw err
-      batches.set(batchId, { ...batches.get(batchId)!, status: 'aborted' })
+      setBatchStatus('done')
+    } catch {
+      if (!signal.aborted) return setBatchStatus('error')
+
+      for (const { url } of list) {
+        const key = getBatchTrackKey(batchId, url)
+        const status = downloads.get(key)?.status
+        if (status === 'queued' || status === 'downloading')
+          downloads.set(key, { status: 'aborted' })
+      }
+      setBatchStatus('aborted')
     } finally {
       isBatchRunning.value = false
     }
