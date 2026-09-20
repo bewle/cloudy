@@ -131,7 +131,10 @@ export const useDownloads = createGlobalState(() => {
 
       if (entries.length) await saveViaMemory(entries)
 
-      setBatchStatus('done')
+      const hasError = list.some(
+        ({ url }) => downloads.get(getBatchTrackKey(batchId, url))?.status === 'error',
+      )
+      setBatchStatus(hasError ? 'error' : 'done')
     } catch {
       if (!signal.aborted) return setBatchStatus('error')
 
