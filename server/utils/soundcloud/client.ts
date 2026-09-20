@@ -11,7 +11,10 @@ export async function $scRequest(endpoint: string, opts: $SCOpts = {}) {
 
   if (res.ok) return res._data
 
-  if (res.status === 404) throw soundcloudErrors.NOT_FOUND({ internal: { res } })
+  if (res.status === 404)
+    throw soundcloudErrors.NOT_FOUND({
+      internal: { data: res._data, status: res.status, statusText: res.statusText },
+    })
 
   if (res.status === 401) {
     // retry once with new client id
@@ -21,7 +24,9 @@ export async function $scRequest(endpoint: string, opts: $SCOpts = {}) {
     if (res.ok) return res._data
   }
 
-  throw soundcloudErrors.INVALID_RESPONSE({ internal: { res } })
+  throw soundcloudErrors.INVALID_RESPONSE({
+    internal: { data: res._data, status: res.status, statusText: res.statusText },
+  })
 
   function req() {
     return $fetch.raw(endpoint, {
