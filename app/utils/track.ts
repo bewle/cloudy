@@ -10,7 +10,6 @@ export interface TrackSource {
   isLoading: Ref<boolean>
   items: Ref<TrackRow[]>
   loadNextHref: () => void
-  retry?: (url: string) => void
 }
 
 export const toReadyTrackRow = (track: SCTrackSummary): TrackRow => ({
@@ -19,18 +18,23 @@ export const toReadyTrackRow = (track: SCTrackSummary): TrackRow => ({
   url: track.permalink_url,
 })
 
-export async function getTrackMeta(url: string) {
+export async function getTrackMeta(url: string, signal?: AbortSignal) {
   return $fetch<SCTrackSummary>('/api/track/meta', {
     query: { url },
+    signal,
   })
 }
 
 export async function getTrackBuffer(
   url: string,
-  { onProgress, streamUrl }: Pick<DownloadTrackOptions, 'onProgress' | 'streamUrl'> = {},
+  {
+    onProgress,
+    signal,
+    streamUrl,
+  }: Pick<DownloadTrackOptions, 'onProgress' | 'signal' | 'streamUrl'> = {},
 ) {
-  const segs = await getTrackStreamSegments(url, streamUrl)
-  return processTrackStreamSegments(segs, onProgress)
+  const segs = await getTrackStreamSegments(url, streamUrl, signal)
+  return processTrackStreamSegments(segs, { onProgress, signal })
 }
 
 export async function getTaggedTrackBuffer(

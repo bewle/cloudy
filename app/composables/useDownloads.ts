@@ -4,6 +4,7 @@ export type DownloadEntry =
   | { status: 'queued' }
   | { progress: number; status: 'downloading' }
   | { status: 'done' }
+  | { status: 'aborted' }
   | { error: Error; status: 'error' }
 
 export interface BatchDownloadItem {
@@ -16,7 +17,15 @@ export interface DownloadBatch {
   name: string
   source: SidebarTrackSourceKey
   tracks: string[]
+  status: 'idle' | 'downloading' | 'done' | 'aborted' | 'error'
+  collapsed: boolean
+  abortController?: AbortController
 }
+
+export type FlatBatch =
+  | { type: 'heading'; id: string }
+  | { type: 'entry'; url: string; last: boolean; key: string; entry: DownloadEntry }
+  | { type: 'separator'; id: number }
 
 const BATCH_SIZE = 50
 
@@ -38,6 +47,7 @@ export const useDownloads = createGlobalState(() => {
     downloads.set(key, { progress: 0, status: 'downloading' })
 
     try {
+      opts.signal?.throwIfAborted()
       const res = await downloadTrack(url, {
         ...opts,
         onProgress: (progress, total) =>
@@ -49,7 +59,10 @@ export const useDownloads = createGlobalState(() => {
 
       return res
     } catch (error) {
-      downloads.set(key, { error: error as Error, status: 'error' })
+      downloads.set(
+        key,
+        opts.signal?.aborted ? { status: 'aborted' } : { error: error as Error, status: 'error' },
+      )
     }
   }
 
@@ -60,17 +73,29 @@ export const useDownloads = createGlobalState(() => {
   ) => {
     const list = [...items]
 
+    const abortController = new AbortController()
+    const { signal } = abortController
+
     const batchId = crypto.randomUUID()
     const batch: DownloadBatch = {
+      abortController,
+      // TODO: make default setting
+      collapsed: false,
       id: batchId,
       name: batchName,
       source,
+      status: 'downloading',
       tracks: list.map(({ url }) => url),
     }
-    batches.set(batch.id, batch)
+    batches.set(batchId, batch)
 
     for (const { url } of list) {
       downloads.set(getBatchTrackKey(batchId, url), { status: 'queued' })
+    }
+
+    const setBatchStatus = (status: DownloadBatch['status']) => {
+      const current = batches.get(batchId)
+      if (current) batches.set(batchId, { ...current, status })
     }
 
     isBatchRunning.value = true
@@ -80,7 +105,7 @@ export const useDownloads = createGlobalState(() => {
         list.map(i => i.url),
         BATCH_SIZE,
       )) {
-        for (const res of await getTrackStreamUrls(c))
+        for (const res of await getTrackStreamUrls(c, signal))
           if (res.streamUrl) streamUrls.set(res.url, res.streamUrl)
       }
 
@@ -90,6 +115,7 @@ export const useDownloads = createGlobalState(() => {
           const res = await run(url, {
             key: getBatchTrackKey(batchId, url),
             meta,
+            signal,
             streamUrl: streamUrls.get(url),
           })
           if (!res) return
@@ -100,27 +126,56 @@ export const useDownloads = createGlobalState(() => {
           } satisfies InputWithSizeMeta
         }),
       )
+      signal.throwIfAborted()
       const entries = mixedEntries.filter(isDefined) as InputWithSizeMeta[]
 
       if (entries.length) await saveViaMemory(entries)
-    } finally {
-      isBatchRunning.value = false
+
+      const hasError = list.some(
+        ({ url }) => downloads.get(getBatchTrackKey(batchId, url))?.status === 'error',
+      )
+      setBatchStatus(hasError ? 'error' : 'done')
+    } catch {
+      if (!signal.aborted) return setBatchStatus('error')
+
       for (const { url } of list) {
         const key = getBatchTrackKey(batchId, url)
-        if (downloads.get(key)?.status !== 'error') downloads.delete(key)
+        const status = downloads.get(key)?.status
+        if (status === 'queued' || status === 'downloading')
+          downloads.set(key, { status: 'aborted' })
       }
+      setBatchStatus('aborted')
+    } finally {
+      isBatchRunning.value = false
     }
   }
 
-  const setDownloadState = (url: string, entry: DownloadEntry) => downloads.set(url, entry)
+  const abortBatch = (batchId: DownloadBatch['id']) =>
+    batches.get(batchId)?.abortController?.abort()
+  const deleteBatch = (batchId: DownloadBatch['id']) => {
+    const batch = batches.get(batchId)
+    if (!batch) return
+
+    if (batch.status === 'downloading') abortBatch(batchId)
+    batches.delete(batchId)
+  }
+
+  const toggleCollapseBatch = (batchId: string) => {
+    const batch = batches.get(batchId)
+    if (!batch) return
+
+    batches.set(batchId, { ...batch, collapsed: !batch.collapsed })
+  }
 
   return {
+    abortBatch,
     batches,
+    deleteBatch,
     downloadBatch,
     downloadSingle,
     downloads,
     isBatchRunning,
-    setDownloadState,
+    toggleCollapseBatch,
   }
 })
 
