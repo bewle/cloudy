@@ -38,7 +38,7 @@ const virtualizer = useListVirtualizer(
   () => viewport.value?.viewportRef?.viewportElement ?? null,
   { estimateSize: () => 52, getItemKey: row => row.url },
 )
-watch([artist, playlist], () => virtualizer.value.scrollToIndex(0))
+watch([artist, playlist, () => trackSourceTab], () => virtualizer.value.scrollToIndex(0))
 
 provideSidebarTrackSourceContentContext({
   activeSource: active,
