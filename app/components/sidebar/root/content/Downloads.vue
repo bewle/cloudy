@@ -39,12 +39,12 @@ const virtualRows = computed(() =>
 <template>
   <SidebarRootContentHeader />
 
-  <div class="flex items-center gap-2">
+  <div class="flex gap-2 items-center">
     <SidebarRootContentSearch />
   </div>
 
   <div class="flex-1 shrink size-full overflow-auto">
-    <SidebarRootContentList :virtualizer ref="viewport" :total-size="virtualizer.getTotalSize()">
+    <SidebarRootContentList ref="viewport" :total-size="virtualizer.getTotalSize()" :virtualizer>
       <div
         v-for="{ row, v } in virtualRows"
         :key="v.index"

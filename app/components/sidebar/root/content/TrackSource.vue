@@ -49,7 +49,7 @@ provideSidebarTrackSourceContentContext({
 <template>
   <SidebarRootContentHeader />
 
-  <div class="flex items-center gap-2">
+  <div class="flex gap-2 items-center">
     <SidebarRootContentSearch />
     <SidebarRootContentDownloadAll />
   </div>
@@ -60,8 +60,8 @@ provideSidebarTrackSourceContentContext({
       :total-size="virtualizer.getTotalSize()"
       :virtualizer
       :show-sentinel="canLoadMore"
-      @sentinel="intersecting = $event"
       class="border-border rounded"
+      @sentinel="intersecting = $event"
     >
       <SidebarRootContentListContainer>
         <template v-if="!isLoadingInitial">

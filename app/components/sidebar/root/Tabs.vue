@@ -46,9 +46,9 @@ const getPreviousTab = (key: SidebarButtonKey) => {
 
       <UButton
         v-else-if="item === 'themeToggle'"
-        @click="toggleTheme"
         :aria-label="SIDEBAR__BUTTON_META[item].label"
         v-bind="buttonProps"
+        @click="toggleTheme"
       >
         <Icon :name="$colorMode.preference === 'dark' ? ICON__CLOUD : ICON__SUN" class="size-1lh" />
       </UButton>
