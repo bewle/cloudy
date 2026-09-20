@@ -3,6 +3,7 @@ import type { Virtualizer } from '@tanstack/vue-virtual'
 
 defineProps<{
   showSentinel?: boolean
+  totalSize: number
   virtualizer: Virtualizer<HTMLElement, Element>
 }>()
 const emit = defineEmits<{
@@ -25,7 +26,7 @@ defineExpose({ viewportRef: viewport })
 <template>
   <UScrollAreaRoot>
     <UScrollAreaViewport ref="viewport" class="pe-3.5">
-      <div class="min-h-fit w-full relative" :style="{ height: `${virtualizer.getTotalSize()}px` }">
+      <div class="min-h-fit w-full relative" :style="{ height: `${totalSize}px` }">
         <slot />
       </div>
 

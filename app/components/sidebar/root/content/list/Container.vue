@@ -9,7 +9,10 @@ const props = defineProps<{
 <template>
   <div
     :class="
-      cn('border-border border rounded of-clip divide-border divide-y has-[*]:border', props.class)
+      cn(
+        'relative min-h-full border-border border rounded of-clip divide-border divide-y has-[*]:border',
+        props.class,
+      )
     "
     data-slot="list-container"
   >

@@ -57,6 +57,7 @@ provideSidebarTrackSourceContentContext({
   <div class="flex-1 shrink size-full overflow-auto">
     <SidebarRootContentList
       ref="viewport"
+      :total-size="virtualizer.getTotalSize()"
       :virtualizer
       :show-sentinel="canLoadMore"
       @sentinel="intersecting = $event"

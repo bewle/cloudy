@@ -44,7 +44,7 @@ const virtualRows = computed(() =>
   </div>
 
   <div class="flex-1 shrink size-full overflow-auto">
-    <SidebarRootContentList :virtualizer ref="viewport">
+    <SidebarRootContentList :virtualizer ref="viewport" :total-size="virtualizer.getTotalSize()">
       <div
         v-for="{ row, v } in virtualRows"
         :key="v.index"
