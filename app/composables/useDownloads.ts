@@ -1,0 +1,135 @@
+import { downloadZip, type InputWithSizeMeta } from 'client-zip'
+
+export type DownloadEntry =
+  | { status: 'queued' }
+  | { progress: number; status: 'downloading' }
+  | { status: 'done' }
+  | { error: Error; status: 'error' }
+
+export interface BatchDownloadItem {
+  meta?: SCTrackSummary
+  url: string
+}
+
+export interface DownloadBatch {
+  id: string
+  name: string
+  source: SidebarTrackSourceKey
+  tracks: string[]
+}
+
+const BATCH_SIZE = 50
+
+export const useDownloads = createGlobalState(() => {
+  const downloads = shallowReactive(new Map<string, DownloadEntry>())
+  const batches = shallowReactive(new Map<DownloadBatch['id'], DownloadBatch>())
+  const isBatchRunning = ref(false)
+
+  const downloadSingle = async (
+    url: string,
+    {
+      save = false,
+      key = url,
+      ...opts
+    }: Omit<DownloadTrackOptions, 'onProgress'> & { save?: boolean; key?: string } = {},
+  ) => {
+    if (downloads.get(key)?.status === 'downloading') return
+
+    downloads.set(key, { progress: 0, status: 'downloading' })
+
+    try {
+      const res = await downloadTrack(url, {
+        ...opts,
+        onProgress: (progress, total) =>
+          downloads.set(key, { progress: progress / total, status: 'downloading' }),
+      })
+      downloads.set(key, { status: 'done' })
+
+      if (save) saveAs(res.blob, res.mime, getTrackFilename(res.trackMeta, res.extension))
+
+      return res
+    } catch (error) {
+      downloads.set(key, { error: error as Error, status: 'error' })
+    }
+  }
+
+  const downloadBatch = async (
+    items: Iterable<BatchDownloadItem>,
+    batchName: string,
+    source: DownloadBatch['source'],
+  ) => {
+    const list = [...items]
+
+    const batchId = crypto.randomUUID()
+    const batch: DownloadBatch = {
+      id: batchId,
+      name: batchName,
+      source,
+      tracks: list.map(({ url }) => url),
+    }
+    batches.set(batch.id, batch)
+
+    for (const { url } of list) {
+      downloads.set(getBatchTrackKey(batchId, url), { status: 'queued' })
+    }
+
+    isBatchRunning.value = true
+    try {
+      const streamUrls = new Map<string, string>()
+      for (const c of chunk(
+        list.map(i => i.url),
+        BATCH_SIZE,
+      )) {
+        for (const res of await getTrackStreamUrls(c))
+          if (res.streamUrl) streamUrls.set(res.url, res.streamUrl)
+      }
+
+      const run = limitAsync(downloadSingle, 3)
+      const mixedEntries = await Promise.all(
+        list.map(async ({ meta, url }) => {
+          const res = await run(url, {
+            key: getBatchTrackKey(batchId, url),
+            meta,
+            streamUrl: streamUrls.get(url),
+          })
+          if (!res) return
+
+          return {
+            input: res.blob,
+            name: getTrackFilename(res.trackMeta, res.extension),
+          } satisfies InputWithSizeMeta
+        }),
+      )
+      const entries = mixedEntries.filter(isDefined) as InputWithSizeMeta[]
+
+      if (entries.length) await saveViaMemory(entries)
+    } finally {
+      isBatchRunning.value = false
+      for (const { url } of list) {
+        const key = getBatchTrackKey(batchId, url)
+        if (downloads.get(key)?.status !== 'error') downloads.delete(key)
+      }
+    }
+  }
+
+  const setDownloadState = (url: string, entry: DownloadEntry) => downloads.set(url, entry)
+
+  return {
+    batches,
+    downloadBatch,
+    downloadSingle,
+    downloads,
+    isBatchRunning,
+    setDownloadState,
+  }
+})
+
+async function saveViaMemory(entries: InputWithSizeMeta[]) {
+  const response = downloadZip(entries)
+  const blob = await response.blob()
+  saveAs(blob, 'application/zip', getZipFileName())
+}
+
+export function getBatchTrackKey(batchId: DownloadBatch['id'], itemUrl: BatchDownloadItem['url']) {
+  return `${batchId}:${itemUrl}`
+}
