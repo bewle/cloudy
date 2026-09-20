@@ -26,7 +26,7 @@ const batchProgress = computed(
   >
     <div
       class="px-2 py-1 border-r border-border flex flex-1 gap-1 items-center of-clip hover:(bg-surface-raised)"
-      @click.self="toggleCollapseBatch(batch.id)"
+      @click="toggleCollapseBatch(batch.id)"
     >
       <Icon :name="SIDEBAR__BUTTON_META[batch.source].icon" />
       <span>{{ batch.name }}</span>
