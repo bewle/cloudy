@@ -57,7 +57,11 @@ const submitForm = () => {
       sidebarState.tab.value = 'playlist'
       break
     }
-    // case 'multitrack':
+    case 'multitrack': {
+      sidebarState.multitrackList.add(url)
+      sidebarState.tab.value = 'multitrack'
+      break
+    }
   }
 }
 

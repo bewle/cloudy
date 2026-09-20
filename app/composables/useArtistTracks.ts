@@ -8,6 +8,7 @@ const NO_TRACKS: ArtistTracksPages = { nextHref: undefined, tracks: [], url: und
 
 export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>) {
   const artistUrlRef = toRef(artistUrl)
+  const { setTrackMeta } = useTrackMeta()
 
   const { pending: artistMetaPending } = useArtistMeta(artistUrl)
 
@@ -48,12 +49,14 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
   const canLoadMore = computed(() => !!current.value.nextHref)
   const isLoading = computed(() => pending.value || artistMetaPending.value)
   const loadNextHref = () => void refresh()
-  const tracks = computed(() => current.value.tracks)
+  const items = computed(() => current.value.tracks.filter(isTrackSummary).map(toReadyTrackRow))
+
+  watchImmediate(() => current.value.tracks, setTrackMeta)
 
   return {
     canLoadMore,
     isLoading,
+    items,
     loadNextHref,
-    tracks,
-  }
+  } satisfies TrackSource
 }
