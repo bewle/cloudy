@@ -36,7 +36,7 @@ const parsedError = computed(() =>
       <SidebarRootContentListCardImg
         class="border border-border border-dashed flex items-center justify-center"
       >
-        <Icon name="tabler:ghost-3" class="text-lg text-muted-foreground" />
+        <Icon :name="ICON__EMPTY" class="text-lg text-muted-foreground" />
       </SidebarRootContentListCardImg>
 
       <SidebarRootContentListCardContent class="flex-1">
