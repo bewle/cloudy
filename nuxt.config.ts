@@ -50,7 +50,7 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
-    collections: ['tabler'],
+    collections: ['tabler', 'mingcute'],
   },
   imports: {
     dirs: [
