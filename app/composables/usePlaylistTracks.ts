@@ -11,7 +11,7 @@ export function usePlaylistTracks(playlistUrl: MaybeRefOrGetter<string | undefin
 
   const { pending: playlistMetaPending } = usePlaylistMeta(playlistUrl)
 
-  const { data, pending } = useCachedData(
+  const { data, pending, error } = useCachedData(
     () => `playlist-tracks-${playlistUrlRef.value}`,
     async (_nuxtApp, { signal }) => {
       const url = playlistUrlRef.value
@@ -39,6 +39,7 @@ export function usePlaylistTracks(playlistUrl: MaybeRefOrGetter<string | undefin
   return {
     // only one response
     canLoadMore: ref(false),
+    error,
     isLoading,
     items,
     loadNextHref: noop,
