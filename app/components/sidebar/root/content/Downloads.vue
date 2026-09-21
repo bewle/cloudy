@@ -35,7 +35,10 @@ const virtualRows = computed(() =>
   virtualizer.value.getVirtualItems().map(v => ({ row: flatBatches.value[v.index]!, v })),
 )
 
-const hasBatches = computed(() => batches.size > 1)
+const hasBatches = computed(() => !!batches.size)
+watchEffect(() => {
+  console.log('hasBatches: ', hasBatches.value)
+})
 </script>
 
 <template>
