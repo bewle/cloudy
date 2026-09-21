@@ -45,10 +45,10 @@ const parsedError = computed(() =>
         </SidebarRootContentListCardTitle>
 
         <SidebarRootContentListCardArtist
-          :title="parsedError?.message ?? 'Failed to load track'"
+          :title="parsedError?.message ?? $t('error.track_load_failed')"
           class="text-danger truncate"
         >
-          {{ parsedError?.message ?? 'Failed to load track' }}
+          {{ parsedError?.message ?? $t('error.track_load_failed') }}
         </SidebarRootContentListCardArtist>
       </SidebarRootContentListCardContent>
 

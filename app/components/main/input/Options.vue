@@ -29,7 +29,7 @@ const inputOption = computed({
         class="font-normal rounded-sm"
         :value="o"
       >
-        {{ o }}
+        {{ $t(`input.option.${o}`) }}
       </UToggleGroupItem>
 
       <div class="flex-1" />
@@ -45,7 +45,7 @@ const inputOption = computed({
       v-model:model-value="autoDetect"
       size="icon"
       class="rounded-sm shrink-0"
-      aria-label="Automatically detect URL type"
+      :aria-label="$t('action.auto_detect')"
     >
       <Icon :name="ICON__AUTO_DETECT" />
     </UToggle>

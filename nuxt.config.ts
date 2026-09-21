@@ -38,16 +38,19 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 5,
   },
+  i18n: {
+    defaultLocale: 'en',
+    experimental: {
+      typedOptionsAndMessages: 'all',
+    },
+    locales: [{ code: 'en', file: 'en.json', language: 'en-US', name: 'English' }],
+    strategy: 'no_prefix',
+  },
   icon: {
     clientBundle: {
       scan: true,
     },
     collections: ['tabler'],
-  },
-  i18n: {
-    defaultLocale: 'en',
-    locales: [{ code: 'en', file: 'en.json', language: 'en-US', name: 'English' }],
-    strategy: 'no_prefix',
   },
   imports: {
     dirs: [

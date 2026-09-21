@@ -38,7 +38,7 @@ const getPreviousTab = (key: SidebarButtonKey) => {
       <UToggleGroupItem
         v-if="SIDEBAR__BUTTON_META[item].isTab"
         :value="item"
-        :aria-label="SIDEBAR__BUTTON_META[item].label"
+        :aria-label="$t(`tab.${item}`)"
         v-bind="buttonProps"
       >
         <Icon :name="SIDEBAR__BUTTON_META[item].icon" class="size-1lh" />
@@ -46,14 +46,14 @@ const getPreviousTab = (key: SidebarButtonKey) => {
 
       <UButton
         v-else-if="item === 'themeToggle'"
-        :aria-label="SIDEBAR__BUTTON_META[item].label"
+        :aria-label="$t(`tab.${item}`)"
         v-bind="buttonProps"
         @click="toggleTheme"
       >
         <Icon :name="$colorMode.preference === 'dark' ? ICON__CLOUD : ICON__SUN" class="size-1lh" />
       </UButton>
 
-      <UButton v-else :aria-label="SIDEBAR__BUTTON_META[item].label" v-bind="buttonProps">
+      <UButton v-else :aria-label="$t(`tab.${item}`)" v-bind="buttonProps">
         <Icon :name="SIDEBAR__BUTTON_META[item].icon" class="size-1lh" />
       </UButton>
     </template>

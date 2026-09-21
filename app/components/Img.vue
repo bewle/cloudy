@@ -50,7 +50,7 @@ const forwarded = useForwardPropsEmits(props, emits)
   <NuxtImg
     v-bind="forwarded"
     :loading="loading ?? 'lazy'"
-    :alt="alt ?? fallbackAlt ?? 'Unknown image'"
+    :alt="alt ?? fallbackAlt ?? $t('general.unknown_image')"
     :width="size ?? width ?? 400"
     :height="size ?? height ?? 400"
     :src
