@@ -50,9 +50,9 @@ export function useMultitrackMeta(multitrackUrls: MaybeRefOrGetter<Set<string>>)
 
   return {
     canLoadMore: ref(false),
+    error: ref(),
     isLoading,
     items,
-    error: ref(),
     loadNextHref: noop,
   } satisfies TrackSource
 }

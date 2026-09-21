@@ -16,9 +16,9 @@ export const useParsedError = (error: MaybeRefOrGetter<Error | undefined>) => {
         : 500
     return {
       message: t('error.unexpected'),
-      why: errorRef.value?.message,
       raw: errorRef.value,
       status,
+      why: errorRef.value?.message,
     } satisfies ParsedError
   })
 }
