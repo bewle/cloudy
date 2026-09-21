@@ -1,24 +1,30 @@
 <script lang="ts" setup>
+const { t } = useI18n()
 const sidebarState = useSidebarState()
 
 const placeholder = computed(() => {
   if (sidebarState.tab.value === 'artist') {
-    if (!sidebarState.artist.value) return 'No artist selected'
-    if (sidebarState.artistMeta.pending.value) return '...'
+    if (!sidebarState.artist.value) return t('sidebar.no_artist_selected')
+    if (sidebarState.artistMeta.pending.value) return t('state.loading')
 
     const { track_count } = sidebarState.artistMeta.data.value ?? {}
-    return typeof track_count === 'number' ? `Search ${track_count} tracks` : 'Search tracks'
+    return typeof track_count === 'number'
+      ? t('search.placeholder_count', [track_count], track_count)
+      : t('search.placeholder')
   }
 
   if (sidebarState.tab.value === 'playlist') {
-    if (!sidebarState.playlist.value) return 'No playlist selected'
-    if (sidebarState.playlistMeta.pending.value) return '...'
+    if (!sidebarState.playlist.value) return t('sidebar.no_playlist_selected')
+    if (sidebarState.playlistMeta.pending.value) return t('state.loading')
 
     const { track_count } = sidebarState.playlistMeta.data.value ?? {}
-    return typeof track_count === 'number' ? `Search ${track_count} tracks` : 'Search tracks'
+    return typeof track_count === 'number'
+      ? t('search.placeholder_count', [track_count], track_count)
+      : t('search.placeholder')
   }
 
-  return `Search ${sidebarState.multitrackList.size} tracks`
+  const { size } = sidebarState.multitrackList
+  return t('search.placeholder_count', [size], size)
 })
 
 const disabled = computed(() => {

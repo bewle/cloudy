@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { injectMainInputContext } from '../Input.vue'
 
+const { t } = useI18n()
 const { downloadState } = injectMainInputContext()
 const error = computed(() =>
   downloadState.value?.status === 'error' ? downloadState.value.error : undefined,
@@ -9,7 +10,7 @@ const error = computed(() =>
 const parsedError = computed(() => {
   const parsed = parseError(error.value)
   if ('why' in parsed) return parsed
-  else return { message: 'Unexpected error', why: error.value?.message }
+  else return { message: t('error.unexpected'), why: error.value?.message }
 })
 </script>
 
@@ -20,7 +21,7 @@ const parsedError = computed(() => {
       class="p-4 border border-danger rounded bg-danger/50 flex flex-col gap-1 h-fit w-full w-main-input-w relative"
     >
       <h3 class="font-medium">
-        {{ parsedError.message ?? 'Unexpected error' }}
+        {{ parsedError.message ?? $t('error.unexpected') }}
       </h3>
       <p class="text-sm">
         {{ parsedError.why }}

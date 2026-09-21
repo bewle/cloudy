@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const { t } = useI18n()
 const { batches } = useDownloads()
 const { tab, multitrackList, artist, playlist, previousTab } = useSidebarState()
 const { data: artistMeta, pending: pendingArtist } = useArtistMeta(artist)
@@ -10,14 +11,14 @@ const subheading = computed(() => {
       artistMeta.value?.full_name ||
       artistMeta.value?.username ||
       artist.value ||
-      'No artist selected'
+      t('sidebar.no_artist_selected')
     )
   if (tab.value === 'playlist')
-    return playlistMeta.value?.title ?? playlist.value ?? 'No playlist selected'
+    return playlistMeta.value?.title ?? playlist.value ?? t('sidebar.no_playlist_selected')
 
-  if (tab.value === 'downloads') return `${batches.size} batch${batches.size !== 1 ? 'es' : ''}`
+  if (tab.value === 'downloads') return t('sidebar.batch_count', [batches.size], batches.size)
 
-  return `${multitrackList.size} tracks`
+  return t('sidebar.track_count', [multitrackList.size], multitrackList.size)
 })
 </script>
 
@@ -25,7 +26,7 @@ const subheading = computed(() => {
   <header class="flex shrink-0 gap-2 h-14 w-full items-center justify-between">
     <div class="flex shrink flex-col w-full justify-center">
       <h3 class="text-xl font-medium w-fit">
-        {{ SIDEBAR__BUTTON_META[tab ?? previousTab].label }}
+        {{ $t(`tab.${tab ?? previousTab}`) }}
       </h3>
 
       <USkeleton v-if="pendingArtist || pendingPlaylist" class="text-xs h-1lh w-24" />
@@ -34,7 +35,7 @@ const subheading = computed(() => {
       </p>
     </div>
 
-    <UButton size="icon" aria-label="Close sidebar" @click="tab = undefined">
+    <UButton size="icon" :aria-label="$t('action.close_sidebar')" @click="tab = undefined">
       <Icon :name="ICON__SIDEBAR_CLOSE" />
     </UButton>
   </header>

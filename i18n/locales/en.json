@@ -1,0 +1,42 @@
+{
+  "action": {
+    "auto_detect": "Automatically detect URL type",
+    "close_sidebar": "Close sidebar"
+  },
+  "app_name": "cloudy",
+  "general": {
+    "unknown_image": "Unknown image"
+  },
+  "error": {
+    "track_load_failed": "Failed to load track",
+    "unexpected": "Unexpected error"
+  },
+  "input": {
+    "option": {
+      "artist": "artist",
+      "multitrack": "multi-track",
+      "playlist": "playlist",
+      "track": "track"
+    }
+  },
+  "search": {
+    "placeholder": "Search tracks",
+    "placeholder_count": "Search {0} tracks|Search {0} track|Search {0} tracks"
+  },
+  "sidebar": {
+    "batch_count": "{0} batches|{0} batch|{0} batches",
+    "no_artist_selected": "No artist selected",
+    "no_playlist_selected": "No playlist selected",
+    "track_count": "{0} tracks|{0} track|{0} tracks"
+  },
+  "state": {
+    "loading": "..."
+  },
+  "tab": {
+    "artist": "Artist",
+    "downloads": "Downloads",
+    "multitrack": "Multi-track",
+    "playlist": "Playlist",
+    "themeToggle": "Toggle theme"
+  }
+}
