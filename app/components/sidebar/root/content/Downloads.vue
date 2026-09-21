@@ -36,9 +36,6 @@ const virtualRows = computed(() =>
 )
 
 const hasBatches = computed(() => !!batches.size)
-watchEffect(() => {
-  console.log('hasBatches: ', hasBatches.value)
-})
 </script>
 
 <template>
