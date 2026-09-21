@@ -4,7 +4,7 @@ const sidebarState = useSidebarState()
 
 const placeholder = computed(() => {
   if (sidebarState.tab.value === 'artist') {
-    if (!sidebarState.artist.value) return t('sidebar.no_artist_selected')
+    if (!sidebarState.artist.value) return t('sidebar.no_selection.title.artist')
     if (sidebarState.artistMeta.pending.value) return t('state.loading')
 
     const { track_count } = sidebarState.artistMeta.data.value ?? {}
@@ -14,7 +14,7 @@ const placeholder = computed(() => {
   }
 
   if (sidebarState.tab.value === 'playlist') {
-    if (!sidebarState.playlist.value) return t('sidebar.no_playlist_selected')
+    if (!sidebarState.playlist.value) return t('sidebar.no_selection.title.playlist')
     if (sidebarState.playlistMeta.pending.value) return t('state.loading')
 
     const { track_count } = sidebarState.playlistMeta.data.value ?? {}

@@ -1,4 +1,6 @@
 <script lang="ts">
+import { toRef } from '@vueuse/core'
+
 export interface SidebarTrackSourceContentContext {
   activeSource: Ref<TrackSource | undefined>
   activeSourceKey: Ref<SidebarTrackSourceKey>
@@ -44,6 +46,12 @@ provideSidebarTrackSourceContentContext({
   activeSource: active,
   activeSourceKey: toRef(() => trackSourceTab),
 })
+
+const activeHasNoInput = computed(
+  () =>
+    !active.value.isLoading.value && !active.value.items.value.length && !active.value.error.value,
+)
+const error = computed(() => active.value.error.value)
 </script>
 
 <template>
@@ -54,8 +62,12 @@ provideSidebarTrackSourceContentContext({
     <SidebarRootContentDownloadAll />
   </div>
 
-  <div class="flex-1 shrink size-full overflow-auto">
+  <div
+    class="flex-1 shrink size-full overflow-auto"
+    :class="error || activeHasNoInput ? 'flex items-center justify-center h-full' : ''"
+  >
     <SidebarRootContentList
+      v-if="!error && !activeHasNoInput"
       ref="viewport"
       :total-size="virtualizer.getTotalSize()"
       :virtualizer
@@ -79,5 +91,9 @@ provideSidebarTrackSourceContentContext({
         </template>
       </SidebarRootContentListContainer>
     </SidebarRootContentList>
+
+    <SidebarRootContentNoInput v-else-if="activeHasNoInput" />
+
+    <SidebarRootContentError v-else :error />
   </div>
 </template>

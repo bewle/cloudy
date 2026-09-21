@@ -1,20 +1,30 @@
 <script lang="ts" setup>
 const { t } = useI18n()
 const { batches } = useDownloads()
-const { tab, multitrackList, artist, playlist, previousTab } = useSidebarState()
-const { data: artistMeta, pending: pendingArtist } = useArtistMeta(artist)
-const { data: playlistMeta, pending: pendingPlaylist } = usePlaylistMeta(playlist)
+const {
+  tab,
+  multitrackList,
+  artistMeta,
+  artist: artistUrl,
+  playlist: playlistUrl,
+  playlistMeta,
+  previousTab,
+} = useSidebarState()
+const { data: artistMetaData, pending: pendingArtist } = artistMeta
+const { data: playlistMetaData, pending: pendingPlaylist } = playlistMeta
 
 const subheading = computed(() => {
   if (tab.value === 'artist')
     return (
-      artistMeta.value?.full_name ||
-      artistMeta.value?.username ||
-      artist.value ||
-      t('sidebar.no_artist_selected')
+      artistMetaData.value?.full_name ||
+      artistMetaData.value?.username ||
+      artistUrl.value ||
+      t('sidebar.no_selection.title.artist')
     )
   if (tab.value === 'playlist')
-    return playlistMeta.value?.title ?? playlist.value ?? t('sidebar.no_playlist_selected')
+    return (
+      playlistMetaData.value?.title ?? playlistUrl.value ?? t('sidebar.no_selection.title.playlist')
+    )
 
   if (tab.value === 'downloads') return t('sidebar.batch_count', [batches.size], batches.size)
 
