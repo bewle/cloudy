@@ -44,6 +44,11 @@ export default defineNuxtConfig({
     },
     collections: ['tabler'],
   },
+  i18n: {
+    defaultLocale: 'en',
+    locales: [{ code: 'en', file: 'en.json', language: 'en-US', name: 'English' }],
+    strategy: 'no_prefix',
+  },
   imports: {
     dirs: [
       '~/utils/**/*.ts',
@@ -69,6 +74,7 @@ export default defineNuxtConfig({
     'evlog/nuxt',
     '@nuxt/test-utils',
     '@nuxt/image',
+    '@nuxtjs/i18n',
   ],
   nitro: {
     imports: {
