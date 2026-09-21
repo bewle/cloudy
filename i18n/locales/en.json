@@ -24,9 +24,21 @@
     "placeholder_count": "Search {0} tracks|Search {0} track|Search {0} tracks"
   },
   "sidebar": {
+    "no_selection": {
+      "title": {
+        "artist": "No artist selected",
+        "playlist": "No playlist selected",
+        "multitrack": "No tracks added",
+        "downloads": "No batches added"
+      },
+      "description": {
+        "artist": "Submit an artist in the main input to see their tracks",
+        "playlist": "Submit a playlist in the main input to see its tracks",
+        "multitrack": "Add a track in the main input to add it to the list",
+        "downloads": "Download a batch by clicking the download button to the right of the search bar of a tab"
+      }
+    },
     "batch_count": "{0} batches|{0} batch|{0} batches",
-    "no_artist_selected": "No artist selected",
-    "no_playlist_selected": "No playlist selected",
     "track_count": "{0} tracks|{0} track|{0} tracks"
   },
   "state": {

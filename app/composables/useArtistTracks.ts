@@ -10,9 +10,14 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
   const artistUrlRef = toRef(artistUrl)
   const { setTrackMeta } = useTrackMeta()
 
-  const { pending: artistMetaPending } = useArtistMeta(artistUrl)
+  const { pending: artistMetaPending, error: artistMetaError } = useArtistMeta(artistUrl)
 
-  const { data, pending, refresh } = useCachedData(
+  const {
+    data,
+    pending,
+    refresh,
+    error: artistTracksError,
+  } = useCachedData(
     () => `artist-tracks-${artistUrlRef.value}`,
     async (nuxtApp, { signal }) => {
       const url = artistUrlRef.value
@@ -47,6 +52,7 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
   const current = computed(() => (data.value.url === artistUrlRef.value ? data.value : NO_TRACKS))
 
   const canLoadMore = computed(() => !!current.value.nextHref)
+  const error = computed(() => artistMetaError.value ?? artistTracksError.value)
   const isLoading = computed(() => pending.value || artistMetaPending.value)
   const loadNextHref = () => void refresh()
   const items = computed(() => current.value.tracks.filter(isTrackSummary).map(toReadyTrackRow))
@@ -55,6 +61,7 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
 
   return {
     canLoadMore,
+    error,
     isLoading,
     items,
     loadNextHref,

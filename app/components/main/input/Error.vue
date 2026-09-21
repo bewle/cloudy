@@ -1,23 +1,18 @@
 <script lang="ts" setup>
 import { injectMainInputContext } from '../Input.vue'
 
-const { t } = useI18n()
 const { downloadState } = injectMainInputContext()
 const error = computed(() =>
   downloadState.value?.status === 'error' ? downloadState.value.error : undefined,
 )
 
-const parsedError = computed(() => {
-  const parsed = parseError(error.value)
-  if ('why' in parsed) return parsed
-  else return { message: t('error.unexpected'), why: error.value?.message }
-})
+const parsedError = useParsedError(error)
 </script>
 
 <template>
   <Transition name="zoom">
     <div
-      v-if="error"
+      v-if="parsedError"
       class="p-4 border border-danger rounded bg-danger/50 flex flex-col gap-1 h-fit w-full w-main-input-w relative"
     >
       <h3 class="font-medium">

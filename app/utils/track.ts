@@ -6,6 +6,7 @@ export type TrackRow =
   | { error: Error; status: 'error'; url: string }
 
 export interface TrackSource {
+  error: Ref<Error | undefined>
   canLoadMore: Ref<boolean>
   isLoading: Ref<boolean>
   items: Ref<TrackRow[]>

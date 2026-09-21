@@ -50,6 +50,7 @@ export function useMultitrackMeta(multitrackUrls: MaybeRefOrGetter<Set<string>>)
 
   return {
     canLoadMore: ref(false),
+    error: ref(),
     isLoading,
     items,
     loadNextHref: noop,

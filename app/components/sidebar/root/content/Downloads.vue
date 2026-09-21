@@ -34,6 +34,8 @@ const virtualizer = useListVirtualizer(
 const virtualRows = computed(() =>
   virtualizer.value.getVirtualItems().map(v => ({ row: flatBatches.value[v.index]!, v })),
 )
+
+const hasBatches = computed(() => !!batches.size)
 </script>
 
 <template>
@@ -43,8 +45,16 @@ const virtualRows = computed(() =>
     <SidebarRootContentSearch />
   </div>
 
-  <div class="flex-1 shrink size-full overflow-auto">
-    <SidebarRootContentList ref="viewport" :total-size="virtualizer.getTotalSize()" :virtualizer>
+  <div
+    class="flex-1 shrink size-full overflow-auto"
+    :class="!hasBatches ? 'flex items-center justify-center h-full' : ''"
+  >
+    <SidebarRootContentList
+      v-if="hasBatches"
+      ref="viewport"
+      :total-size="virtualizer.getTotalSize()"
+      :virtualizer
+    >
       <div
         v-for="{ row, v } in virtualRows"
         :key="v.index"
@@ -68,5 +78,15 @@ const virtualRows = computed(() =>
         <div v-else-if="row.type === 'separator'" class="h-12px" aria-hidden="true" />
       </div>
     </SidebarRootContentList>
+
+    <UStateRoot v-else class="max-w-96">
+      <UStateIcon :name="ICON__EMPTY" />
+      <UStateTitle>
+        {{ $t('sidebar.no_selection.title.downloads') }}
+      </UStateTitle>
+      <UStateDescription>
+        {{ $t('sidebar.no_selection.description.downloads') }}
+      </UStateDescription>
+    </UStateRoot>
   </div>
 </template>
