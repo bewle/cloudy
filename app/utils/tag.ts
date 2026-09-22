@@ -1,11 +1,8 @@
 import type { MetadataTags } from 'mediabunny'
 
-export interface TagWorkerPayload {
-  action: 'tag'
-  id: string
-  buffer: ArrayBuffer
-  tags: MetadataTags
-}
+export type TagWorkerPayload =
+  | { action: 'tag'; id: string; buffer: ArrayBuffer; tags: MetadataTags }
+  | { action: 'cancel'; id: string }
 
 export type TagWorkerResponse =
   | { action: 'tag'; id: string; buffer: ArrayBuffer }
@@ -63,6 +60,7 @@ export const getTaggedTrackBlob = ({
 
     function handleAbort() {
       cleanup()
+      worker.postMessage({ action: 'cancel', id } satisfies TagWorkerPayload)
       reject(signal!.reason)
     }
 

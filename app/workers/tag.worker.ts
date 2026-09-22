@@ -10,10 +10,19 @@ import {
 
 import type { TagWorkerPayload, TagWorkerResponse } from '~/utils/tag'
 
+const conversions = new Map<string, Conversion | null>()
+
 globalThis.addEventListener('message', async (payload: MessageEvent<TagWorkerPayload>) => {
   if (!('action' in payload.data)) throw new Error('Invalid tag worker payload')
 
+  if (payload.data.action === 'cancel') {
+    await conversions.get(payload.data.id)?.cancel()
+    conversions.delete(payload.data.id)
+    return
+  }
+
   const { buffer, tags, id } = payload.data
+  conversions.set(id, null)
 
   try {
     const input = new Input({
@@ -31,6 +40,9 @@ globalThis.addEventListener('message', async (payload: MessageEvent<TagWorkerPay
       output,
       tags,
     })
+
+    if (!conversions.has(id)) return
+    conversions.set(id, conversion)
 
     await conversion.execute()
 
@@ -51,5 +63,7 @@ globalThis.addEventListener('message', async (payload: MessageEvent<TagWorkerPay
     }
 
     globalThis.postMessage(res)
+  } finally {
+    conversions.delete(id)
   }
 })
