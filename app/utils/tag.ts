@@ -21,27 +21,55 @@ export const getTaggedTrackBlob = ({
   buffer,
   format,
   tags,
+  signal,
 }: {
   buffer: ArrayBuffer
   format: SCTranscodingType
   tags: MetadataTags
+  signal?: AbortSignal
 }) => {
+  signal?.throwIfAborted()
+
   const worker = getTagWorker()
   const id = crypto.randomUUID()
   const payload: TagWorkerPayload = { action: 'tag', buffer, id, tags }
   worker.postMessage(payload, [buffer])
 
   return new Promise<Blob>((resolve, reject) => {
-    const handleMsg = (e: MessageEvent<TagWorkerResponse>) => {
+    const cleanup = () => {
+      worker.removeEventListener('message', handleMsg)
+      worker.removeEventListener('error', handleError)
+      worker.removeEventListener('messageerror', handleError)
+      signal?.removeEventListener('abort', handleAbort)
+    }
+
+    function handleMsg(e: MessageEvent<TagWorkerResponse>) {
       if (!('id' in e.data) || !('action' in e.data) || e.data.id !== id) return
 
-      worker.removeEventListener('message', handleMsg)
+      cleanup()
 
       if ('error' in e.data) reject(new Error(e.data.error))
       else resolve(new Blob([e.data.buffer], { type: transcodingToMime(format) }))
     }
 
+    function handleError(e: Event) {
+      cleanup()
+      if (e.type === 'error' && tagWorker === worker) {
+        worker.terminate()
+        tagWorker = undefined
+      }
+      reject(new Error(e instanceof ErrorEvent ? e.message : 'Tag worker failed'))
+    }
+
+    function handleAbort() {
+      cleanup()
+      reject(signal!.reason)
+    }
+
     worker.addEventListener('message', handleMsg)
+    worker.addEventListener('error', handleError)
+    worker.addEventListener('messageerror', handleError)
+    signal?.addEventListener('abort', handleAbort)
   })
 }
 
