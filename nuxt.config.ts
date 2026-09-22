@@ -114,6 +114,7 @@ export default defineNuxtConfig({
           "'wasm-unsafe-eval'",
         ],
       },
+      crossOriginEmbedderPolicy: false,
     },
   },
 })

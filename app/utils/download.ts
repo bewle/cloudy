@@ -19,14 +19,8 @@ export async function downloadTrack(
   const trackMeta = meta ?? (await getTrackMeta(url, signal))
 
   const trackBuffer = await getTrackBuffer(url, { onProgress, signal, streamUrl })
-  const blob = await getTaggedTrackBuffer(trackBuffer, trackMeta, [
-    'APIC',
-    'COMM',
-    'TDAT',
-    'TIT2',
-    'TPE1',
-    'WOAS',
-  ])
+  const tags = await getTrackTags(trackMeta, ['APIC', 'COMM', 'TDAT', 'TIT2', 'TPE1', 'WOAS'])
+  const blob = await getTaggedTrackBlob({ buffer: trackBuffer, format: 'mp3', signal, tags })
   const mime = transcodingToMime('mp3')
   const extension = transcodingToExt('mp3')
 
