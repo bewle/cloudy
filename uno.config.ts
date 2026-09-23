@@ -2,56 +2,17 @@ import {
   defineConfig,
   presetWind4,
   type PresetWind4Theme,
-  definePreset,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
 
-const presetAnchorPositioning = definePreset(() => {
-  return {
-    name: 'unocss-anchor-positioning-preset',
-    rules: [
-      [
-        /(?<=position-anchor-)(?<name>[a-zA-Z0-9]+)/g,
-        ([name]) => ({
-          'position-anchor': `--${name}`,
-        }),
-      ],
-      [
-        /(?<=anchor-name-)(?<name>[a-zA-Z0-9]+)/g,
-        ([name]) => ({
-          'anchor-name': `--${name}`,
-        }),
-      ],
-      [
-        /(?<=anchor-scope-)(?<name>[a-zA-Z0-9]+)/g,
-        ([name]) => ({
-          'anchor-scope': `--${name}`,
-        }),
-      ],
-      [
-        /(?<=anchor-)(?<pos>left|right|top|bottom|inset)/g,
-        ([pos]) => {
-          if (pos === 'inset') {
-            return {
-              bottom: 'anchor(bottom)',
-              left: 'anchor(left)',
-              right: 'anchor(right)',
-              top: 'anchor(top)',
-            }
-          }
-          return {
-            [pos]: `anchor(${pos})`,
-          }
-        },
-      ],
-    ],
-  }
-})
+import { presetAnchorPositioning } from './uno.anchor'
+import { presetReka } from './uno.reka'
 
 export default defineConfig<PresetWind4Theme>({
   presets: [
     presetAnchorPositioning,
+    presetReka,
     presetWind4({
       preflights: {
         reset: true,
@@ -85,6 +46,16 @@ export default defineConfig<PresetWind4Theme>({
         'text-box': 'trim-both cap alphabetic',
       },
     ],
+  ],
+  shortcuts: [
+    {
+      'z-dialog': 'z-50',
+      'z-dropdown': 'z-65',
+      'z-menu': 'z-70',
+      'z-overlay': 'z-50',
+      'z-popover': 'z-60',
+      'z-tooltip': 'z-80',
+    },
   ],
   theme: {
     colors: {

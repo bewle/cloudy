@@ -46,6 +46,7 @@
     "@iconify-json/tabler": "^1.2.39",
     "@nuxt/test-utils": "^4.3.2",
     "@unocss/eslint-plugin": "^66.10.5",
+    "@unocss/rule-utils": "^66.10.5",
     "@vue/test-utils": "^2.5.1",
     "eslint": "^10.11.0",
     "golar": "^0.1.10",

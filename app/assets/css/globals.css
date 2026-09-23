@@ -70,9 +70,9 @@
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --shift-hover-lightness: 0.075;
+  --shift-hover-lightness: 0.065;
   --shift-hover-chroma: 0.005;
-  --shift-active-lightness: 0.1;
+  --shift-active-lightness: 0.085;
   --shift-active-chroma: 0.01;
 }
 
