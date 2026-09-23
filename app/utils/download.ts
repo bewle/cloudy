@@ -10,19 +10,20 @@ export interface DownloadTrackOptions {
   onProgress?: (i: number, total: number) => void
   streamUrl?: string
   signal?: AbortSignal
+  format?: SCTranscodingType
 }
 
 export async function downloadTrack(
   url: string,
-  { meta, onProgress, signal, streamUrl }: DownloadTrackOptions = {},
+  { meta, onProgress, signal, streamUrl, format = 'mp3' }: DownloadTrackOptions = {},
 ): Promise<DownloadTrackResult> {
   const trackMeta = meta ?? (await getTrackMeta(url, signal))
 
-  const trackBuffer = await getTrackBuffer(url, { onProgress, signal, streamUrl })
+  const trackBuffer = await getTrackBuffer(url, { format, onProgress, signal, streamUrl })
   const tags = await getTrackTags(trackMeta, ['APIC', 'COMM', 'TDAT', 'TIT2', 'TPE1', 'WOAS'])
-  const blob = await getTaggedTrackBlob({ buffer: trackBuffer, format: 'mp3', signal, tags })
-  const mime = transcodingToMime('mp3')
-  const extension = transcodingToExt('mp3')
+  const blob = await getTaggedTrackBlob({ buffer: trackBuffer, format, signal, tags })
+  const mime = transcodingToMime(format)
+  const extension = transcodingToExt(format)
 
   return { blob, extension, mime, trackMeta }
 }
@@ -33,9 +34,12 @@ export interface BatchStreamUrlResult {
   url: string
 }
 
-export async function getTrackStreamUrls(urls: string[], signal?: AbortSignal) {
+export async function getTrackStreamUrls(
+  urls: string[],
+  { signal, format }: Pick<DownloadTrackOptions, 'signal' | 'format'> = {},
+) {
   return $fetch<BatchStreamUrlResult[]>('/api/track/stream', {
-    body: { url: urls },
+    body: { format, url: urls },
     method: 'POST',
     signal,
   })
@@ -43,13 +47,17 @@ export async function getTrackStreamUrls(urls: string[], signal?: AbortSignal) {
 
 export async function getTrackStreamSegments(
   url: string,
-  streamUrl?: string,
-  signal?: AbortSignal,
+  {
+    signal,
+    streamUrl,
+    format = SETTINGS__DEFAULT.preferredFormat,
+  }: Pick<DownloadTrackOptions, 'signal' | 'streamUrl' | 'format'> = {},
 ) {
   const m3u8Url =
     streamUrl ??
     (await $fetch<string>('/api/track/stream', {
       query: {
+        format,
         url,
       },
       signal,

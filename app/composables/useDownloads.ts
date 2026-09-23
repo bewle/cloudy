@@ -32,6 +32,7 @@ const BATCH_SIZE = 50
 export const useDownloads = createGlobalState(() => {
   const downloads = shallowReactive(new Map<string, DownloadEntry>())
   const batches = shallowReactive(new Map<DownloadBatch['id'], DownloadBatch>())
+  const settings = useSettings()
   const isBatchRunning = ref(false)
 
   const downloadSingle = async (
@@ -44,12 +45,15 @@ export const useDownloads = createGlobalState(() => {
   ) => {
     if (downloads.get(key)?.status === 'downloading') return
 
+    const format = opts.format ?? settings.value.preferredFormat
+
     downloads.set(key, { progress: 0, status: 'downloading' })
 
     try {
       opts.signal?.throwIfAborted()
       const res = await downloadTrack(url, {
         ...opts,
+        format,
         onProgress: (progress, total) =>
           downloads.set(key, { progress: progress / total, status: 'downloading' }),
       })
@@ -71,6 +75,7 @@ export const useDownloads = createGlobalState(() => {
     batchName: string,
     source: DownloadBatch['source'],
   ) => {
+    const format = settings.value.preferredFormat
     const list = [...items]
 
     const abortController = new AbortController()
@@ -105,7 +110,7 @@ export const useDownloads = createGlobalState(() => {
         list.map(i => i.url),
         BATCH_SIZE,
       )) {
-        for (const res of await getTrackStreamUrls(c, signal))
+        for (const res of await getTrackStreamUrls(c, { format, signal }))
           if (res.streamUrl) streamUrls.set(res.url, res.streamUrl)
       }
 
@@ -113,6 +118,7 @@ export const useDownloads = createGlobalState(() => {
       const mixedEntries = await Promise.all(
         list.map(async ({ meta, url }) => {
           const res = await run(url, {
+            format,
             key: getBatchTrackKey(batchId, url),
             meta,
             signal,
