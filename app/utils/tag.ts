@@ -1,7 +1,13 @@
 import type { MetadataTags } from 'mediabunny'
 
 export type TagWorkerPayload =
-  | { action: 'tag'; id: string; buffer: ArrayBuffer; tags: MetadataTags }
+  | {
+      action: 'tag'
+      id: string
+      buffer: ArrayBuffer
+      tags: MetadataTags
+      format: SCTranscodingType
+    }
   | { action: 'cancel'; id: string }
 
 export type TagWorkerResponse =
@@ -29,7 +35,7 @@ export const getTaggedTrackBlob = ({
 
   const worker = getTagWorker()
   const id = crypto.randomUUID()
-  const payload: TagWorkerPayload = { action: 'tag', buffer, id, tags }
+  const payload: TagWorkerPayload = { action: 'tag', buffer, format, id, tags }
   worker.postMessage(payload, [buffer])
 
   return new Promise<Blob>((resolve, reject) => {

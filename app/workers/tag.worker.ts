@@ -1,3 +1,5 @@
+import { registerAacEncoder } from '@mediabunny/aac-encoder'
+import { registerMp3Encoder } from '@mediabunny/mp3-encoder'
 import {
   BufferSource,
   BufferTarget,
@@ -5,7 +7,10 @@ import {
   Input,
   Mp3OutputFormat,
   Output,
-  HLS_FORMATS,
+  canEncodeAudio,
+  Mp4OutputFormat,
+  OggOutputFormat,
+  ALL_FORMATS,
 } from 'mediabunny'
 
 import type { TagWorkerPayload, TagWorkerResponse } from '~/utils/tag'
@@ -21,17 +26,33 @@ globalThis.addEventListener('message', async (payload: MessageEvent<TagWorkerPay
     return
   }
 
-  const { buffer, tags, id } = payload.data
+  const { buffer, tags, id, format } = payload.data
   conversions.set(id, null)
 
   try {
+    const trackFormat = getTrackFormat(format)
+    switch (format) {
+      case 'aac': {
+        if (!(await canEncodeAudio('aac'))) {
+          registerAacEncoder()
+        }
+        break
+      }
+      case 'mp3': {
+        if (!(await canEncodeAudio('mp3'))) {
+          registerMp3Encoder()
+        }
+        break
+      }
+    }
+
     const input = new Input({
-      formats: HLS_FORMATS,
+      formats: ALL_FORMATS,
       source: new BufferSource(buffer),
     })
 
     const output = new Output({
-      format: new Mp3OutputFormat(),
+      format: trackFormat,
       target: new BufferTarget(),
     })
 
@@ -67,3 +88,16 @@ globalThis.addEventListener('message', async (payload: MessageEvent<TagWorkerPay
     conversions.delete(id)
   }
 })
+
+function getTrackFormat(format: SCTranscodingType) {
+  switch (format) {
+    case 'aac':
+      return new Mp4OutputFormat({ fastStart: 'in-memory' })
+    case 'mp3':
+      return new Mp3OutputFormat()
+    case 'opus':
+      return new OggOutputFormat()
+    default:
+      throw new Error('Unsupported format')
+  }
+}
