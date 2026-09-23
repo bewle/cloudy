@@ -4,8 +4,6 @@ export interface Settings {
 }
 
 export type SettingMetadata = {
-  title: string
-  description?: string
   icon?: string
 } & (
   | {

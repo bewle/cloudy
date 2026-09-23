@@ -4,16 +4,13 @@ export const SETTINGS__DEFAULT: Settings = {
   preferredFormat: 'mp3',
 }
 
-export const SETTINGS__METADATA: Record<keyof Settings, SettingMetadata> = {
+export const SETTINGS__METADATA = {
   metadataFrames: {
-    description: 'ID3 frames to be written to downloaded files',
-    options: ['APIC', 'COMM', 'TDAT', 'TIT2', 'TPE1', 'WOAS'],
-    title: 'Metadata frames',
+    options: ['APIC', 'COMM', 'TDAT', 'TIT2', 'TPE1', 'WOAS'] as const,
     type: 'select',
   },
   preferredFormat: {
-    options: ['mp3', 'aac', 'opus'],
-    title: 'Preferred format',
+    options: ['aac', 'mp3', 'opus'] as SCTranscodingType[],
     type: 'picklist',
   },
-}
+} satisfies Record<keyof Settings, SettingMetadata>
