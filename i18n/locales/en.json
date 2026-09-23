@@ -5,7 +5,9 @@
   },
   "app_name": "cloudy",
   "general": {
-    "unknown_image": "Unknown image"
+    "unknown_image": "Unknown image",
+    "recommended": "Recommended",
+    "not_recommended": "Not recommended"
   },
   "error": {
     "track_load_failed": "Failed to load track",
@@ -49,6 +51,33 @@
     "downloads": "Downloads",
     "multitrack": "Multi-track",
     "playlist": "Playlist",
-    "themeToggle": "Toggle theme"
+    "themeToggle": "Toggle theme",
+    "settings": "Settings"
+  },
+  "settings": {
+    "metadataFrames": {
+      "description": "ID3 frames to be written to downloaded files",
+      "title": "Metadata frames"
+    },
+    "preferredFormat": {
+      "title": "Preferred format"
+    }
+  },
+  "transcoding": {
+    "description": {
+      "opus": "Great quality, least supported. Most tracks unlikely are able to be downloaded in this format",
+      "mp3": "Good quality, widely supported. All tracks will be able to be downloaded in this format",
+      "aac": "Best quality, highly supported. Most tracks likely are able to be downloaded in this format"
+    }
+  },
+  "id3": {
+    "human_readable": {
+      "TIT2": "Title",
+      "APIC": "Front cover",
+      "COMM": "Description",
+      "TPE1": "Artist",
+      "WOAS": "Track URL",
+      "TDAT": "Date"
+    }
   }
 }

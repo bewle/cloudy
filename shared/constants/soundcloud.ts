@@ -20,6 +20,11 @@ export const SC__TRANSCODING_MIME_TYPE_REGEX_MAP = {
   mp3: RE__SC_TRANSCODING_MIME_TYPES[1],
   opus: RE__SC_TRANSCODING_MIME_TYPES[2],
 } as const
+export const SC__TRANSCODING_RECOMMENDATIONS = {
+  aac: true,
+  mp3: undefined,
+  opus: false,
+} as const
 export const SC__IMAGE_FORMAT_EXTENSIONS = ['.jpg', '.png'] as const
 export const SC__IMAGE_QUALITY_TIERS_DESC: readonly SCImageFormat[] = [
   'original',
