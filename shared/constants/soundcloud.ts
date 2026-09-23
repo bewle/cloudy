@@ -4,6 +4,7 @@ import type { SCUser } from '../types/soundcloud/user'
 export const SC__API_URL = 'https://api-v2.soundcloud.com'
 export const SC__SITE_URL = 'https://soundcloud.com'
 export const SC__OPTION_KINDS = ['track', 'user', 'playlist'] as const
+export const SC__TRANSCODINGS = ['aac', 'mp3', 'opus'] as const
 export const SC__TRANSCODING_EXTENSION_MAP = {
   aac: '.m4a',
   mp3: '.mp3',

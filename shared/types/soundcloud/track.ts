@@ -17,7 +17,7 @@ import type {
 } from '../../schemas/soundcloud/track'
 import type { SCFilter } from './api'
 
-export type SCTranscodingType = keyof typeof SC__TRANSCODING_MIME_TYPE_REGEX_MAP
+export type SCTranscodingType = (typeof SC__TRANSCODINGS)[number]
 export type SCTrackSummary = Omit<
   Pick<SCTrack, (typeof SC__TRACK_SUMMARY_KEYS)[number]>,
   'user'
