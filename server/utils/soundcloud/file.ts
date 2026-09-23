@@ -1,13 +1,11 @@
-export async function getTrackStreamUrl(url: string) {
+export async function getTrackStreamUrl(url: string, format: SCTranscodingType) {
   const { media } = await $scResolve(url, 'track')
   const { transcodings } = media ?? {}
   if (!transcodings) throw soundcloudErrors.NO_TRACK_TRANSCODINGS({ why: 'No transcodings found' })
 
-  const _transcoding: SCTranscodingType = 'mp3'
-
-  const targetTranscodings = getTargetTranscodings(transcodings, _transcoding)
+  const targetTranscodings = getTargetTranscodings(transcodings, format)
   if (!targetTranscodings)
-    throw soundcloudErrors.NO_TARGET_TRACK_TRANSCODINGS({ transcoding: _transcoding })
+    throw soundcloudErrors.NO_TARGET_TRACK_TRANSCODINGS({ transcoding: format })
 
   const hlsTranscodings = getHlsTranscoding(targetTranscodings)
   if (!hlsTranscodings)
@@ -23,7 +21,10 @@ export async function getTrackStreamUrl(url: string) {
   const bestTranscoding = sortedTranscodings[0]
   if (!bestTranscoding)
     throw soundcloudErrors.NO_TRACK_TRANSCODINGS({
-      why: 'No transcodings found after filtering/sorting',
+      internal: {
+        transcodings,
+      },
+      why: 'The target audio format is unavailable for this track. Try switching to mp3 or m4a',
     })
 
   const streamUrlRes = await $scRequest(bestTranscoding.url)
@@ -31,11 +32,4 @@ export async function getTrackStreamUrl(url: string) {
     throw soundcloudErrors.NO_STREAM_URL()
 
   return streamUrlRes.url
-}
-
-export async function getTrackHlsUrl(url: string) {
-  const streamUrl = await getTrackStreamUrl(url)
-  return $fetch<string>(streamUrl, {
-    responseType: 'text',
-  })
 }
