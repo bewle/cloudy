@@ -20,17 +20,18 @@ const forwarded = useForwardPropsEmits(delegated)
 
 <template>
   <ToggleGroupItem
+    v-slot="slotProps"
     v-bind="forwarded"
     :class="
       cn(
         buttonStyles({ variant, size }),
-        'relative z-1',
-        nodePresent && 'data-[active]:(anchor-name-toggle bg-surface-active)',
+        'relative z-1 hover:(border-border-hover) reka-active:(bg-surface-active! border-border-strong-active!)',
+        nodePresent && 'reka-active:(anchor-name-toggle)',
         props.class,
       )
     "
     data-slot="toggle-group-item"
   >
-    <slot />
+    <slot v-bind="slotProps" />
   </ToggleGroupItem>
 </template>

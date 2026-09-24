@@ -27,20 +27,26 @@ const subheading = computed(() => {
     )
 
   if (tab.value === 'downloads') return t('sidebar.batch_count', [batches.size], batches.size)
+  if (tab.value === 'multitrack')
+    return t('sidebar.track_count', [multitrackList.size], multitrackList.size)
 
-  return t('sidebar.track_count', [multitrackList.size], multitrackList.size)
+  return null
 })
 </script>
 
 <template>
   <header class="flex shrink-0 gap-2 h-14 w-full items-center justify-between">
     <div class="flex shrink flex-col w-full justify-center">
-      <h3 class="text-xl font-medium w-fit">
+      <h3 class="text-xl font-semibold w-fit">
         {{ $t(`tab.${tab ?? previousTab}`) }}
       </h3>
 
       <USkeleton v-if="pendingArtist || pendingPlaylist" class="text-xs h-1lh w-24" />
-      <p v-else :title="subheading" class="text-xs text-muted-foreground font-mono truncate">
+      <p
+        v-else-if="subheading"
+        :title="subheading"
+        class="text-xs text-muted-foreground font-mono truncate"
+      >
         {{ subheading }}
       </p>
     </div>

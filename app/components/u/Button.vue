@@ -5,6 +5,13 @@ import type { HTMLAttributes } from 'vue'
 
 export const buttonStyles = tv({
   base: 'inline-flex items-center justify-center font-medium select-none shrink-0 gap-2 outline-none focus-visible:ring-2 ring-border-strong disabled:(opacity-50 pointer-events-none)',
+  compoundVariants: [
+    {
+      className: '-mx-2.5',
+      size: 'default',
+      variant: 'link',
+    },
+  ],
   defaultVariants: {
     size: 'default',
     variant: 'default',
@@ -18,13 +25,15 @@ export const buttonStyles = tv({
     },
     variant: {
       'default':
-        // 'text-muted-foreground not-[[data-state=active],[data-state=on]]:hover:(bg-background-hover text-foreground) active:(bg-background-active text-foreground) focus-visible:bg-background-hover data-[state=active]:(bg-background-active text-foreground) data-[state=on]:(bg-background-active text-foreground)',
-        'text-muted-foreground not-[[data-state=active],[data-state=on]]:hover:(bg-background-hover text-foreground) focus-visible:bg-background-hover data-[state=active]:(bg-background-active text-foreground) data-[state=on]:(bg-background-active text-foreground)',
+        'text-muted-foreground not-reka-active:hover:(bg-background-hover text-foreground) focus-visible:bg-background-hover reka-active:(bg-background-active text-foreground)',
       'ghost-danger':
-        'text-danger-foreground not-[[data-state=active],[data-state=on]]:hover:(bg-danger-hover text-foreground) active:(bg-danger-active text-foreground) focus-visible:bg-danger-hover',
+        'text-danger-foreground not-reka-active:hover:(bg-danger-hover text-foreground) active:(bg-danger-active text-foreground) focus-visible:bg-danger-hover',
+      'link':
+        'inline-flex underline text-primary h-fit not-reka-open:hover:(text-primary-hover) reka-open:(text-primary-active)',
       'outline':
-        // 'bg-surface not-[[data-state=active],[data-state=on]]:hover:(bg-surface-hover border-border-hover) active:(bg-surface-active border-border-active) focus-visible:bg-surface-hover border border-border data-[state=active]:(bg-surface-active border-border-active) data-[state=on]:(bg-surface-active border-border-active)',
-        'bg-surface not-[[data-state=active],[data-state=on]]:hover:(bg-surface-hover border-border-hover) focus-visible:bg-surface-hover border border-border data-[state=active]:(bg-surface-active border-border-active) data-[state=on]:(bg-surface-active border-border-active)',
+        'bg-surface not-reka-active:hover:(bg-surface-hover border-border-hover) focus-visible:bg-surface-hover border border-border reka-active:(bg-surface-active border-border-active)',
+      'soft':
+        'text-muted-foreground bg-surface border border-border not-reka-active:hover:(bg-surface-hover border-border-strong text-foreground border-border-strong) focus-visible:bg-surface-hover reka-active:(bg-surface-active border-border-strong-active text-foreground)',
     },
   },
 })

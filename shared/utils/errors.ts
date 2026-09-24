@@ -55,16 +55,17 @@ export const soundcloudErrors = defineErrorCatalog('soundcloud', {
     title: 'No m3u8 URLs found',
   },
   NO_STREAM_URL: {
-    message: 'No stream URL available for inputted track',
+    message: 'No stream URL available',
     status: 422,
   },
   NO_TARGET_TRACK_TRANSCODINGS: {
+    fix: 'Try switching to a more supported format or enable fallback formats',
     message: ({ transcoding }: { transcoding: SCTranscodingType }) =>
-      `No ${transcoding} transcodings are available for inputted track`,
+      `No ${transcoding} transcodings are available`,
     status: 422,
   },
   NO_TRACK_TRANSCODINGS: {
-    message: 'No valid transcodings are available for inputted track',
+    message: 'No valid transcodings are available',
     status: 422,
   },
 })

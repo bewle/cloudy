@@ -19,7 +19,7 @@ const parsedError = useParsedError(error)
         {{ parsedError.message ?? $t('error.unexpected') }}
       </h3>
       <p class="text-sm">
-        {{ parsedError.why }}
+        {{ parsedError.fix ?? parsedError.why }}
       </p>
 
       <UButton

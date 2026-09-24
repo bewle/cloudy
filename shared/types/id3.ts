@@ -45,5 +45,5 @@ export type ID3FrameId =
 
 export type ID3FrameIdWritable = Extract<
   ID3FrameId,
-  'TPE1' | 'TIT2' | 'TDAT' | 'COMM' | 'WOAS' | 'APIC'
+  'TPE1' | 'TIT2' | 'TDAT' | 'COMM' | 'WOAS' | 'APIC' | 'TCON'
 >

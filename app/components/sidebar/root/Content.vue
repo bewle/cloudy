@@ -18,6 +18,7 @@ const { tab } = useSidebarState()
       />
 
       <SidebarRootContentDownloads v-else-if="tab === 'downloads'" />
+      <SidebarRootContentSettings v-else-if="tab === 'settings'" />
     </div>
   </Transition>
 </template>

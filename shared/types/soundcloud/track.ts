@@ -3,7 +3,6 @@ import type * as v from 'valibot'
 import type {
   SC__TRACK_SEARCH_SUMMARY_KEYS,
   SC__TRACK_SUMMARY_KEYS,
-  SC__TRANSCODING_MIME_TYPE_REGEX_MAP,
 } from '../../constants/soundcloud'
 import type { scLicenseSchema } from '../../schemas/soundcloud/common'
 import type {
@@ -17,7 +16,12 @@ import type {
 } from '../../schemas/soundcloud/track'
 import type { SCFilter } from './api'
 
-export type SCTranscodingType = keyof typeof SC__TRANSCODING_MIME_TYPE_REGEX_MAP
+export interface TrackStream {
+  format: SCTranscodingType
+  streamUrl: string
+}
+
+export type SCTranscodingType = (typeof SC__TRANSCODINGS)[number]
 export type SCTrackSummary = Omit<
   Pick<SCTrack, (typeof SC__TRACK_SUMMARY_KEYS)[number]>,
   'user'

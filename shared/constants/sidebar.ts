@@ -4,6 +4,7 @@ export const SIDEBAR__BUTTON_KEYS = [
   'playlist',
   'downloads',
   'themeToggle',
+  'settings',
 ] as const
 export const SIDEBAR__BUTTON_META = {
   artist: {
@@ -29,6 +30,12 @@ export const SIDEBAR__BUTTON_META = {
     isTab: true,
     isTrackSource: true,
     section: 1,
+  },
+  settings: {
+    icon: ICON__SETTINGS,
+    isTab: true,
+    isTrackSource: false,
+    section: 2,
   },
   themeToggle: {
     icon: 'hi',

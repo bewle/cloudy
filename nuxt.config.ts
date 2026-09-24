@@ -51,6 +51,7 @@ export default defineNuxtConfig({
       scan: true,
     },
     collections: ['tabler', 'mingcute'],
+    customCollections: [{ dir: './app/assets/icons/format', prefix: 'format' }],
   },
   imports: {
     dirs: [

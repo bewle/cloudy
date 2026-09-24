@@ -30,8 +30,9 @@ export async function getTrackBuffer(
     onProgress,
     signal,
     streamUrl,
-  }: Pick<DownloadTrackOptions, 'onProgress' | 'signal' | 'streamUrl'> = {},
+    format,
+  }: Pick<DownloadTrackOptions, 'onProgress' | 'signal' | 'streamUrl' | 'format'> = {},
 ) {
-  const segs = await getTrackStreamSegments(url, streamUrl, signal)
+  const segs = await getTrackStreamSegments(url, { format, signal, streamUrl })
   return processTrackStreamSegments(segs, { onProgress, signal })
 }
