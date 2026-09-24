@@ -1,11 +1,11 @@
 <script lang="ts">
 const exampleMap: Record<Exclude<ID3FrameIdWritable, 'APIC'>, string> = {
   COMM: "Radio Edits of the singles from the album 'Before The Storm'.",
+  TCON: 'electronic dance music',
   TDAT: '10-26-1999',
   TIT2: 'Sandstorm (Radio Edit)',
   TPE1: 'Darude',
   WOAS: 'https://soundcloud.com/darude/sandstorm-radio-edit',
-  TCON: 'electronic dance music',
 }
 </script>
 
@@ -35,6 +35,7 @@ const props = defineProps<{
       </ULabel>
 
       <UCheckbox
+        as="span"
         tabindex="-1"
         :model-value="pressed"
         class="pointer-events-none group-hover:(bg-surface-hover border-border-hover) group-reka-active:(bg-surface-active! border-border-strong-active!)"

@@ -77,7 +77,8 @@
       "COMM": "Description",
       "TPE1": "Artist",
       "WOAS": "Track URL",
-      "TDAT": "Date"
+      "TDAT": "Date",
+      "TCON": "Genre"
     }
   }
 }

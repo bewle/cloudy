@@ -105,6 +105,13 @@ export async function getTrackTags(trackMeta: SCTrackSummary, frameIds: ID3Frame
         }
         break
       }
+      case 'TCON': {
+        if (trackMeta.genre) {
+          mediaBunnyKey = 'genre'
+          payload = trackMeta.genre
+        }
+        break
+      }
       case 'WOAS': {
         mediaBunnyKey = 'raw'
         payload = { WOAS: new TextEncoder().encode(trackMeta.permalink_url) }

@@ -54,6 +54,7 @@ export const useDownloads = createGlobalState(() => {
       const res = await downloadTrack(url, {
         ...opts,
         format,
+        frames: settings.value.metadataFrames,
         onProgress: (progress, total) =>
           downloads.set(key, { progress: progress / total, status: 'downloading' }),
       })

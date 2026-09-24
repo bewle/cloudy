@@ -11,16 +11,24 @@ export interface DownloadTrackOptions {
   streamUrl?: string
   signal?: AbortSignal
   format?: SCTranscodingType
+  frames?: ID3FrameIdWritable[]
 }
 
 export async function downloadTrack(
   url: string,
-  { meta, onProgress, signal, streamUrl, format = 'mp3' }: DownloadTrackOptions = {},
+  {
+    meta,
+    onProgress,
+    signal,
+    streamUrl,
+    format = 'mp3',
+    frames = SETTINGS__DEFAULT.metadataFrames,
+  }: DownloadTrackOptions = {},
 ): Promise<DownloadTrackResult> {
   const trackMeta = meta ?? (await getTrackMeta(url, signal))
 
   const trackBuffer = await getTrackBuffer(url, { format, onProgress, signal, streamUrl })
-  const tags = await getTrackTags(trackMeta, ['APIC', 'COMM', 'TDAT', 'TIT2', 'TPE1', 'WOAS'])
+  const tags = await getTrackTags(trackMeta, frames)
   const blob = await getTaggedTrackBlob({ buffer: trackBuffer, format, signal, tags })
   const mime = transcodingToMime(format)
   const extension = transcodingToExt(format)
