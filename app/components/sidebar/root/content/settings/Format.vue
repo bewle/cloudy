@@ -17,10 +17,11 @@ const modelValue = computed({
   <USettingRoot>
     <USettingLabel>{{ $t('settings.preferredFormat.title') }}</USettingLabel>
 
-    <ToggleGroupRoot class="flex flex-col gap-2" v-model:model-value="modelValue" type="single">
+    <ToggleGroupRoot v-model:model-value="modelValue" class="flex flex-col gap-2" type="single">
       <ToggleGroupItem
         v-for="format in formats"
         :key="format"
+        v-slot="{ pressed }"
         :value="format"
         :class="
           cn(
@@ -28,10 +29,9 @@ const modelValue = computed({
             'p-3 rounded border flex-col relative of-clip isolate group h-fit w-full justify-start items-start gap-2',
           )
         "
-        v-slot="{ pressed }"
       >
-        <div class="flex items-center justify-between w-full">
-          <div class="flex items-center gap-2">
+        <div class="flex w-full items-center justify-between">
+          <div class="flex gap-2 items-center">
             <span class="font-mono">{{ format }}</span>
             <UBadge
               v-if="isDefined(SC__TRANSCODING_RECOMMENDATIONS[format])"
@@ -47,7 +47,7 @@ const modelValue = computed({
           <UCheckbox
             as="div"
             tabindex="-1"
-            class="pointer-events-none z-1 group-hover:(bg-surface-hover border-border-strong) group-reka-active:(bg-surface-active! border-border-strong-active!)"
+            class="pointer-events-none z-1 group-hover:(border-border-strong bg-surface-hover) group-reka-active:(bg-surface-active! border-border-strong-active!)"
             :model-value="pressed"
           />
         </div>
@@ -58,7 +58,7 @@ const modelValue = computed({
 
         <Icon
           :name="`format:${format}`"
-          class="absolute -right-4 w-24 top-1/2 -translate-y-1/2 h-3/4 scale-200 opacity-5 text-muted-foreground"
+          class="text-muted-foreground opacity-5 h-3/4 w-24 scale-200 top-1/2 absolute -translate-y-1/2 -right-4"
         />
       </ToggleGroupItem>
     </ToggleGroupRoot>

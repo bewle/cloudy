@@ -20,6 +20,7 @@ const forwarded = useForwardPropsEmits(delegated)
 
 <template>
   <ToggleGroupItem
+    v-slot="slotProps"
     v-bind="forwarded"
     :class="
       cn(
@@ -30,7 +31,6 @@ const forwarded = useForwardPropsEmits(delegated)
       )
     "
     data-slot="toggle-group-item"
-    v-slot="slotProps"
   >
     <slot v-bind="slotProps" />
   </ToggleGroupItem>

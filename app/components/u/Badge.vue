@@ -5,18 +5,18 @@ import type { HTMLAttributes } from 'vue'
 
 export const badgeStyles = tv({
   base: 'font-medium',
+  defaultVariants: {
+    size: 'default',
+    variant: 'default',
+  },
   variants: {
     size: {
       default: 'text-xs rounded-sm px-1.25',
     },
     variant: {
-      soft: 'bg-surface-raised border-0',
       default: 'bg-surface border border-border',
+      soft: 'bg-surface-raised border-0',
     },
-  },
-  defaultVariants: {
-    size: 'default',
-    variant: 'default',
   },
 })
 

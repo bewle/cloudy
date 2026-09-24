@@ -31,15 +31,15 @@ export const SIDEBAR__BUTTON_META = {
     isTrackSource: true,
     section: 1,
   },
-  themeToggle: {
-    icon: 'hi',
-    isTab: false,
-    isTrackSource: false,
-    section: 2,
-  },
   settings: {
     icon: ICON__SETTINGS,
     isTab: true,
+    isTrackSource: false,
+    section: 2,
+  },
+  themeToggle: {
+    icon: 'hi',
+    isTab: false,
     isTrackSource: false,
     section: 2,
   },

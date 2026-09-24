@@ -29,8 +29,8 @@ const props = defineProps<{
       )
     "
   >
-    <div class="flex items-center justify-between w-full">
-      <ULabel class="text-foreground text-sm">
+    <div class="flex w-full items-center justify-between">
+      <ULabel class="text-sm text-foreground">
         {{ $t(`id3.human_readable.${frame}`) }}
       </ULabel>
 

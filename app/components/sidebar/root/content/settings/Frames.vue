@@ -7,14 +7,14 @@ const settings = useSettings()
     <USettingLabel>{{ $t('settings.metadataFrames.title') }}</USettingLabel>
 
     <UToggleGroupRoot
-      class="flex items-start gap-2"
-      type="multiple"
       v-model="settings.metadataFrames"
+      class="flex gap-2 items-start"
+      type="multiple"
     >
       <UToggleGroupItem
-        value="APIC"
-        class="size-36 group reka-off:opacity-75 rounded border border-border items-start justify-between p-2.5"
         v-slot="{ pressed }"
+        value="APIC"
+        class="group p-2.5 border border-border rounded size-36 items-start justify-between reka-off:opacity-75"
       >
         <ULabel class="text-foreground">
           {{ $t(`id3.human_readable.APIC`) }}
@@ -24,13 +24,13 @@ const settings = useSettings()
           as="span"
           tabindex="-1"
           :model-value="pressed"
-          class="pointer-events-none text-sm size-1lh group-hover:(bg-surface-hover border-border-hover) group-reka-active:(bg-surface-active! border-border-strong-active!)"
+          class="text-sm size-1lh pointer-events-none group-hover:(bg-surface-hover border-border-hover) group-reka-active:(bg-surface-active! border-border-strong-active!)"
         />
       </UToggleGroupItem>
 
-      <div class="w-full flex flex-col gap-2">
+      <div class="flex flex-col gap-2 w-full">
         <SidebarRootContentSettingsFramesField frame="TIT2" />
-        <div class="flex items-center gap-2">
+        <div class="flex gap-2 items-center">
           <SidebarRootContentSettingsFramesField frame="TPE1" />
           <SidebarRootContentSettingsFramesField frame="TDAT" />
         </div>
