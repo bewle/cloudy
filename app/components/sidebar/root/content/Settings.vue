@@ -16,6 +16,7 @@ const settingsEntries = computed(() => {
     <template v-for="entry in settingsEntries" :key="entry.key">
       <SidebarRootContentSettingsFrames v-if="entry.key === 'metadataFrames'" />
       <SidebarRootContentSettingsFormat v-else-if="entry.key === 'preferredFormat'" />
+      <SidebarRootContentSettingsFallback v-else-if="entry.key === 'fallbackFormat'" />
 
       <!-- <USettingRoot v-else>
         <USettingLabel>{{ $t(`settings.${entry.key}.title`) }}</USettingLabel>
