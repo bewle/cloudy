@@ -35,6 +35,9 @@ export const useDownloads = createGlobalState(() => {
   const settings = useSettings()
   const isBatchRunning = ref(false)
 
+  const getFallbackFormat = () =>
+    settings.value.fallbackFormat.enabled ? settings.value.fallbackFormat.format : undefined
+
   const downloadSingle = async (
     url: string,
     {
@@ -46,6 +49,7 @@ export const useDownloads = createGlobalState(() => {
     if (downloads.get(key)?.status === 'downloading') return
 
     const format = opts.format ?? settings.value.preferredFormat
+    const fallback = opts.fallback ?? getFallbackFormat()
 
     downloads.set(key, { progress: 0, status: 'downloading' })
 
@@ -53,6 +57,7 @@ export const useDownloads = createGlobalState(() => {
       opts.signal?.throwIfAborted()
       const res = await downloadTrack(url, {
         ...opts,
+        fallback,
         format,
         frames: settings.value.metadataFrames,
         onProgress: (progress, total) =>
@@ -77,6 +82,7 @@ export const useDownloads = createGlobalState(() => {
     source: DownloadBatch['source'],
   ) => {
     const format = settings.value.preferredFormat
+    const fallback = getFallbackFormat()
     const list = [...items]
 
     const abortController = new AbortController()
@@ -106,24 +112,26 @@ export const useDownloads = createGlobalState(() => {
 
     isBatchRunning.value = true
     try {
-      const streamUrls = new Map<string, string>()
+      const streams = new Map<string, TrackStream>()
       for (const c of chunk(
         list.map(i => i.url),
         BATCH_SIZE,
       )) {
-        for (const res of await getTrackStreamUrls(c, { format, signal }))
-          if (res.streamUrl) streamUrls.set(res.url, res.streamUrl)
+        for (const res of await getTrackStreamUrls(c, { fallback, format, signal }))
+          if (res.streamUrl && res.format)
+            streams.set(res.url, { format: res.format, streamUrl: res.streamUrl })
       }
 
       const run = limitAsync(downloadSingle, 3)
       const mixedEntries = await Promise.all(
         list.map(async ({ meta, url }) => {
           const res = await run(url, {
+            fallback,
             format,
             key: getBatchTrackKey(batchId, url),
             meta,
             signal,
-            streamUrl: streamUrls.get(url),
+            ...streams.get(url),
           })
           if (!res) return
 

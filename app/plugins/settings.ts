@@ -5,6 +5,8 @@ export default defineNuxtPlugin({
       default: () => SETTINGS__DEFAULT,
     })
 
+    settings.value = merge(settings.value, SETTINGS__DEFAULT)
+
     return {
       provide: { settings },
     }

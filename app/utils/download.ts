@@ -11,6 +11,7 @@ export interface DownloadTrackOptions {
   streamUrl?: string
   signal?: AbortSignal
   format?: SCTranscodingType
+  fallback?: SCTranscodingType
   frames?: ID3FrameIdWritable[]
 }
 
@@ -22,10 +23,13 @@ export async function downloadTrack(
     signal,
     streamUrl,
     format = 'mp3',
+    fallback,
     frames = SETTINGS__DEFAULT.metadataFrames,
   }: DownloadTrackOptions = {},
 ): Promise<DownloadTrackResult> {
   const trackMeta = meta ?? (await getTrackMeta(url, signal))
+  // Resolve up front so tagging/mime/extension use the format the server actually picked
+  if (!streamUrl) ({ format, streamUrl } = await getTrackStream(url, { fallback, format, signal }))
 
   const trackBuffer = await getTrackBuffer(url, { format, onProgress, signal, streamUrl })
   const tags = await getTrackTags(trackMeta, frames)
@@ -36,40 +40,41 @@ export async function downloadTrack(
   return { blob, extension, mime, trackMeta }
 }
 
-export interface BatchStreamUrlResult {
+export interface BatchStreamUrlResult extends Partial<TrackStream> {
   error?: { message: string }
-  streamUrl?: string
   url: string
 }
 
 export async function getTrackStreamUrls(
   urls: string[],
-  { signal, format }: Pick<DownloadTrackOptions, 'signal' | 'format'> = {},
+  { signal, format, fallback }: Pick<DownloadTrackOptions, 'signal' | 'format' | 'fallback'> = {},
 ) {
   return $fetch<BatchStreamUrlResult[]>('/api/track/stream', {
-    body: { format, url: urls },
+    body: { fallback, format, url: urls },
     method: 'POST',
+    signal,
+  })
+}
+
+export async function getTrackStream(
+  url: string,
+  {
+    signal,
+    format = SETTINGS__DEFAULT.preferredFormat,
+    fallback,
+  }: Pick<DownloadTrackOptions, 'signal' | 'format' | 'fallback'> = {},
+) {
+  return $fetch<TrackStream>('/api/track/stream', {
+    query: { fallback, format, url },
     signal,
   })
 }
 
 export async function getTrackStreamSegments(
   url: string,
-  {
-    signal,
-    streamUrl,
-    format = SETTINGS__DEFAULT.preferredFormat,
-  }: Pick<DownloadTrackOptions, 'signal' | 'streamUrl' | 'format'> = {},
+  { signal, streamUrl, format }: Pick<DownloadTrackOptions, 'signal' | 'streamUrl' | 'format'> = {},
 ) {
-  const m3u8Url =
-    streamUrl ??
-    (await $fetch<string>('/api/track/stream', {
-      query: {
-        format,
-        url,
-      },
-      signal,
-    }))
+  const m3u8Url = streamUrl ?? (await getTrackStream(url, { format, signal })).streamUrl
 
   const m3u8 = await $fetch<string>(m3u8Url, { responseType: 'text', signal })
 

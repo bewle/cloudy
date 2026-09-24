@@ -59,6 +59,7 @@ export const soundcloudErrors = defineErrorCatalog('soundcloud', {
     status: 422,
   },
   NO_TARGET_TRACK_TRANSCODINGS: {
+    fix: 'Try switching to a more supported format or enable fallback formats',
     message: ({ transcoding }: { transcoding: SCTranscodingType }) =>
       `No ${transcoding} transcodings are available`,
     status: 422,

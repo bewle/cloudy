@@ -1,6 +1,10 @@
 export interface Settings {
-  preferredFormat: keyof typeof SC__TRANSCODING_MIME_TYPE_REGEX_MAP
+  preferredFormat: SCTranscodingType
   metadataFrames: ID3FrameIdWritable[]
+  fallbackFormat: {
+    enabled: boolean
+    format: SCTranscodingType
+  }
 }
 
 export type SettingMetadata = {
