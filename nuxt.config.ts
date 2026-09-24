@@ -79,6 +79,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/image',
     '@nuxtjs/i18n',
+    '@nuxtjs/seo',
   ],
   nitro: {
     imports: {
@@ -117,5 +118,9 @@ export default defineNuxtConfig({
       },
       crossOriginEmbedderPolicy: false,
     },
+  },
+  site: {
+    description: '🌧️ archival frontend for SoundCloud',
+    name: 'cloudy',
   },
 })
