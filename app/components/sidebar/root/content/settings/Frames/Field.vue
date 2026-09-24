@@ -42,7 +42,10 @@ const props = defineProps<{
       />
     </div>
 
-    <span class="text-left text-muted-foreground text-xs italic font-normal truncate w-full pr-5">
+    <span
+      class="text-xs text-muted-foreground font-normal pr-5 text-left w-full truncate italic"
+      :class="!$settings.value.metadataFrames.includes(frame) && 'line-through'"
+    >
       {{ exampleMap[frame] }}
     </span>
   </UToggleGroupItem>

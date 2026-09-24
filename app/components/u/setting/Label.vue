@@ -9,7 +9,7 @@ const props = defineProps<USettingLabelProps>()
 </script>
 
 <template>
-  <ULabel :class="cn('text-base', props.class)" data-slot="SettingLabel">
+  <ULabel :class="cn('text-lg', props.class)" data-slot="SettingLabel">
     <slot />
   </ULabel>
 </template>
