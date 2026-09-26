@@ -21,9 +21,14 @@ const handlePaste = async (data: string | File | Event) => {
   let text: string | undefined
   if (data instanceof Event) {
     if (!canPaste.value) return
-    text = await navigator.clipboard.readText()
+    try {
+      text = await navigator.clipboard.readText()
+    } catch {
+      return
+    }
   } else text = data
 
+  text = text?.trim()
   if (!text) return
 
   form.value.url = text
