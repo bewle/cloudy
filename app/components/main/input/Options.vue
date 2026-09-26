@@ -3,7 +3,7 @@ import type { AcceptableValue } from 'reka-ui'
 
 import { injectMainInputContext } from '../Input.vue'
 
-const { form, autoDetect } = injectMainInputContext()
+const { form, autoDetect, submitForm } = injectMainInputContext()
 
 const inputOption = computed({
   get: () => form.value.option,
@@ -12,6 +12,25 @@ const inputOption = computed({
     form.value.option = v as InputOption
   },
 })
+
+const { isSupported: canPaste } = useClipboard()
+
+const handlePaste = async (data: string | File | Event) => {
+  if (data instanceof File) return
+
+  let text: string | undefined
+  if (data instanceof Event) {
+    if (!canPaste.value) return
+    text = await navigator.clipboard.readText()
+  } else text = data
+
+  if (!text) return
+
+  form.value.url = text
+  submitForm()
+}
+
+onPaste(handlePaste)
 </script>
 
 <template>
@@ -49,8 +68,17 @@ const inputOption = computed({
     >
       <Icon :name="ICON__AUTO_DETECT" />
     </UToggle>
-    <UButton size="icon" class="rounded-sm shrink-0">
-      <Icon :name="ICON__PASTE" />
-    </UButton>
+
+    <ClientOnly>
+      <UButton :disabled="!canPaste" @click="handlePaste" size="icon" class="rounded-sm shrink-0">
+        <Icon :name="ICON__PASTE" />
+      </UButton>
+
+      <template #fallback>
+        <UButton size="icon" class="rounded-sm shrink-0">
+          <Icon :name="ICON__PASTE" />
+        </UButton>
+      </template>
+    </ClientOnly>
   </div>
 </template>
