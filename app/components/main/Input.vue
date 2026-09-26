@@ -9,6 +9,7 @@ export interface MainInputContext {
   submitForm: () => void
   downloadState: ComputedRef<DownloadEntry | undefined>
   autoDetect: Ref<boolean>
+  clearError: () => void
 }
 
 export const [injectMainInputContext, provideMainInputContext] =
@@ -65,7 +66,13 @@ const submitForm = () => {
   }
 }
 
-provideMainInputContext({ autoDetect, downloadState, form, submitForm })
+provideMainInputContext({
+  autoDetect,
+  downloadState,
+  form,
+  submitForm,
+  clearError: () => downloads.delete(form.value.url),
+})
 </script>
 
 <template>

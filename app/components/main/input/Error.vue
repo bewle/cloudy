@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { injectMainInputContext } from '../Input.vue'
 
-const { downloadState } = injectMainInputContext()
+const { downloadState, clearError } = injectMainInputContext()
 const error = computed(() =>
   downloadState.value?.status === 'error' ? downloadState.value.error : undefined,
 )
@@ -26,7 +26,7 @@ const parsedError = useParsedError(error)
         size="icon"
         variant="ghost-danger"
         class="right-2 top-2 absolute"
-        @click="error = undefined"
+        @click="clearError"
       >
         <Icon :name="ICON__CLOSE" />
       </UButton>
