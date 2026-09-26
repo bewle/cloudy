@@ -1,0 +1,34 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
+  "entry": [
+    // golar CLI config (not referenced by any script)
+    "golar.config.ts",
+    // loaded by @unocss/nuxt at build time
+    "uno.config.ts!",
+  ],
+  // plugin treats uno.config.ts as non-production config; the entry above covers it
+  "unocss": false,
+  "ignoreDependencies": [
+    // nuxt.config `icon.collections`
+    "@iconify-json/mingcute",
+    "@iconify-json/tabler",
+    // optional peer of nuxt-og-image (renderer)
+    "@takumi-rs/core",
+    // nuxt.config `imports.presets` (auto-imported, never imported explicitly)
+    "es-toolkit",
+    "ufo",
+    // used by `vp lint` typeAware and `nuxt typecheck`
+    "oxlint-tsgolint",
+    "vue-tsc",
+  ],
+  // Covers <script> exports in SFCs (props types, contexts, tv() styles)
+  "ignoreExportsUsedInFile": true,
+  "ignoreIssues": {
+    // Knip's Nuxt auto-import map is keyed by name: nitro's server/utils getTrackMeta
+    // overwrites this one, so its use in app/utils/download.ts isn't seen
+    "app/utils/track.ts": ["exports"],
+    // tv() styles used only in <template>, which ignoreExportsUsedInFile doesn't see
+    "app/components/u/Input.vue": ["exports"],
+    "app/components/u/select/{Content,Item}.vue": ["exports"],
+  },
+}
