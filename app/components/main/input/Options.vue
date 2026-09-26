@@ -70,7 +70,7 @@ onPaste(handlePaste)
     </UToggle>
 
     <ClientOnly>
-      <UButton :disabled="!canPaste" @click="handlePaste" size="icon" class="rounded-sm shrink-0">
+      <UButton :disabled="!canPaste" size="icon" class="rounded-sm shrink-0" @click="handlePaste">
         <Icon :name="ICON__PASTE" />
       </UButton>
 
