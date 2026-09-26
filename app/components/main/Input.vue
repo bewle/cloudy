@@ -68,10 +68,10 @@ const submitForm = () => {
 
 provideMainInputContext({
   autoDetect,
+  clearError: () => downloads.delete(form.value.url),
   downloadState,
   form,
   submitForm,
-  clearError: () => downloads.delete(form.value.url),
 })
 </script>
 
