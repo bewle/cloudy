@@ -12,6 +12,7 @@ const settings = useSettings()
         tag="label"
         for="fallback-enabled"
         scope="global"
+        class="text-sm"
       >
         <template #format>
           <USettingPicklist
@@ -19,9 +20,6 @@ const settings = useSettings()
             variant="link"
             :options="SETTINGS__METADATA.fallbackFormat.options"
             :disabled="!settings.fallbackFormat.enabled"
-            :ui="{
-              trigger: 'text-base',
-            }"
           />
         </template>
       </i18n-t>
