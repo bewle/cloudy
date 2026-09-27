@@ -10,6 +10,7 @@
     "not_recommended": "Not recommended"
   },
   "error": {
+    "rate_limited": "Too many requests, try again in a minute",
     "track_load_failed": "Failed to load track",
     "unexpected": "Unexpected error"
   },

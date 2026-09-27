@@ -8,6 +8,7 @@ export const useParsedError = (error: MaybeRefOrGetter<Error | undefined>) => {
     if (!errorRef.value) return
 
     const parsed = parseError(errorRef.value)
+    if (parsed.status === 429) return { ...parsed, message: t('error.rate_limited') }
     if ('why' in parsed) return parsed
 
     const status =
