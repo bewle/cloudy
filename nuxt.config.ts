@@ -94,6 +94,18 @@ export default defineNuxtConfig({
       ],
     },
   },
+  routeRules: {
+    '/api/**': {
+      security: {
+        rateLimiter: { headers: true, interval: 60_000, tokensPerInterval: 60 },
+      },
+    },
+    '/api/track/stream': {
+      security: {
+        rateLimiter: { headers: true, interval: 60_000, tokensPerInterval: 20 },
+      },
+    },
+  },
   runtimeConfig: {
     axiom: {
       apiKey: '',
@@ -102,6 +114,7 @@ export default defineNuxtConfig({
     posthog: {
       apiKey: '',
     },
+    rateLimitIpHeader: '',
   },
   security: {
     headers: {
@@ -118,6 +131,7 @@ export default defineNuxtConfig({
       },
       crossOriginEmbedderPolicy: false,
     },
+    rateLimiter: false,
   },
   site: {
     description: '🌧️ archival frontend for SoundCloud',
