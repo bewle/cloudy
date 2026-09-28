@@ -53,6 +53,7 @@ export const useDownloads = createGlobalState(() => {
 
     const format = opts.format ?? settings.value.preferredFormat
     const fallback = opts.fallback ?? getFallbackFormat()
+    const avoidLq = opts.avoidLq ?? settings.value.fallbackFormat.avoidLq
 
     downloads.set(key, { status: 'queued' })
     await queue.acquire()
@@ -62,6 +63,7 @@ export const useDownloads = createGlobalState(() => {
       downloads.set(key, { progress: 0, status: 'downloading' })
       const res = await downloadTrack(url, {
         ...opts,
+        avoidLq,
         fallback,
         format,
         frames: settings.value.metadataFrames,
@@ -90,6 +92,7 @@ export const useDownloads = createGlobalState(() => {
   ) => {
     const format = settings.value.preferredFormat
     const fallback = getFallbackFormat()
+    const { avoidLq } = settings.value.fallbackFormat
     const list = [...items]
 
     const abortController = new AbortController()
@@ -124,7 +127,7 @@ export const useDownloads = createGlobalState(() => {
         list.map(i => i.url),
         BATCH_SIZE,
       )) {
-        for (const res of await getTrackStreamUrls(c, { fallback, format, signal }))
+        for (const res of await getTrackStreamUrls(c, { avoidLq, fallback, format, signal }))
           if (res.streamUrl && res.format)
             streams.set(res.url, { format: res.format, streamUrl: res.streamUrl })
       }
@@ -132,6 +135,7 @@ export const useDownloads = createGlobalState(() => {
       const mixedEntries = await Promise.all(
         list.map(async ({ meta, url }) => {
           const res = await downloadSingle(url, {
+            avoidLq,
             fallback,
             format,
             key: getBatchTrackKey(batchId, url),

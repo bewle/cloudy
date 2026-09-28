@@ -12,7 +12,7 @@ const settings = useSettings()
         tag="label"
         for="fallback-enabled"
         scope="global"
-        class="text-sm"
+        class="text-sm select-none"
       >
         <template #format>
           <USettingPicklist
@@ -23,6 +23,17 @@ const settings = useSettings()
           />
         </template>
       </i18n-t>
+    </div>
+
+    <div class="pl-6 flex gap-2 items-center">
+      <UCheckbox
+        id="fallback-avoid-lq"
+        v-model="settings.fallbackFormat.avoidLq"
+        :disabled="!settings.fallbackFormat.enabled"
+      />
+      <ULabel for="fallback-avoid-lq" class="text-sm font-normal">
+        {{ $t('settings.fallbackFormat.avoidLq') }}
+      </ULabel>
     </div>
   </USettingRoot>
 </template>
