@@ -25,7 +25,7 @@ const settings = useSettings()
       </i18n-t>
     </div>
 
-    <div class="flex gap-2 items-center pl-6">
+    <div class="pl-6 flex gap-2 items-center">
       <UCheckbox
         id="fallback-avoid-lq"
         v-model="settings.fallbackFormat.avoidLq"
