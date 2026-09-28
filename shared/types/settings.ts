@@ -2,6 +2,7 @@ export interface Settings {
   preferredFormat: SCTranscodingType
   metadataFrames: ID3FrameIdWritable[]
   fallbackFormat: {
+    avoidLq: boolean
     enabled: boolean
     format: SCTranscodingType
   }

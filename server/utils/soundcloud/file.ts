@@ -2,6 +2,7 @@ export async function getTrackStreamUrl(
   url: string,
   format: SCTranscodingType,
   fallback?: SCTranscodingType,
+  avoidLq = false,
 ) {
   const { media } = await $scResolve(url, 'track')
   const { transcodings } = media ?? {}
@@ -9,9 +10,14 @@ export async function getTrackStreamUrl(
 
   let resolvedFormat = format
   let bestTranscoding = getBestTranscoding(transcodings, format)
-  if (!bestTranscoding && fallback && fallback !== format) {
-    resolvedFormat = fallback
-    bestTranscoding = getBestTranscoding(transcodings, fallback)
+  const alt =
+    fallback && fallback !== format ? getBestTranscoding(transcodings, fallback) : undefined
+  if (
+    alt &&
+    (!bestTranscoding || (avoidLq && bestTranscoding.quality === 'lq' && alt.quality !== 'lq'))
+  ) {
+    resolvedFormat = fallback!
+    bestTranscoding = alt
   }
   if (!bestTranscoding) throw soundcloudErrors.NO_TARGET_TRACK_TRANSCODINGS({ transcoding: format })
 

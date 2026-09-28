@@ -1,4 +1,5 @@
 const bodySchema = v.object({
+  avoidLq: v.optional(v.boolean()),
   fallback: v.optional(v.picklist(SC__TRANSCODINGS)),
   format: v.optional(v.picklist(SC__TRANSCODINGS), 'mp3'),
   url: v.pipe(v.array(v.pipe(v.string(), v.url())), v.maxLength(50)),
@@ -9,7 +10,7 @@ export default defineEventHandler(async event => {
 
   const resolve = limitAsync(async (url: string) => {
     const [err, stream] = await attemptAsync<TrackStream, Error>(() =>
-      getTrackStreamUrl(url, body.format, body.fallback),
+      getTrackStreamUrl(url, body.format, body.fallback, body.avoidLq),
     )
     return err ? { error: { message: err.message }, url } : { ...stream, url }
   }, 8)

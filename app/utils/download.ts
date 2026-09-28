@@ -12,6 +12,7 @@ export interface DownloadTrackOptions {
   signal?: AbortSignal
   format?: SCTranscodingType
   fallback?: SCTranscodingType
+  avoidLq?: boolean
   frames?: ID3FrameIdWritable[]
 }
 
@@ -24,12 +25,13 @@ export async function downloadTrack(
     streamUrl,
     format = 'mp3',
     fallback,
+    avoidLq,
     frames = SETTINGS__DEFAULT.metadataFrames,
   }: DownloadTrackOptions = {},
 ): Promise<DownloadTrackResult> {
   const trackMeta = meta ?? (await getTrackMeta(url, signal))
-  // Resolve up front so tagging/mime/extension use the format the server actually picked
-  if (!streamUrl) ({ format, streamUrl } = await getTrackStream(url, { fallback, format, signal }))
+  if (!streamUrl)
+    ({ format, streamUrl } = await getTrackStream(url, { avoidLq, fallback, format, signal }))
 
   const trackBuffer = await getTrackBuffer(url, { format, onProgress, signal, streamUrl })
   const tags = await getTrackTags(trackMeta, frames)
@@ -47,10 +49,15 @@ export interface BatchStreamUrlResult extends Partial<TrackStream> {
 
 export async function getTrackStreamUrls(
   urls: string[],
-  { signal, format, fallback }: Pick<DownloadTrackOptions, 'signal' | 'format' | 'fallback'> = {},
+  {
+    signal,
+    format,
+    fallback,
+    avoidLq,
+  }: Pick<DownloadTrackOptions, 'signal' | 'format' | 'fallback' | 'avoidLq'> = {},
 ) {
   return $fetch<BatchStreamUrlResult[]>('/api/track/stream', {
-    body: { fallback, format, url: urls },
+    body: { avoidLq, fallback, format, url: urls },
     method: 'POST',
     signal,
   })
@@ -62,10 +69,11 @@ export async function getTrackStream(
     signal,
     format = SETTINGS__DEFAULT.preferredFormat,
     fallback,
-  }: Pick<DownloadTrackOptions, 'signal' | 'format' | 'fallback'> = {},
+    avoidLq,
+  }: Pick<DownloadTrackOptions, 'signal' | 'format' | 'fallback' | 'avoidLq'> = {},
 ) {
   return $fetch<TrackStream>('/api/track/stream', {
-    query: { fallback, format, url },
+    query: { avoidLq, fallback, format, url },
     signal,
   })
 }

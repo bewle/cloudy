@@ -65,7 +65,8 @@
       "title": "Preferred format"
     },
     "fallbackFormat": {
-      "description": "Download in {format} when the preferred format is unavailable"
+      "description": "Download in {format} when the preferred format is unavailable",
+      "avoidLq": "Also use it when the preferred format is only available in low quality"
     }
   },
   "transcoding": {

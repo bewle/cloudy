@@ -3,6 +3,7 @@ import { SC__TRANSCODINGS } from './soundcloud'
 export const SETTINGS__COOKIE_NAME = 'cloudy:settings'
 export const SETTINGS__DEFAULT: Settings = {
   fallbackFormat: {
+    avoidLq: true,
     enabled: true,
     format: 'mp3',
   },
