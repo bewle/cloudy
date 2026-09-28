@@ -10,6 +10,14 @@ import { presetAnchorPositioning } from './uno.anchor'
 import { presetReka } from './uno.reka'
 
 export default defineConfig<PresetWind4Theme>({
+  extendTheme: theme => ({
+    ...theme,
+    breakpoint: {
+      ...theme.breakpoint,
+      'main-input-options': '77rem',
+      'sidebar': '69rem',
+    },
+  }),
   presets: [
     presetAnchorPositioning,
     presetReka,
