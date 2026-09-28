@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 const props = defineProps<{
   trackRow: TrackRow
+  isDownloading: boolean
 }>()
 
+const { downloadSingle } = useDownloads()
 const { multitrackList } = useSidebarState()
 const inMultitrackList = computed(() => multitrackList.has(props.trackRow.url))
 
@@ -17,6 +19,14 @@ const removeMultitrackItem = () => multitrackList.delete(props.trackRow.url)
     </UButton>
     <UButton v-else size="icon" @click="addMultitrackItem">
       <Icon :name="ICON__PLUS" />
+    </UButton>
+
+    <UButton
+      :is-loading="isDownloading"
+      size="icon"
+      @click="downloadSingle(trackRow.url, { save: true })"
+    >
+      <Icon :name="ICON__DOWNLOAD" />
     </UButton>
   </div>
 </template>

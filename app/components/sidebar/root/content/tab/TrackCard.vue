@@ -4,6 +4,12 @@ const props = defineProps<{ trackRow: TrackRow }>()
 const parsedError = computed(() =>
   props.trackRow.status === 'error' ? parseError(props.trackRow.error) : undefined,
 )
+
+const { downloads } = useDownloads()
+const downloadEntry = computed(() => downloads.get(props.trackRow.url))
+const isDownloading = computed(
+  () => downloadEntry.value?.status === 'downloading' || downloadEntry.value?.status === 'queued',
+)
 </script>
 
 <template>
@@ -29,7 +35,7 @@ const parsedError = computed(() =>
         <NuxtTime :datetime="resolveTrackDate(trackRow.track)" />
       </SidebarRootContentListCardDate>
 
-      <SidebarRootContentListCardButtons :track-row />
+      <SidebarRootContentListCardButtons :is-downloading :track-row />
     </template>
 
     <template v-else>
@@ -52,7 +58,11 @@ const parsedError = computed(() =>
         </SidebarRootContentListCardArtist>
       </SidebarRootContentListCardContent>
 
-      <SidebarRootContentListCardButtons :track-row />
+      <SidebarRootContentListCardButtons :is-downloading :track-row />
     </template>
+
+    <UProgressUnderlay
+      :progress="downloadEntry?.status === 'downloading' ? downloadEntry.progress : 0"
+    />
   </SidebarRootContentListCard>
 </template>

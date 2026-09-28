@@ -1,4 +1,5 @@
 import { downloadZip, type InputWithSizeMeta } from 'client-zip'
+import { Semaphore } from 'es-toolkit'
 
 export type DownloadEntry =
   | { status: 'queued' }
@@ -28,12 +29,14 @@ export type FlatBatch =
   | { type: 'separator'; id: number }
 
 const BATCH_SIZE = 50
+const MAX_CONCURRENCY = 3
 
 export const useDownloads = createGlobalState(() => {
   const downloads = shallowReactive(new Map<string, DownloadEntry>())
   const batches = shallowReactive(new Map<DownloadBatch['id'], DownloadBatch>())
   const settings = useSettings()
   const isBatchRunning = ref(false)
+  const queue = new Semaphore(MAX_CONCURRENCY)
 
   const getFallbackFormat = () =>
     settings.value.fallbackFormat.enabled ? settings.value.fallbackFormat.format : undefined
@@ -51,10 +54,12 @@ export const useDownloads = createGlobalState(() => {
     const format = opts.format ?? settings.value.preferredFormat
     const fallback = opts.fallback ?? getFallbackFormat()
 
-    downloads.set(key, { progress: 0, status: 'downloading' })
+    downloads.set(key, { status: 'queued' })
+    await queue.acquire()
 
     try {
       opts.signal?.throwIfAborted()
+      downloads.set(key, { progress: 0, status: 'downloading' })
       const res = await downloadTrack(url, {
         ...opts,
         fallback,
@@ -73,6 +78,8 @@ export const useDownloads = createGlobalState(() => {
         key,
         opts.signal?.aborted ? { status: 'aborted' } : { error: error as Error, status: 'error' },
       )
+    } finally {
+      queue.release()
     }
   }
 
@@ -122,10 +129,9 @@ export const useDownloads = createGlobalState(() => {
             streams.set(res.url, { format: res.format, streamUrl: res.streamUrl })
       }
 
-      const run = limitAsync(downloadSingle, 3)
       const mixedEntries = await Promise.all(
         list.map(async ({ meta, url }) => {
-          const res = await run(url, {
+          const res = await downloadSingle(url, {
             fallback,
             format,
             key: getBatchTrackKey(batchId, url),
