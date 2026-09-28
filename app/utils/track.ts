@@ -17,6 +17,13 @@ export const toReadyTrackRow = (track: SCTrackSummary): TrackRow => ({
   url: track.permalink_url,
 })
 
+export function matchesQuery(track: SCTrackSummary | undefined, url: string, query: string) {
+  const q = query.trim().toLowerCase()
+  if (!q) return true
+
+  return (track ? `${track.title} ${resolveTrackArtist(track)}` : url).toLowerCase().includes(q)
+}
+
 export async function getTrackMeta(url: string, signal?: AbortSignal) {
   return $fetch<SCTrackSummary>('/api/track/meta', {
     query: { url },
