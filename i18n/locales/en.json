@@ -1,7 +1,8 @@
 {
   "action": {
     "auto_detect": "Automatically detect URL type",
-    "close_sidebar": "Close sidebar"
+    "close_sidebar": "Close sidebar",
+    "open_sidebar": "Open sidebar"
   },
   "app_name": "cloudy",
   "general": {

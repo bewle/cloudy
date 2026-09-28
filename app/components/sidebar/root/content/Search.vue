@@ -3,7 +3,7 @@ const { t } = useI18n()
 const sidebarState = useSidebarState()
 
 const placeholder = computed(() => {
-  if (sidebarState.tab.value === 'artist') {
+  if (sidebarState.shownTab.value === 'artist') {
     if (!sidebarState.artist.value) return t('sidebar.no_selection.title.artist')
     if (sidebarState.artistMeta.pending.value) return t('state.loading')
 
@@ -13,7 +13,7 @@ const placeholder = computed(() => {
       : t('search.placeholder')
   }
 
-  if (sidebarState.tab.value === 'playlist') {
+  if (sidebarState.shownTab.value === 'playlist') {
     if (!sidebarState.playlist.value) return t('sidebar.no_selection.title.playlist')
     if (sidebarState.playlistMeta.pending.value) return t('state.loading')
 
@@ -28,9 +28,9 @@ const placeholder = computed(() => {
 })
 
 const disabled = computed(() => {
-  if (sidebarState.tab.value === 'multitrack') return false
-  if (sidebarState.tab.value === 'artist' && sidebarState.artist.value) return false
-  if (sidebarState.tab.value === 'playlist' && sidebarState.playlist.value) return false
+  if (sidebarState.shownTab.value === 'multitrack') return false
+  if (sidebarState.shownTab.value === 'artist' && sidebarState.artist.value) return false
+  if (sidebarState.shownTab.value === 'playlist' && sidebarState.playlist.value) return false
 
   return true
 })

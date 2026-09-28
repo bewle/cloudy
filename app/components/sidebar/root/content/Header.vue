@@ -8,26 +8,26 @@ const {
   artist: artistUrl,
   playlist: playlistUrl,
   playlistMeta,
-  previousTab,
+  shownTab,
 } = useSidebarState()
 const { data: artistMetaData, pending: pendingArtist } = artistMeta
 const { data: playlistMetaData, pending: pendingPlaylist } = playlistMeta
 
 const subheading = computed(() => {
-  if (tab.value === 'artist')
+  if (shownTab.value === 'artist')
     return (
       artistMetaData.value?.full_name ||
       artistMetaData.value?.username ||
       artistUrl.value ||
       t('sidebar.no_selection.title.artist')
     )
-  if (tab.value === 'playlist')
+  if (shownTab.value === 'playlist')
     return (
       playlistMetaData.value?.title ?? playlistUrl.value ?? t('sidebar.no_selection.title.playlist')
     )
 
-  if (tab.value === 'downloads') return t('sidebar.batch_count', [batches.size], batches.size)
-  if (tab.value === 'multitrack')
+  if (shownTab.value === 'downloads') return t('sidebar.batch_count', [batches.size], batches.size)
+  if (shownTab.value === 'multitrack')
     return t('sidebar.track_count', [multitrackList.size], multitrackList.size)
 
   return null
@@ -38,7 +38,7 @@ const subheading = computed(() => {
   <header class="flex shrink-0 gap-2 h-14 w-full items-center justify-between">
     <div class="flex shrink flex-col w-full justify-center">
       <h3 class="text-xl font-semibold w-fit">
-        {{ $t(`tab.${tab ?? previousTab}`) }}
+        {{ $t(`tab.${shownTab}`) }}
       </h3>
 
       <USkeleton v-if="pendingArtist || pendingPlaylist" class="text-xs h-1lh w-24" />

@@ -1,12 +1,14 @@
-<script lang="ts" setup>
+<script lang="ts">
 import { UToggleGroupItem } from '#components'
 
-const { tab, previousTab: previousTabRef } = useSidebarState()
-
-const buttonProps = {
+export const sidebarTabButtonProps = {
   class: 'rounded-sm h-auto w-14 aspect-square',
   size: 'icon',
 } as const
+</script>
+
+<script lang="ts" setup>
+const { tab, previousTab: previousTabRef } = useSidebarState()
 
 const shouldAnimate = computed(() => {
   const currentTab = tab.value
@@ -39,7 +41,7 @@ const getPreviousTab = (key: SidebarButtonKey) => {
         v-if="SIDEBAR__BUTTON_META[item].isTab"
         :value="item"
         :aria-label="$t(`tab.${item}`)"
-        v-bind="buttonProps"
+        v-bind="sidebarTabButtonProps"
       >
         <Icon :name="SIDEBAR__BUTTON_META[item].icon" class="size-1lh" />
       </UToggleGroupItem>
@@ -47,13 +49,13 @@ const getPreviousTab = (key: SidebarButtonKey) => {
       <UButton
         v-else-if="item === 'themeToggle'"
         :aria-label="$t(`tab.${item}`)"
-        v-bind="buttonProps"
+        v-bind="sidebarTabButtonProps"
         @click="toggleTheme"
       >
         <Icon :name="$colorMode.preference === 'dark' ? ICON__CLOUD : ICON__SUN" class="size-1lh" />
       </UButton>
 
-      <UButton v-else :aria-label="$t(`tab.${item}`)" v-bind="buttonProps">
+      <UButton v-else :aria-label="$t(`tab.${item}`)" v-bind="sidebarTabButtonProps">
         <Icon :name="SIDEBAR__BUTTON_META[item].icon" class="size-1lh" />
       </UButton>
     </template>

@@ -52,8 +52,10 @@ onPaste(handlePaste)
         :key="o"
         class="font-normal rounded-sm"
         :value="o"
+        :aria-label="$t(`input.option.${o}`)"
       >
-        {{ $t(`input.option.${o}`) }}
+        <span class="lt-main-input-options:hidden">{{ $t(`input.option.${o}`) }}</span>
+        <Icon :name="INPUT__OPTIONS_ICON_MAP[o]" class="main-input-options:hidden" />
       </UToggleGroupItem>
 
       <div class="flex-1" />
