@@ -13,6 +13,8 @@ watch(tab, t => {
 
 <template>
   <div class="flex h-screen items-center">
+    <MobileButtons />
+
     <SplitterGroup
       id="index-splitter"
       direction="horizontal"
