@@ -1,5 +1,11 @@
 export const INPUT__SOURCE_OPTIONS = ['track', 'artist', 'playlist'] as const
 export const INPUT__OPTIONS = [...INPUT__SOURCE_OPTIONS, 'multitrack'] as const
+export const INPUT__OPTIONS_ICON_MAP = {
+  artist: ICON__ARTIST,
+  multitrack: ICON__MULTITRACK,
+  playlist: ICON__PLAYLIST,
+  track: ICON__TRACK,
+} as const satisfies Record<InputOption, string>
 export type InputOption = (typeof INPUT__OPTIONS)[number]
 export type InputSourceOption = (typeof INPUT__SOURCE_OPTIONS)[number]
 
