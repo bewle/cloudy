@@ -24,6 +24,7 @@
     }
   },
   "search": {
+    "no_results": "No matching tracks",
     "placeholder": "Search tracks",
     "placeholder_count": "Search {0} tracks|Search {0} track|Search {0} tracks"
   },
