@@ -25,7 +25,7 @@ watch(tab, t => {
         ref="sidebar"
         as="aside"
         size-unit="px"
-        class="h-full flex lt-sidebar:(absolute inset-0 z-1)"
+        class="flex h-full lt-sidebar:(inset-0 absolute z-1)"
         :class="[
           animating && 'motion-safe:(transition-[flex-grow] duration-150 ease-snappy)',
           !tab && 'lt-sidebar:(pointer-events-none)',
@@ -40,12 +40,12 @@ watch(tab, t => {
         </div>
       </SplitterPanel>
 
-      <SplitterResizeHandle v-if="tab && isSidebarPanel" class="my-2.5 -translate-x-2.5 z-2" />
+      <SplitterResizeHandle v-if="tab && isSidebarPanel" class="my-2.5 z-2 -translate-x-2.5" />
 
       <SplitterPanel
         id="index-splitter-panel-2"
         as="main"
-        class="flex items-center justify-center sidebar:(pr-2) lt-sidebar:(p-2)"
+        class="flex items-center justify-center lt-sidebar:(p-2) sidebar:(pr-2)"
         :class="animating && 'motion-safe:(transition-[flex-grow] duration-150 ease-snappy)'"
       >
         <MainInput />

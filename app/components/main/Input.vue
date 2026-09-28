@@ -76,7 +76,7 @@ provideMainInputContext({
 </script>
 
 <template>
-  <div class="gap-4 grid grid-rows-3 w-full max-w-lg md:max-w-main-input-w">
+  <div class="gap-4 grid grid-rows-3 max-w-lg w-full md:max-w-main-input-w">
     <div class="pb-2 flex items-end justify-center">
       <MainInputTitle />
     </div>

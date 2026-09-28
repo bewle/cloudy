@@ -8,8 +8,8 @@ const { previousTab, tab } = useSidebarState()
   <UButton
     :aria-label="$t('action.open_sidebar')"
     v-bind="mobileButtonProps"
-    @click="tab = previousTab"
     :class="cn(mobileButtonProps.class, 'absolute top-4 left-4')"
+    @click="tab = previousTab"
   >
     <Icon :name="ICON__SIDEBAR_OPEN" class="size-1lh" />
   </UButton>

@@ -5,7 +5,7 @@ const { tab, animating, isSidebarPanel } = useSidebarState()
 <template>
   <FocusScope as-child :trapped="!!tab && !isSidebarPanel">
     <div
-      class="p-1.5 border border-border rounded bg-surface flex h-full overflow-hidden lt-sidebar:(absolute inset-2 h-auto -translate-x-[calc(100%+1rem)])"
+      class="p-1.5 border border-border rounded bg-surface flex h-full overflow-hidden lt-sidebar:(h-auto inset-2 absolute -translate-x-[calc(100%+1rem)])"
       :class="[
         tab && 'lt-sidebar:translate-x-0',
         animating && 'lt-sidebar:(transition-transform ease-snappy duration-150)',
