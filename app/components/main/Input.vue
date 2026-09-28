@@ -76,13 +76,13 @@ provideMainInputContext({
 </script>
 
 <template>
-  <div class="gap-4 grid grid-rows-3">
+  <div class="gap-4 grid grid-rows-3 w-full max-w-lg md:max-w-main-input-w">
     <div class="pb-2 flex items-end justify-center">
       <MainInputTitle />
     </div>
 
     <div
-      class="p-2 border border-border rounded bg-surface flex shrink-0 flex-col gap-2 w-main-input-w relative overflow-clip has-focus:(border-border-active)"
+      class="p-2 border border-border rounded bg-surface flex shrink-0 flex-col gap-2 w-full relative overflow-clip has-focus:(border-border-active)"
     >
       <MainInputField />
       <MainInputOptions />

@@ -17,7 +17,7 @@ const handleRight = (e: Event) => {
 </script>
 
 <template>
-  <div class="flex gap-2 items-center">
+  <div class="flex gap-2 w-full items-center">
     <input
       v-model="form.url"
       class="text-sm ps-1.5 outline-none h-main-input-field-h w-full"
