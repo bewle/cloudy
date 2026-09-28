@@ -1,6 +1,8 @@
 export const useSidebarState = createGlobalState(() => {
   const tab = ref<SidebarButtonKey | undefined>()
   const previousTab = refDefault(usePrevious(tab), SIDEBAR__BUTTON_KEYS[0])
+  const shownTab = computed(() => tab.value ?? previousTab.value)
+
   const multitrackList = shallowReactive(new Set<string>())
   const artist = ref<string>() // url
   const playlist = ref<string>() // url
@@ -17,6 +19,7 @@ export const useSidebarState = createGlobalState(() => {
     playlist,
     playlistMeta,
     previousTab,
+    shownTab,
     tab,
   }
 })
