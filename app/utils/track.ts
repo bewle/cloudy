@@ -21,7 +21,9 @@ export function matchesQuery(track: SCTrackSummary | undefined, url: string, que
   const q = query.trim().toLowerCase()
   if (!q) return true
 
-  return (track ? `${track.title} ${resolveTrackArtist(track)}` : url).toLowerCase().includes(q)
+  return (track ? `${track.title} ${resolveTrackArtist(track)} ${url}` : url)
+    .toLowerCase()
+    .includes(q)
 }
 
 export async function getTrackMeta(url: string, signal?: AbortSignal) {

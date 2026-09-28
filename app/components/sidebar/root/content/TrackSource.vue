@@ -32,7 +32,7 @@ const rows = computed(() =>
 
 const canLoadMore = computed(() => active.value?.canLoadMore.value ?? false)
 const isLoading = computed(() => active.value?.isLoading.value ?? false)
-const isLoadingInitial = computed(() => isLoading.value && items.value.length === 0)
+const isLoadingInitial = computed(() => isLoading.value && rows.value.length === 0)
 
 const intersecting = ref(false)
 watch([intersecting, isLoading], ([hit, loading]) => {
