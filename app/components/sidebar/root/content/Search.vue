@@ -23,12 +23,15 @@ const placeholder = computed(() => {
       : t('search.placeholder')
   }
 
+  if (sidebarState.shownTab.value === 'downloads') return t('search.placeholder')
+
   const { size } = sidebarState.multitrackList
   return t('search.placeholder_count', [size], size)
 })
 
 const disabled = computed(() => {
   if (sidebarState.shownTab.value === 'multitrack') return false
+  if (sidebarState.shownTab.value === 'downloads') return false
   if (sidebarState.shownTab.value === 'artist' && sidebarState.artist.value) return false
   if (sidebarState.shownTab.value === 'playlist' && sidebarState.playlist.value) return false
 
@@ -37,5 +40,5 @@ const disabled = computed(() => {
 </script>
 
 <template>
-  <UInput class="flex-1" :placeholder :disabled />
+  <UInput v-model="sidebarState.searchQuery.value" class="flex-1" :placeholder :disabled />
 </template>

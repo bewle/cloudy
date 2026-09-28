@@ -1,20 +1,25 @@
 <script lang="ts" setup>
 const { downloads, batches } = useDownloads()
+const { getTrackMeta } = useTrackMeta()
+const { searchQuery } = useSidebarState()
 
 const flatBatches = computed(() => {
   const flat: FlatBatch[] = []
   let lastBatchId: string | undefined
   for (const [batchId, batch] of batches.entries()) {
+    const urls = batch.tracks.filter(url => matchesQuery(getTrackMeta(url), url, searchQuery.value))
+    if (!urls.length) continue
+
     if (lastBatchId && batchId !== lastBatchId) flat.push({ id: flat.length, type: 'separator' })
     lastBatchId = batchId
 
     flat.push({ id: batchId, type: 'heading' })
 
     if (!batch.collapsed)
-      batch.tracks.forEach((url, i) => {
+      urls.forEach((url, i) => {
         const key = getBatchTrackKey(batchId, url)
         const entry = downloads.get(key)!
-        flat.push({ entry, key, last: i === batch.tracks.length - 1, type: 'entry', url })
+        flat.push({ entry, key, last: i === urls.length - 1, type: 'entry', url })
       })
   }
 
@@ -36,6 +41,7 @@ const virtualRows = computed(() =>
 )
 
 const hasBatches = computed(() => !!batches.size)
+const noMatches = computed(() => hasBatches.value && !flatBatches.value.length)
 </script>
 
 <template>
@@ -47,10 +53,10 @@ const hasBatches = computed(() => !!batches.size)
 
   <div
     class="flex-1 shrink size-full overflow-auto"
-    :class="!hasBatches ? 'flex items-center justify-center h-full' : ''"
+    :class="!hasBatches || noMatches ? 'flex items-center justify-center h-full' : ''"
   >
     <SidebarRootContentList
-      v-if="hasBatches"
+      v-if="hasBatches && !noMatches"
       ref="viewport"
       :total-size="virtualizer.getTotalSize()"
       :virtualizer
@@ -78,6 +84,8 @@ const hasBatches = computed(() => !!batches.size)
         <div v-else-if="row.type === 'separator'" class="h-12px" aria-hidden="true" />
       </div>
     </SidebarRootContentList>
+
+    <SidebarRootContentNoMatches v-else-if="noMatches" />
 
     <UStateRoot v-else class="max-w-96">
       <UStateIcon :name="ICON__EMPTY" />

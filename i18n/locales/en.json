@@ -2,6 +2,8 @@
   "action": {
     "auto_detect": "Automatically detect URL type",
     "close_sidebar": "Close sidebar",
+    "download_all": "Download all tracks",
+    "download_matching": "Download matching tracks",
     "open_sidebar": "Open sidebar"
   },
   "app_name": "cloudy",
@@ -24,6 +26,7 @@
     }
   },
   "search": {
+    "no_results": "No matching tracks",
     "placeholder": "Search tracks",
     "placeholder_count": "Search {0} tracks|Search {0} track|Search {0} tracks"
   },

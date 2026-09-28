@@ -7,6 +7,12 @@ export const useSidebarState = createGlobalState(() => {
   const artist = ref<string>() // url
   const playlist = ref<string>() // url
 
+  const queries = reactive<Partial<Record<SidebarButtonKey, string>>>({})
+  const searchQuery = computed({
+    get: () => queries[shownTab.value] ?? '',
+    set: (v: string) => (queries[shownTab.value] = v),
+  })
+
   const isSidebarPanel = useMediaQuery('(min-width: 69rem)', { ssrWidth: 1920 })
 
   const animating = refAutoReset(false, 150)
@@ -26,6 +32,7 @@ export const useSidebarState = createGlobalState(() => {
     playlist,
     playlistMeta,
     previousTab,
+    searchQuery,
     shownTab,
     tab,
   }
