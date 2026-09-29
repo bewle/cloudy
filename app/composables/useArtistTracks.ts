@@ -24,9 +24,8 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
       const url = artistUrlRef.value
       if (!url) return NO_TRACKS
 
-      $analytics.track('ARTIST_TRACKS')
-
       const prev = nuxtApp.payload.data[`artist-tracks-${url}`] as ArtistTracksPages | undefined
+      if (!prev) $analytics.track('ARTIST_TRACKS')
       if (prev?.tracks.length && !prev.nextHref) return { ...prev, url }
 
       const { collection, next_href } = await $fetch<SCTrackSearchSummary>('/api/artist/tracks', {

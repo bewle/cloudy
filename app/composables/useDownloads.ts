@@ -52,9 +52,6 @@ export const useDownloads = createGlobalState(() => {
   ) => {
     if (downloads.get(key)?.status === 'downloading') return
 
-    if (save)
-      $analytics.track('TRACK_SINGLE', opts.meta ? { duration: opts.meta.duration } : undefined)
-
     const format = opts.format ?? settings.value.preferredFormat
     const fallback = opts.fallback ?? getFallbackFormat()
     const avoidLq = opts.avoidLq ?? settings.value.fallbackFormat.avoidLq
@@ -76,7 +73,10 @@ export const useDownloads = createGlobalState(() => {
       })
       downloads.set(key, { status: 'done' })
 
-      if (save) saveAs(res.blob, res.mime, getTrackFilename(res.trackMeta, res.extension))
+      if (save) {
+        $analytics.track('TRACK_SINGLE', { duration: res.trackMeta.duration })
+        saveAs(res.blob, res.mime, getTrackFilename(res.trackMeta, res.extension))
+      }
 
       return res
     } catch (error) {
@@ -98,11 +98,6 @@ export const useDownloads = createGlobalState(() => {
     const fallback = getFallbackFormat()
     const { avoidLq } = settings.value.fallbackFormat
     const list = [...items]
-
-    $analytics.track('TRACK_BATCH', {
-      duration: list.reduce((total, { meta }) => total + (meta?.duration ?? 0), 0),
-      trackCount: list.length,
-    })
 
     const abortController = new AbortController()
     const { signal } = abortController
@@ -163,7 +158,16 @@ export const useDownloads = createGlobalState(() => {
       signal.throwIfAborted()
       const entries = mixedEntries.filter(isDefined) as InputWithSizeMeta[]
 
-      if (entries.length) await saveViaMemory(entries)
+      if (entries.length) {
+        await saveViaMemory(entries)
+        $analytics.track('TRACK_BATCH', {
+          duration: list.reduce(
+            (total, { meta }, i) => total + (mixedEntries[i] ? (meta?.duration ?? 0) : 0),
+            0,
+          ),
+          trackCount: entries.length,
+        })
+      }
 
       const hasError = list.some(
         ({ url }) => downloads.get(getBatchTrackKey(batchId, url))?.status === 'error',

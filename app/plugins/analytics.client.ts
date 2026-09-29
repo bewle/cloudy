@@ -14,8 +14,9 @@ export default defineNuxtPlugin({
     function track(event: keyof typeof ANALYTICS__EVENTS, props?: Props) {
       if (import.meta.env.DEV) return
 
-      ph?.proxy.posthog.capture(event, props)
-      pa?.proxy.plausible(event, { props })
+      const name = ANALYTICS__EVENTS[event]
+      ph?.proxy.posthog.capture(name, props)
+      pa?.proxy.plausible(name, { props })
     }
 
     return {
