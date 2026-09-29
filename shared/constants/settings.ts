@@ -12,7 +12,7 @@ export const SETTINGS__DEFAULT: Settings = {
 }
 
 // oxlint-disable-next-line sort-keys
-export const SETTINGS__METADATA = {c
+export const SETTINGS__METADATA = {
   metadataFrames: {
     options: ['APIC', 'COMM', 'TCON', 'TDAT', 'TIT2', 'TPE1', 'WOAS'] as ID3FrameIdWritable[],
     type: 'select',
