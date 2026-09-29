@@ -40,6 +40,7 @@ export const SC__TRACK_SUMMARY_KEYS = [
   'description',
   'genre',
   'id',
+  'duration',
   'permalink_url',
   'publisher_metadata',
   'title',

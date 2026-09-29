@@ -8,6 +8,7 @@ const NO_TRACKS: PlaylistTracks = { tracks: [], url: undefined }
 export function usePlaylistTracks(playlistUrl: MaybeRefOrGetter<string | undefined>) {
   const playlistUrlRef = toRef(playlistUrl)
   const { setTrackMeta } = useTrackMeta()
+  const { $analytics } = useNuxtApp()
 
   const { pending: playlistMetaPending } = usePlaylistMeta(playlistUrl)
 
@@ -16,6 +17,8 @@ export function usePlaylistTracks(playlistUrl: MaybeRefOrGetter<string | undefin
     async (_nuxtApp, { signal }) => {
       const url = playlistUrlRef.value
       if (!url) return NO_TRACKS
+
+      $analytics.track('PLAYLIST_TRACKS')
 
       const { collection } = await $fetch<SCTrackSearchSummary>('/api/playlist/tracks', {
         query: { url },

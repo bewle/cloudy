@@ -9,6 +9,7 @@ const NO_TRACKS: ArtistTracksPages = { nextHref: undefined, tracks: [], url: und
 export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>) {
   const artistUrlRef = toRef(artistUrl)
   const { setTrackMeta } = useTrackMeta()
+  const { $analytics } = useNuxtApp()
 
   const { pending: artistMetaPending, error: artistMetaError } = useArtistMeta(artistUrl)
 
@@ -22,6 +23,8 @@ export function useArtistTracks(artistUrl: MaybeRefOrGetter<string | undefined>)
     async (nuxtApp, { signal }) => {
       const url = artistUrlRef.value
       if (!url) return NO_TRACKS
+
+      $analytics.track('ARTIST_TRACKS')
 
       const prev = nuxtApp.payload.data[`artist-tracks-${url}`] as ArtistTracksPages | undefined
       if (prev?.tracks.length && !prev.nextHref) return { ...prev, url }

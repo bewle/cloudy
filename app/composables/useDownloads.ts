@@ -35,6 +35,7 @@ export const useDownloads = createGlobalState(() => {
   const downloads = shallowReactive(new Map<string, DownloadEntry>())
   const batches = shallowReactive(new Map<DownloadBatch['id'], DownloadBatch>())
   const settings = useSettings()
+  const { $analytics } = useNuxtApp()
   const isBatchRunning = ref(false)
   const queue = new Semaphore(MAX_CONCURRENCY)
 
@@ -50,6 +51,9 @@ export const useDownloads = createGlobalState(() => {
     }: Omit<DownloadTrackOptions, 'onProgress'> & { save?: boolean; key?: string } = {},
   ) => {
     if (downloads.get(key)?.status === 'downloading') return
+
+    if (save)
+      $analytics.track('TRACK_SINGLE', opts.meta ? { duration: opts.meta.duration } : undefined)
 
     const format = opts.format ?? settings.value.preferredFormat
     const fallback = opts.fallback ?? getFallbackFormat()
@@ -94,6 +98,11 @@ export const useDownloads = createGlobalState(() => {
     const fallback = getFallbackFormat()
     const { avoidLq } = settings.value.fallbackFormat
     const list = [...items]
+
+    $analytics.track('TRACK_BATCH', {
+      duration: list.reduce((total, { meta }) => total + (meta?.duration ?? 0), 0),
+      trackCount: list.length,
+    })
 
     const abortController = new AbortController()
     const { signal } = abortController
