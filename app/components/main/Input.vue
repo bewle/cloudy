@@ -28,7 +28,17 @@ const downloadState = computed(() => downloads.get(form.value.url))
 
 const sidebarState = useSidebarState()
 
-const submitForm = () => {
+const submitForm = async () => {
+  if (isShortUrl(form.value.url)) {
+    const shortUrl = form.value.url
+    const [error, expanded] = await attemptAsync(() =>
+      $fetch<string>('/api/expand', { query: { url: shortUrl } }),
+    )
+    if (error || !expanded)
+      return downloads.set(shortUrl, { error: error as Error, status: 'error' })
+    form.value.url = expanded
+  }
+
   if (!isUrl(form.value.url))
     return downloads.set(form.value.url, {
       error: validationErrors.INVALID_URL({

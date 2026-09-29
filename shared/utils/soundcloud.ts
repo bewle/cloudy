@@ -79,6 +79,10 @@ export function getUrlType(url: string): InputSourceOption | undefined {
   if (segments.length === 3 && segments[2]?.startsWith('s-')) return 'track'
 }
 
+export function isShortUrl(url: string) {
+  return parseURL(url).host === 'on.soundcloud.com'
+}
+
 export function transcodingToMime(transcoding: SCTranscodingType) {
   return SC__TRANSCODING_MIME_TYPE_MAP[transcoding]
 }
