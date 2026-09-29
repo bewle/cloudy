@@ -35,6 +35,7 @@ export const useDownloads = createGlobalState(() => {
   const downloads = shallowReactive(new Map<string, DownloadEntry>())
   const batches = shallowReactive(new Map<DownloadBatch['id'], DownloadBatch>())
   const settings = useSettings()
+  const { $analytics } = useNuxtApp()
   const isBatchRunning = ref(false)
   const queue = new Semaphore(MAX_CONCURRENCY)
 
@@ -72,7 +73,10 @@ export const useDownloads = createGlobalState(() => {
       })
       downloads.set(key, { status: 'done' })
 
-      if (save) saveAs(res.blob, res.mime, getTrackFilename(res.trackMeta, res.extension))
+      if (save) {
+        $analytics.track('TRACK_SINGLE', { duration: res.trackMeta.duration })
+        saveAs(res.blob, res.mime, getTrackFilename(res.trackMeta, res.extension))
+      }
 
       return res
     } catch (error) {
@@ -154,7 +158,16 @@ export const useDownloads = createGlobalState(() => {
       signal.throwIfAborted()
       const entries = mixedEntries.filter(isDefined) as InputWithSizeMeta[]
 
-      if (entries.length) await saveViaMemory(entries)
+      if (entries.length) {
+        await saveViaMemory(entries)
+        $analytics.track('TRACK_BATCH', {
+          duration: list.reduce(
+            (total, { meta }, i) => total + (mixedEntries[i] ? (meta?.duration ?? 0) : 0),
+            0,
+          ),
+          trackCount: entries.length,
+        })
+      }
 
       const hasError = list.some(
         ({ url }) => downloads.get(getBatchTrackKey(batchId, url))?.status === 'error',

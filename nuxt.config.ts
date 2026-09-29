@@ -80,6 +80,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/seo',
+    '@nuxt/scripts',
   ],
   nitro: {
     imports: {
@@ -95,6 +96,10 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    // nuxt-scripts analytics proxy
+    '/_scripts/p/**': {
+      security: { xssValidator: false },
+    },
     '/api/**': {
       security: {
         rateLimiter: { headers: true, interval: 60_000, tokensPerInterval: 60 },
@@ -114,7 +119,18 @@ export default defineNuxtConfig({
     posthog: {
       apiKey: '',
     },
+    public: {
+      scripts: {
+        plausibleAnalytics: { scriptId: '' },
+      },
+    },
     rateLimitIpHeader: '',
+  },
+  scripts: {
+    registry: {
+      plausibleAnalytics: { trigger: false },
+      posthog: { trigger: false },
+    },
   },
   security: {
     headers: {
