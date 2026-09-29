@@ -8,11 +8,11 @@ export const SETTINGS__DEFAULT: Settings = {
     format: 'mp3',
   },
   metadataFrames: ['APIC', 'COMM', 'TCON', 'TDAT', 'TIT2', 'TPE1', 'WOAS'],
-  preferredFormat: 'mp3',
+  preferredFormat: 'aac',
 }
 
 // oxlint-disable-next-line sort-keys
-export const SETTINGS__METADATA = {
+export const SETTINGS__METADATA = {c
   metadataFrames: {
     options: ['APIC', 'COMM', 'TCON', 'TDAT', 'TIT2', 'TPE1', 'WOAS'] as ID3FrameIdWritable[],
     type: 'select',
