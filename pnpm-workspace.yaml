@@ -6,6 +6,8 @@ overrides:
   typescript: 6.0.3
   vite@*: npm:@voidzero-dev/vite-plus-core@0.3.3
   vue: 3.6.0-rc.9
+patchedDependencies:
+  mediabunny: patches/mediabunny.patch
 peerDependencyRules:
   allowAny:
     - vite

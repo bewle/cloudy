@@ -1,0 +1,31 @@
+diff --git a/dist/modules/src/isobmff/isobmff-boxes.js b/dist/modules/src/isobmff/isobmff-boxes.js
+index 7af901e75f804bfadd331ee525369f93729f6b53..3d7a922cf664f9842d34255ca7a67f8d1aebcf02 100644
+--- a/dist/modules/src/isobmff/isobmff-boxes.js
++++ b/dist/modules/src/isobmff/isobmff-boxes.js
+@@ -1523,7 +1523,7 @@ const generateMetadataPairs = (tags, isMdta) => {
+     if (tags.raw) {
+         for (const key in tags.raw) {
+             const value = tags.raw[key];
+-            if (value == null || (!isMdta && key.length !== 4) || pairs.some(x => x.key === key)) {
++            if (value == null || (!isMdta && key.length !== 4 && !key.startsWith('----:')) || pairs.some(x => x.key === key)) {
+                 continue;
+             }
+             if (typeof value === 'string') {
+@@ -1556,7 +1556,16 @@ const metaMdir = (tags) => {
+     // fullBox format
+     return fullBox('meta', 0, 0, undefined, [
+         hdlr(false, 'mdir', '', 'appl'), // mdir handler
+-        box('ilst', undefined, pairs.map(pair => box(pair.key, undefined, [pair.value]))), // Item list without keys box
++        box('ilst', undefined, pairs.map(({ key, value }) => {
++            if (!key.startsWith('----:'))
++                return box(key, undefined, [value]);
++            const [, mean, name] = key.split(':');
++            return box('----', undefined, [
++                fullBox('mean', 0, 0, [...textEncoder.encode(mean)]),
++                fullBox('name', 0, 0, [...textEncoder.encode(name)]),
++                value,
++            ]);
++        })), // Item list without keys box
+     ]);
+ };
+ /** Metadata Box (mdta format with keys box) */

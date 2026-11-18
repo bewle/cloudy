@@ -77,7 +77,22 @@ export const getTaggedTrackBlob = ({
   })
 }
 
-export async function getTrackTags(trackMeta: SCTrackSummary, frameIds: ID3FrameIdWritable[]) {
+function getSourceUrlTag(url: string, format: SCTranscodingType) {
+  switch (format) {
+    case 'aac':
+      return { '----:com.apple.iTunes:AUDIOSOURCEWEBPAGE': url }
+    case 'mp3':
+      return { WOAS: new TextEncoder().encode(url) }
+    case 'opus':
+      return { AUDIOSOURCEWEBPAGE: url }
+  }
+}
+
+export async function getTrackTags(
+  trackMeta: SCTrackSummary,
+  frameIds: ID3FrameIdWritable[],
+  format: SCTranscodingType,
+) {
   const frames = await mapAsync(frameIds, async id => {
     let mediaBunnyKey: keyof MetadataTags | undefined
     let payload: any
@@ -114,7 +129,7 @@ export async function getTrackTags(trackMeta: SCTrackSummary, frameIds: ID3Frame
       }
       case 'WOAS': {
         mediaBunnyKey = 'raw'
-        payload = { WOAS: new TextEncoder().encode(trackMeta.permalink_url) }
+        payload = getSourceUrlTag(trackMeta.permalink_url, format)
         break
       }
       case 'APIC': {
